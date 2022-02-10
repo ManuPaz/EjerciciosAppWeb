@@ -33,4 +33,4 @@ build/
 .vscode/
 Servidor/src/test/resources/dev.properties
 Servidor/src/main/resources/dev.properties
-Servidor/comandos
+
