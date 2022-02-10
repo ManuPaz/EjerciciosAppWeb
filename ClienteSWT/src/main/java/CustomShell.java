@@ -114,9 +114,7 @@ public class CustomShell extends Shell {
 
 
 
-        this.pack();
 
-        this.open();
 
 
     }
