@@ -1,22 +1,27 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import peticionesRest.VerJuegos;
+public class CustomShell extends Shell {
+    private Button b1;
+    private Button b2;
+    private Button b3;
+    private Table table;
+    private Combo combo1;
+    private Combo combo2;
+    private Combo combo3;
+    private VerJuegos verjuegos;
+    public CustomShell(Display display) throws JsonProcessingException {
+        super(display);
 
-public class Main
-{
-    public static void main(String[] args) throws JsonProcessingException {
-        Display display = new Display();
-        VerJuegos verjuegos=new VerJuegos("http://localhost:8080/juegos","admin","manuel");
-        JsonNode juegos=verjuegos.pedirJuegos();
+        this.verjuegos=new VerJuegos("http://localhost:8080/juegos","admin","manuel");
+        JsonNode juegos=this.verjuegos.pedirJuegos();
 
-        Shell shell = new Shell(display);
-        //shell.setSize(280, 300);
-
+        Shell shell=this;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
 
@@ -85,9 +90,9 @@ public class Main
         for (JsonNode i : juegos){
             TableItem item = new TableItem(table, SWT.PUSH);
             if (i.get("año").asText()!="null")
-            item.setText(6,i.get("año").asText());
+                item.setText(6,i.get("año").asText());
             if (i.get("descripcion_tipo_jjoo").asText()!="null")
-            item.setText(7,i.get("descripcion_tipo_jjoo").asText());
+                item.setText(7,i.get("descripcion_tipo_jjoo").asText());
             item.setText(1,i.get("nombre_ciudad").asText());
             item.setText(0,i.get("id_ciudad").asText());
             item.setText(2,i.get("nombre_pais").asText());
@@ -95,7 +100,7 @@ public class Main
             item.setText(4,i.get("valor").asText());
             item.setText(5,i.get("numero_veces_sede").asText());
 
-      }
+        }
 
 
 
@@ -109,15 +114,30 @@ public class Main
 
 
 
-        shell.pack();
+        this.pack();
 
-        shell.open();
+        this.open();
 
-        while (!shell.isDisposed()) {
-
-            if (!display.readAndDispatch()) display.sleep();
-
-        }display.sleep();
-        }
 
     }
+
+    public Button getB1() {
+        return b1;
+    }
+
+    public Button getB2() {
+        return b2;
+    }
+
+    public Button getB3() {
+        return b3;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+
+
+
+}
