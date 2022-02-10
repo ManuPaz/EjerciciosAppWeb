@@ -31,5 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-src/test/resources/dev.properties
-src/main/resources/dev.properties
+Servidor/src/test/resources/dev.properties
+Servidor/src/main/resources/dev.properties
+Servidor/comandos
