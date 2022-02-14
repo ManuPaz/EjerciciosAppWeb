@@ -1,20 +1,26 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-
+import avisos.MensajesError;
 import com.fasterxml.jackson.databind.JsonNode;
+import listeners.ModificarListener;
 import org.eclipse.swt.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import peticionesRest.VerJuegos;
 
+import java.io.IOException;
+
 public class Main
+
+
 {
-    public static void main(String[] args) throws JsonProcessingException {
+    public static void main(String[] args) throws IOException {
         Display display = new Display();
-        VerJuegos verjuegos=new VerJuegos("http://localhost:8080/juegos","admin","manuel");
+        Shell shell = new Shell(display);
+        MensajesError mensajesError=new MensajesError(shell);
+        VerJuegos verjuegos=new VerJuegos("http://localhost:8080","admin","manuel",mensajesError);
         JsonNode juegos=verjuegos.pedirJuegos();
 
-        Shell shell = new Shell(display);
+
+
         //shell.setSize(280, 300);
 
         GridLayout gridLayout = new GridLayout();
@@ -22,57 +28,64 @@ public class Main
 
         shell.setLayout(gridLayout);
 
-        Button b=new Button(shell, SWT.PUSH);
-        b.setText("Añadir sede");
-        b.addListener(SWT.Dispose, new Listener() {
-            public void handleEvent(Event event) {
-                // widget was disposed
-            }
-        });
+        Button b1=new Button(shell, SWT.PUSH);
+        b1.setText("Añadir sede");
 
 
 
 
-        b.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-        final Combo combo  = new Combo(shell, SWT.PUSH);
-        combo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-
-        String[] items = new String[] { "English", "Vietnamese" };
-        combo.setItems(items);
-        b=new Button(shell, SWT.PUSH);
-        b.setText("Modificar sede");
-        b.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(Event e) {
-                switch (e.type) {
-                    case SWT.Selection:
-                        String[] items = new String[] { "Manu","Jaco" };
-                        combo.setItems(items);
-                        break;
-                }
-            }
-        });
-
-        final Combo combo1  = new Combo(shell, SWT.PUSH);
-        combo1.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-        b.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING ));
-        b=new Button(shell, SWT.PUSH);
-        b.setText("Eliminar sede");
-        b.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-        final Combo combo2 = new Combo(shell, SWT.PUSH);
-        combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        b1.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
 
-        GridLayout gridLayout2 = new GridLayout();
 
-        gridLayout2.numColumns = 1;
+        Button  b2=new Button(shell, SWT.PUSH);
+        b2.setText("Modificar sede");
 
-        shell.setLayout(gridLayout2);
+
+
+        //GridData grid2=new GridData(GridData.HORIZONTAL_ALIGN_FILL );
+        //b2.setLayoutData(grid2);
+
+        //b4.setLayoutData(grid2);
+        Button b3=new Button(shell, SWT.PUSH);
+        b3.setText("Eliminar sede");
+        b3.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        final Combo combo3  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo3.setVisible(false);
+        final Combo combo2  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo2.setVisible(false);
+
+        final Combo combo4  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo4.setVisible(false);
+
+        Button b4=new Button(shell, SWT.PUSH);
+        b4.setText("Enviar");
+        final Combo combo5  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo5.setVisible(false);
+        final Combo combo6  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo6.setVisible(false);
+        final Combo combo7  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo7.setVisible(false);
+        final Combo combo8  = new Combo(shell, SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        combo8.setVisible(false);
+
+
+
+
 
 
         Table table = new Table(shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
                 | SWT.H_SCROLL);
+
         table.setHeaderVisible(true);
-        String[] titles = { "Id  de la ciudad ","Ciudad ","Pais","Id del pais","Valor","Numero de veces que fue sede","Año ", "Tipo de sede " };
+        String[] titles = { "Id  de la ciudad ","Ciudad ","Pais","Id del pais","Valor","Numero de veces que fue sede", "Tipo de sede " };
         GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 
         gridData.verticalSpan = 20;
@@ -84,10 +97,9 @@ public class Main
         }
         for (JsonNode i : juegos){
             TableItem item = new TableItem(table, SWT.PUSH);
-            if (i.get("año").asText()!="null")
-            item.setText(6,i.get("año").asText());
+
             if (i.get("descripcion_tipo_jjoo").asText()!="null")
-            item.setText(7,i.get("descripcion_tipo_jjoo").asText());
+            item.setText(6,i.get("descripcion_tipo_jjoo").asText());
             item.setText(1,i.get("nombre_ciudad").asText());
             item.setText(0,i.get("id_ciudad").asText());
             item.setText(2,i.get("nombre_pais").asText());
@@ -107,7 +119,8 @@ public class Main
 
 
 
-
+        Listener listener=new ModificarListener(table,verjuegos,shell,mensajesError,combo2);
+        b2.addListener(SWT.Selection,listener);
 
         shell.pack();
 
