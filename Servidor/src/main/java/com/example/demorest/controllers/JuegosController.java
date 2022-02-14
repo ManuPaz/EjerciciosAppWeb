@@ -36,6 +36,27 @@ public class JuegosController {
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), HttpStatus.OK);
     }
 
+    @GetMapping("/juegos/ciudad")
+    ResponseEntity<List<Integer>> buscarJuegosPorCiudad(
+
+
+
+
+            @RequestParam(value = "ciudad", required = true) Integer ciudad
+
+
+    ) {
+
+        HttpStatus codigo = HttpStatus.OK;
+       List<Integer> j=juegosService.findJuegosCiudad(ciudad);
+
+       return new ResponseEntity<List<Integer>>(j, codigo);
+
+
+
+
+    }
+
     @PostMapping("/juegos/añadir")
     ResponseEntity<Juegos> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
                                      @RequestParam(value = "pais", required = false) String nombre_pais,
@@ -99,18 +120,19 @@ public class JuegosController {
     ResponseEntity<Juegos> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
                                       @RequestParam(value = "pais", required = false) String nombre_pais,
                                       @RequestParam(value = "codigoPais", required = false) String codigoPais,
+                                      @RequestParam(value = "valorPais", required = false) Integer valorPais,
 
 
                                       @RequestParam(value = "año", required = true) Integer año,
                                       @RequestParam(value = "nuevoAño", required = false) Integer nuevoAño,
                                       @RequestParam(value = "tipoSede", required = true) String tipo,
                                       @RequestParam(value = "idCiudad", required = false) Integer id_ciudad,
-                                      @RequestParam(value = "idPais", required = false) Integer id_pais,
+
                                       @RequestParam(value = "nuevoTipoSede", required = false) String nuevoTipoSede
 
 
     ) {
-        JuegosDTO juegosdto = new JuegosDTO(nombre_pais, nombre_ciudad, id_ciudad, codigoPais, tipo, año, nuevoAño, nuevoTipoSede);
+        JuegosDTO juegosdto = new JuegosDTO(nombre_pais, nombre_ciudad, id_ciudad, codigoPais, tipo, año, nuevoAño, nuevoTipoSede,valorPais);
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {

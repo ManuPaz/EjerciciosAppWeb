@@ -14,13 +14,7 @@ public class JuegosCiudades {
         this.nombre_pais = nombre_pais;
     }
 
-    public String getNombre_ciuddad() {
-        return nombre_ciudad;
-    }
 
-    public void setNombre_ciuddad(String nombre_ciuddad) {
-        this.nombre_ciudad = nombre_ciuddad;
-    }
 
     public Integer getId_pais() {
         return id_pais;

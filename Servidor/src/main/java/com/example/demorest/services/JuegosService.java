@@ -41,6 +41,13 @@ public class JuegosService {
     public List<JuegosCiudades> findJuegosCiudades() {
         return juegosRepository.findJuegosCiudades();
     }
+    public List<Integer> findJuegosCiudad(Integer idciudad) {
+
+
+            return juegosRepository.findJuegosByCiudad(idciudad);
+
+
+    }
 
     private boolean guardarCiudad(JuegosDTO sede) {
         boolean finalizar = false;
@@ -143,9 +150,10 @@ public class JuegosService {
                 juegos1 = juegos.get();
 
 
-                if (sede.getNuevoTipoSede() != null && !sede.getNuevoTipoSede().equals(sede.getDescripcion_tipo_jjoo())) {
+                if (sede.getNuevoTipoSede() != null ) {
 
-                    if (tipoSedeRepository.existsTipoSedeBydescripciontipo(sede.getNuevoTipoSede())) {
+                    if (tipoSedeRepository.existsTipoSedeBydescripciontipo(sede.getNuevoTipoSede())){
+                        if( !sede.getNuevoTipoSede().equals(sede.getDescripcion_tipo_jjoo()) ) {
 
 
                         TipoSede tiposede1 = tipoSedeRepository.findBydescripciontipo(sede.getNuevoTipoSede());
@@ -159,12 +167,14 @@ public class JuegosService {
                         juegosRepository.save(juegos2);
                         juegosRepository.deleteById(juegos1.getId());
 
-                    } else {
-
-                        finalizar = true;
+                    }}else{
+                        finalizar=true;
                     }
                 }
-                if (juegos2 != null) juegos1 = juegos2;
+                if (juegos2 != null) {
+                    juegos1 = juegos2;
+                    juegos2=null;
+                }
                 if (finalizar == false) {
                     if (sede.getId_ciudad() != null) {
 
@@ -179,12 +189,18 @@ public class JuegosService {
 
                     } else {
                         if (sede.getNombre_ciudad() != null) {
+
                             Ciudad ciudad1 = ciudadRepository.findBynombreciudad(sede.getNombre_ciudad());
+
                             if (ciudad1 != null) {
 
                                 juegos1.setCiudad(ciudad1);
                             } else {
-                                finalizar = true;
+                                finalizar = guardarCiudad(sede);
+                                if (finalizar==false){
+                                    ciudad1 = ciudadRepository.findBynombreciudad(sede.getNombre_ciudad());
+                                    juegos1.setCiudad(ciudad1);
+                                }
                             }
 
 
@@ -192,6 +208,7 @@ public class JuegosService {
                     }
                 }
                 if (finalizar == false) {
+                    juegosRepository.save(juegos1);
 
 
                     if (sede.getNuevoAño() != null && sede.getNuevoAño().intValue() != sede.getAño().intValue()) {
