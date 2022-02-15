@@ -12,8 +12,13 @@ public class MensajesError {
         this.shell = shell;
     }
     public void avisar(String mensaje){
-        MessageBox messageBox = new MessageBox(this.shell, SWT.OK
-                | SWT.ICON_WARNING);
+        MessageBox messageBox = new MessageBox(this.shell, SWT.ERROR);
+        messageBox.setMessage(mensaje);
+        messageBox.open();
+
+    }
+    public void confirmar(String mensaje){
+        MessageBox messageBox = new MessageBox(this.shell, SWT.ICON_INFORMATION);
         messageBox.setMessage(mensaje);
         messageBox.open();
 

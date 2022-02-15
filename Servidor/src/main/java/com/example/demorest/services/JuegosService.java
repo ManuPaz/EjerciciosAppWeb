@@ -2,6 +2,7 @@ package com.example.demorest.services;
 
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.*;
 import com.example.demorest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +43,18 @@ public class JuegosService {
     public List<JuegosCiudades> findJuegosCiudades() {
         return juegosRepository.findJuegosCiudades();
     }
-    public List<Integer> findJuegosCiudad(Integer idciudad) {
+    public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
+        TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(tipo);
+        Ciudad ciudad = null;
+        if (tiposede != null) {
 
 
-            return juegosRepository.findJuegosByCiudad(idciudad);
+            return juegosRepository.findJuegosByCiudad(idciudad,tiposede.getId_tipo_jjoo());
+        }
+        else{
+
+            return new ArrayList<>();
+        }
 
 
     }

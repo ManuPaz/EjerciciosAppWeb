@@ -2,6 +2,7 @@ package com.example.demorest.controllers;
 
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.services.JuegosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,27 +38,29 @@ public class JuegosController {
     }
 
     @GetMapping("/juegos/ciudad")
-    ResponseEntity<List<Integer>> buscarJuegosPorCiudad(
+    ResponseEntity<List<Sede>> buscarJuegosPorCiudad(
 
 
 
 
-            @RequestParam(value = "ciudad", required = true) Integer ciudad
+            @RequestParam(value = "ciudad", required = true) Integer ciudad,
+            @RequestParam(value = "tipo", required = true) String tipo
 
 
     ) {
 
         HttpStatus codigo = HttpStatus.OK;
-       List<Integer> j=juegosService.findJuegosCiudad(ciudad);
 
-       return new ResponseEntity<List<Integer>>(j, codigo);
+       List<Sede> j=juegosService.findJuegosCiudad(ciudad,tipo);
+
+       return new ResponseEntity<List<Sede>>(j, codigo);
 
 
 
 
     }
 
-    @PostMapping("/juegos/añadir")
+    @PostMapping("/juegos/anadir")
     ResponseEntity<Juegos> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
                                      @RequestParam(value = "pais", required = false) String nombre_pais,
                                      @RequestParam(value = "codigoPais", required = false) String codigoPais,
