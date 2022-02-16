@@ -141,7 +141,7 @@ public class JuegosService {
 
 
     }
-
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos editarJuegos(JuegosDTO sede) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
         Juegos juegos1 = null;
@@ -187,7 +187,7 @@ public class JuegosService {
                 }
                 if (finalizar == false) {
                     if (sede.getId_ciudad() != null) {
-
+                        System.out.println(sede.getId_ciudad());
                         Optional<Ciudad> ciudad = ciudadRepository.findById(sede.getId_ciudad());
                         if (ciudad.isPresent()) {
                             Ciudad ciudad1 = ciudad.get();

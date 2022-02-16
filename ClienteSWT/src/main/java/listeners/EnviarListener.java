@@ -100,6 +100,9 @@ public class EnviarListener implements Listener {
                             this.gui.getLabel8().setVisible(false);
                             this.gui.getText8().setVisible(false);
                             this.gui.getLabel10().setVisible(false);
+                            this.gui.getButton4().setVisible(false);
+                            this.gui.getButton5().setVisible(false);
+                            this.mensajesError.confirmar(Constante.MENSAJE_SEDE_AÑADIDA);
                         }
                         }
                         else{
@@ -138,9 +141,8 @@ public class EnviarListener implements Listener {
                     String nuevoNombreCiudad=null;
                     try {
 
-                        Integer nuevoaño = null;
-                        String nombreciudad=this.gui.getText11().getText();
-                        String nuevotipo=null;
+
+
 
                             if (this.gui.getText5().getText()!="") {
 
@@ -159,14 +161,14 @@ public class EnviarListener implements Listener {
 
                             }
                             if (this.gui.getCombo7().getSelectionIndex()!=-1) {
-                                nuevotipo=this.gui.getCombo7().getItem(this.gui.getCombo7().getSelectionIndex()).toString();
+                                nuevoTipoSede=this.gui.getCombo7().getItem(this.gui.getCombo7().getSelectionIndex()).toString();
 
 
                             }
 
 
 
-                            terminar=this.verjuegos.modificarJuegos(nombreciudad,año,tipo,nuevoaño,nuevotipo,nuevoIdCiudad);
+                            terminar=this.verjuegos.modificarJuegos( nuevoNombreCiudad,año,tipo,nuevoAño,nuevoTipoSede,nuevoIdCiudad);
 
 
                             if (terminar) {
@@ -182,6 +184,9 @@ public class EnviarListener implements Listener {
                                 this.gui.getText9().setVisible(false);
                                 this.gui.getLabel11().setVisible(false);
                                 this.gui.getText11().setVisible(false);
+                                this.gui.getButton4().setVisible(false);
+                                this.gui.getButton5().setVisible(false);
+                                this.mensajesError.confirmar(Constante.MENSAJE_SEDE_MODIFICADA);
                             }
 
 
@@ -221,8 +226,8 @@ public class EnviarListener implements Listener {
                         this.gui.getCombo7().setVisible(false);
                         this.gui.getButton4().setVisible(false);
                         this.gui.getButton5().setVisible(false);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    } catch (Exception ex) {
+
                         this.mensajesError.avisar(Constante.MENSAJE_ERROR_ELIMINAR_SEDE);
                     }
 

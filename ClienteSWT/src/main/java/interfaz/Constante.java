@@ -14,5 +14,7 @@ public final class Constante {
     public static final int TEXT_HEIGHT=2;
     public static final String MENSAJE_CIUDAD_INVALIDA="Introduzca el nombre de la ciudad";
     public static final String MENSAJE_CAMPOS_INVALIDOS="Algun campo de la petición es inválido o faltan campos";
+    public static final String MENSAJE_SEDE_AÑADIDA="JJOO añadido correctamente";
+    public static final String MENSAJE_SEDE_MODIFICADA="JJOO modificado correctamente";
 
 }

@@ -84,27 +84,20 @@ public class RestJuegos {
        this.mensajesError.confirmar(this.devolverConfirmacion(response));
 
     }
-    public void modificarJuegos(Integer año,String tipoJuegos) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> request=this.createHeaders();
 
-        ResponseEntity<String> response = restTemplate.exchange(restService+"/juegos/eliminar?año={año}&tipoSede={tipo}", HttpMethod.POST, request, String.class,(año),tipoJuegos);
 
-        this.mensajesError.confirmar(this.devolverConfirmacion(response));
-
-    }
     public boolean modificarJuegos(String nombreCiudad,Integer año,String tipoJuegos,Integer nuevoAño,String nuevoTipo,Integer nuevoId) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request=this.createHeaders();
         String consulta=restService;
 
-        ArrayList<Object> args=new ArrayList<>();
+
         consulta+="/juegos/modificar?año={año}&tipoSede={tipoSede}";
-        args.add(año);
-        args.add(tipoJuegos);
-        args.add(nombreCiudad);
+
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("año", año);
+
 
         params.put("tipoSede",  tipoJuegos);
         if (nombreCiudad!=null){
