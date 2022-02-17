@@ -18,6 +18,8 @@ public class Gui {
     private Button button3;
     private Button button4;
     private Button button5;
+    private Button butonEnviarModal;
+    private Button butonCancelarModal;
     private Table table;
     private Label label1;
     private Label label2;
@@ -201,7 +203,9 @@ public class Gui {
     private RestJuegos verjuegos;
     private Shell shell;
     private MensajesError mensajesError;
-    public Gui(Shell shell, RestJuegos verjuegos, MensajesError mensajesError) throws IOException {
+    private Shell modalShell;
+    private Display display;
+    public Gui(Shell shell, RestJuegos verjuegos, MensajesError mensajesError,Display display) throws IOException {
         this.shell=shell;
         this.verjuegos=verjuegos;
         this.inicializar();
@@ -209,6 +213,124 @@ public class Gui {
         this.mensajesError=mensajesError;
         this.addListeners();
         this.limpiarTextos();
+        this.display=display;
+
+
+    }
+
+    public Button getButonEnviarModal() {
+        return butonEnviarModal;
+    }
+
+    public void setButonEnviarModal(Button butonEnviarModal) {
+        this.butonEnviarModal = butonEnviarModal;
+    }
+
+    public Button getButonCancelarModal() {
+        return butonCancelarModal;
+    }
+
+    public void setButonCancelarModal(Button butonCancelarModal) {
+        this.butonCancelarModal = butonCancelarModal;
+    }
+
+    public Shell getModalShell() {
+        return modalShell;
+    }
+
+    public void setModalShell(Shell modalShell) {
+        this.modalShell = modalShell;
+    }
+
+    public void newShell(JsonNode años){
+        final String [ ] tipos = { "INVIERNO","VERANO" };
+
+
+        GridData gridData1 = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+
+        gridData1.horizontalSpan=2;
+        Shell dialogShell = new Shell(display, SWT.APPLICATION_MODAL);
+// populate dialogShell
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 2;
+        dialogShell.setLayout(gridLayout);
+
+        dialogShell.setLayout(gridLayout);
+        this.label2  = new Label(dialogShell , SWT.PUSH);
+        this.label2.setText("* Selecciona sede:");
+
+
+
+        this.combo2  = new Combo(dialogShell , SWT.PUSH);
+        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+
+        this.label5  = new Label(dialogShell , SWT.PUSH);
+        this.label5.setText("Nuevo año:");
+
+        Text text5=new Text(dialogShell , SWT.PUSH |SWT.BORDER);
+        text5.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
+        text5.setEditable(true);
+
+        this.text5=text5;
+
+        this.label7  = new Label(dialogShell , SWT.PUSH);
+        this.label7.setText("Nuevo tipo de sede:");
+
+        Combo combo7=new Combo(dialogShell , SWT.PUSH |SWT.BORDER);
+        this.combo7=combo7;
+        combo7.setItems(tipos);
+
+
+
+
+        this.label9  = new Label(dialogShell , SWT.PUSH);
+        this.label9.setText("Nuevo id de ciudad:");
+
+        Text text9=new Text(dialogShell , SWT.PUSH |SWT.BORDER);
+        text9.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
+        text9.setEditable(true);
+
+        this.text9=text9;
+        this.label11  = new Label(dialogShell , SWT.PUSH);
+        this.label11.setText("Nuevo nombre de ciudad:");
+
+        Text text11=new Text(dialogShell , SWT.PUSH |SWT.BORDER);
+        text11.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
+        text11.setEditable(true);
+
+        this.text11=text11;
+        Button b4=new Button(dialogShell , SWT.PUSH);
+        b4.setText("Enviar");
+
+        b4.setLayoutData(gridData1);
+        this.butonEnviarModal=b4;
+        Button b5=new Button(dialogShell , SWT.PUSH);
+        b5.setText("Cancelar");
+
+        b5.setLayoutData(gridData1);
+        this.butonCancelarModal=b5;
+
+        this.modalShell=dialogShell;
+        Listener listener=new EnviarListener(table,verjuegos,shell,mensajesError,combo2,this);
+        this.butonEnviarModal.addListener(SWT.Selection,listener);
+        listener=new CancelarListener(table,verjuegos,shell,mensajesError,combo2,this);
+        this.butonCancelarModal.addListener(SWT.Selection,listener);
+        for (JsonNode año:años){
+
+
+            this.combo2.add(año.get("año").toString()+"-"+año.get("descripcion_tipo_jjoo").asText());
+
+
+
+        }
+        dialogShell.pack();
+        dialogShell.open();
+
+        while (!dialogShell.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
 
 
     }
@@ -224,6 +346,8 @@ public class Gui {
         button1.addListener(SWT.Selection,listener);
         listener=new CancelarListener(table,verjuegos,shell,mensajesError,combo2,this);
         button5.addListener(SWT.Selection,listener);
+        listener=new SeleccionarListener(table,verjuegos,shell,mensajesError,combo2,this);
+        table.addListener(SWT.Selection,listener);
     }
 
     public Label getLabel2() {
@@ -324,7 +448,9 @@ public class Gui {
 
 
         Button  b2=new Button(shell, SWT.PUSH);
+
         b2.setText("Modificar sede");
+
         this.button2=b2;
 
         Button b3=new Button(shell, SWT.PUSH);
@@ -334,7 +460,11 @@ public class Gui {
         Table table = new Table(shell,   SWT.BORDER | SWT.V_SCROLL
                 | SWT.H_SCROLL);
         this.button1.setLayoutData(gridData1);
-        this.button2.setLayoutData(gridData1);
+        GridData gridData2 = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+
+        gridData2.horizontalSpan=2;
+        this.button2.setLayoutData(gridData2);
+
         this.button3.setLayoutData(gridData1);
 
         table.setHeaderVisible(true);
@@ -369,14 +499,9 @@ public class Gui {
         textField1.setEditable(true);
         this.text1=textField1;
         this.text1.setVisible(false);
-        this.label2  = new Label(shell, SWT.PUSH);
-        this.label2.setText("* Selecciona sede:");
-        label2.setVisible(false);
+        Label secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
 
-
-        this.combo2  = new Combo(shell, SWT.PUSH);
-        //combo2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-        combo2.setVisible(false);
         this.label3  = new Label(shell, SWT.PUSH);
         this.label3.setText("* Selecciona sede: ");
         label3.setVisible(false);
@@ -394,14 +519,8 @@ public class Gui {
         text4.setEditable(true);
         text4.setVisible(false);
         this.text4=text4;
-        this.label5  = new Label(shell, SWT.PUSH);
-        this.label5.setText("Nuevo año:");
-        label5.setVisible(false);
-        Text text5=new Text(shell, SWT.PUSH |SWT.BORDER);
-        text5.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
-        text5.setEditable(true);
-        text5.setVisible(false);
-        this.text5=text5;
+        secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
         Button b4=new Button(shell, SWT.PUSH);
         b4.setText("Enviar");
         b4.setVisible(false);
@@ -416,14 +535,8 @@ public class Gui {
         combo6.setVisible(false);
         final String [ ] tipos = { "INVIERNO","VERANO" };
         combo6.setItems(tipos);
-        this.label7  = new Label(shell, SWT.PUSH);
-        this.label7.setText("Nuevo tipo de sede:");
-
-        Combo combo7=new Combo(shell, SWT.PUSH |SWT.BORDER);
-        this.combo7=combo7;
-        combo7.setItems(tipos);
-        label7.setVisible(false);
-        combo7.setVisible(false);
+        secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
         Button b5=new Button(shell, SWT.PUSH);
         b5.setText("Cancelar");
         b5.setVisible(false);
@@ -437,15 +550,10 @@ public class Gui {
         text8.setEditable(true);
         text8.setVisible(false);
         this.text8=text8;
-        this.label9  = new Label(shell, SWT.PUSH);
-        this.label9.setText("Nuevo id de ciudad:");
-        label9.setVisible(false);
-        Text text9=new Text(shell, SWT.PUSH |SWT.BORDER);
-        text9.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
-        text9.setEditable(true);
-        text9.setVisible(false);
-        this.text9=text9;
-        Label secondLabel = new Label (shell,SWT.NONE);
+
+        secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
         secondLabel = new Label (shell,SWT.NONE);
         this.label10  = new Label(shell, SWT.PUSH);
         this.label10.setText("Codigo de pais:");
@@ -456,14 +564,9 @@ public class Gui {
         text10.setEditable(true);
         text10.setVisible(false);
         this.text10=text10;
-        this.label11  = new Label(shell, SWT.PUSH);
-        this.label11.setText("Nuevo nombre de ciudad:");
-        label11.setVisible(false);
-        Text text11=new Text(shell, SWT.PUSH |SWT.BORDER);
-        text11.setSize(Constante.TEXT_WIDTH,Constante.TEXT_HEIGHT);
-        text11.setEditable(true);
-        text11.setVisible(false);
-        this.text11=text11;
+        secondLabel = new Label (shell,SWT.NONE);
+        secondLabel = new Label (shell,SWT.NONE);
+
         secondLabel = new Label (shell,SWT.NONE);
         secondLabel = new Label (shell,SWT.NONE);
         this.label12  = new Label(shell, SWT.PUSH);
@@ -487,6 +590,8 @@ public class Gui {
         text13.setEditable(true);
         text13.setVisible(false);
         this.text13=text13;
+        this.button2.setEnabled(false);
+        this.button3.setEnabled(false);
 
 
 
@@ -510,21 +615,21 @@ public class Gui {
         this.text1.setText("");
 
         this.text4.setText("");
-        this.text5.setText("");
+
         this.text8.setText("");
-        this.text9.setText("");
+
         this.text10.setText("");
-        this.text11.setText("");
+
         this.text12.setText("");
         this.text13.setText("");
 
 
-        this.combo2.deselectAll();
+
         this.combo3.deselectAll();
 
 
         this.combo6.deselectAll();
-        this.combo7.deselectAll();
+
 
 
 

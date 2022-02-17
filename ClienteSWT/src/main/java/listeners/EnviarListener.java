@@ -37,10 +37,11 @@ public class EnviarListener implements Listener {
         boolean  terminar=false;
         if (this.gui.getLabel1().isVisible())
             accion="añadir";
-        else if  (this.gui.getLabel2().isVisible())
-            accion="modificar";
+
         else if (this.gui.getLabel3().isVisible())
             accion="eliminar";
+        else
+            accion="modificar";
         switch (accion){
             case "añadir":
 
@@ -174,34 +175,23 @@ public class EnviarListener implements Listener {
                             if (terminar) {
 
 
-                                this.gui.getCombo2().setVisible(false);
-                                this.gui.getLabel2().setVisible(false);
-                                this.gui.getLabel5().setVisible(false);
-                                this.gui.getText5().setVisible(false);
-                                this.gui.getCombo7().setVisible(false);
-                                this.gui.getLabel7().setVisible(false);
-                                this.gui.getLabel9().setVisible(false);
-                                this.gui.getText9().setVisible(false);
-                                this.gui.getLabel11().setVisible(false);
-                                this.gui.getText11().setVisible(false);
-                                this.gui.getButton4().setVisible(false);
-                                this.gui.getButton5().setVisible(false);
+                                this.gui.getModalShell().dispose();
                                 this.mensajesError.confirmar(Constante.MENSAJE_SEDE_MODIFICADA);
                             }
 
 
                     }catch(NumberFormatException   exception){
 
-                        this.mensajesError.avisar(Constante.MENSAJE_ERROR_AÑO);
+                        this.mensajesError.avisarEnModal(Constante.MENSAJE_ERROR_AÑO,this.gui.getModalShell());
 
                     } catch (IOException ex) {
-                        this.mensajesError.avisar(Constante. MENSAJE_CAMPOS_INVALIDOS);
+                        this.mensajesError.avisarEnModal(Constante. MENSAJE_CAMPOS_INVALIDOS,this.gui.getModalShell());
                     }
 
 
                 }else{
 
-                    this.mensajesError.avisar(Constante.MENSAJE_ERROR_SELECCIONAR_TIPO_SEDE);
+                    this.mensajesError.avisarEnModal(Constante.MENSAJE_ERROR_SELECCIONAR_TIPO_SEDE,this.gui.getModalShell());
                 }
 
 
@@ -222,8 +212,7 @@ public class EnviarListener implements Listener {
                         terminar=true;
                         this.gui.getCombo3().setVisible(false);
                         this.gui.getLabel3().setVisible(false);
-                        this.gui.getLabel7().setVisible(false);
-                        this.gui.getCombo7().setVisible(false);
+
                         this.gui.getButton4().setVisible(false);
                         this.gui.getButton5().setVisible(false);
                     } catch (Exception ex) {
@@ -245,8 +234,8 @@ public class EnviarListener implements Listener {
         }
         this.gui.getTable().setEnabled(true);
         this.gui.getButton1().setEnabled(true);
-        this.gui.getButton2().setEnabled(true);
-        this.gui.getButton3().setEnabled(true);
+        //this.gui.getButton2().setEnabled(true);
+        //this.gui.getButton3().setEnabled(true);
         this.gui.getButton4().setVisible(false);
         this.gui.getButton5().setVisible(false);
         this.gui.limpiarTextos();

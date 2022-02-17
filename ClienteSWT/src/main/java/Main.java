@@ -15,7 +15,7 @@ public class Main
         MensajesError mensajesError=new MensajesError(shell);
         RestJuegos verjuegos=new RestJuegos("http://localhost:8080","admin","manuel",mensajesError);
 
-        Gui gui=new Gui(shell,verjuegos,mensajesError);
+        Gui gui=new Gui(shell,verjuegos,mensajesError,display);
 
 
         shell.pack();

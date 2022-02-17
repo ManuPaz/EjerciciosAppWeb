@@ -51,30 +51,12 @@ public class ModificarListener implements Listener {
               JsonNode años= null;
               try {
                   años = this.verjuegos.buscarPorCiudad(idciudad,tipo);
-                  this.gui.getCombo2().removeAll();
-                  for (JsonNode año:años){
 
-                      this.gui.getCombo2().add(año.get("año").toString()+"-"+año.get("descripcion_tipo_jjoo").asText());
+                    this.gui.getButton3().setEnabled(false);
+                    this.gui.getButton2().setEnabled(false);
+                  this.gui.newShell(años);
 
 
-
-                  }
-                  this.combo.setVisible(true);
-                  this.table.setEnabled(false);
-                  this.gui.getButton1().setEnabled(false);
-                  this.gui.getButton2().setEnabled(false);
-                  this.gui.getButton3().setEnabled(false);
-                  this.gui.getButton4().setVisible(true);
-                  this.gui.getButton5().setVisible(true);
-                  this.gui.getLabel2().setVisible(true);
-                  this.gui.getLabel7().setVisible(true);
-                  this.gui.getCombo7().setVisible(true);
-                  this.gui.getLabel5().setVisible(true);
-                  this.gui.getText5().setVisible(true);
-                  this.gui.getLabel9().setVisible(true);
-                  this.gui.getText9().setVisible(true);
-                  this.gui.getLabel11().setVisible(true);
-                  this.gui.getText11().setVisible(true);
 
 
               } catch (Exception ex) {

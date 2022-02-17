@@ -17,6 +17,12 @@ public class MensajesError {
         messageBox.open();
 
     }
+    public void avisarEnModal(String mensaje,Shell modal){
+        MessageBox messageBox = new MessageBox(modal, SWT.ERROR);
+        messageBox.setMessage(mensaje);
+        messageBox.open();
+
+    }
     public void confirmar(String mensaje){
         MessageBox messageBox = new MessageBox(this.shell, SWT.ICON_INFORMATION);
         messageBox.setMessage(mensaje);

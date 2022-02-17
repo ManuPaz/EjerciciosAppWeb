@@ -34,36 +34,40 @@ public class CancelarListener implements Listener {
     public void handleEvent(Event e) {
         this.gui.getButton4().setVisible(false);
         this.gui.getButton1().setEnabled(true);
-        this.gui.getButton2().setEnabled(true);
-        this.gui.getButton3().setEnabled(true);
+        //this.gui.getButton2().setEnabled(true);
+        //this.gui.getButton3().setEnabled(true);
         this.gui.getButton5().setVisible(false);
         this.gui.getTable().setEnabled(true);
         this.gui.getText1().setVisible(false);
         this.gui.getText4().setVisible(false);
-        this.gui.getText5().setVisible(false);
+
         this.gui.getText8().setVisible(false);
-        this.gui.getText9().setVisible(false);
+
         this.gui.getText10().setVisible(false);
-        this.gui.getText11().setVisible(false);
+
         this.gui.getText12().setVisible(false);
         this.gui.getText13().setVisible(false);
         this.gui.getLabel1().setVisible(false);
-        this.gui.getLabel2().setVisible(false);
+
         this.gui.getLabel3().setVisible(false);
         this.gui.getLabel4().setVisible(false);
-        this.gui.getLabel5().setVisible(false);
+
         this.gui.getLabel6().setVisible(false);
-        this.gui.getLabel7().setVisible(false);
+
         this.gui.getLabel8().setVisible(false);
         this.gui.getLabel13().setVisible(false);
-        this.gui.getLabel9().setVisible(false);
         this.gui.getLabel10().setVisible(false);
-        this.gui.getLabel11().setVisible(false);
+
         this.gui.getLabel12().setVisible(false);
         this.gui.getCombo3().setVisible(false);
-        this.gui.getCombo2().setVisible(false);
+
         this.gui.getCombo6().setVisible(false);
-        this.gui.getCombo7().setVisible(false);
+
+        if (this.gui.getModalShell()!=null){
+            this.gui.getModalShell().dispose();
+
+
+        }
 
 
 
