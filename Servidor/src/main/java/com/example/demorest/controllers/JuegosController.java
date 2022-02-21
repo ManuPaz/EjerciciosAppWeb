@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class JuegosController {
         return new ResponseEntity<Juegos>(j, codigo);
     }
 
-    @PostMapping("/juegos/eliminar")
+    @DeleteMapping("/juegos/eliminar")
     ResponseEntity<String> deleteJuegos(
 
 
@@ -119,7 +116,7 @@ public class JuegosController {
 
     }
 
-    @PostMapping("/juegos/modificar")
+    @PutMapping("/juegos/modificar")
     ResponseEntity<Juegos> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
                                       @RequestParam(value = "pais", required = false) String nombre_pais,
                                       @RequestParam(value = "codigoPais", required = false) String codigoPais,
