@@ -1,0 +1,10 @@
+<h2>Juegos Olímpicos</h2>
+<ul class="juegos">
+  <li *ngFor="let juego of juegos"
+    [class.selected]="juego === selectedJuego"
+    (click)="onSelect(juego)">
+    <span class="badge">{{juego.nombre_ciudad}}</span> {{juego.id_ciudad}}
+  </li>
+</ul>
+
+<app-juego-detail [juego]="selectedJuego"></app-juego-detail>

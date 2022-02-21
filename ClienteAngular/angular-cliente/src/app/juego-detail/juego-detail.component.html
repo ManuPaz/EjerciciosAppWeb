@@ -1,0 +1,12 @@
+<p>juego-detail works!</p>
+<div *ngIf="juego">
+
+    <h2>{{juego.nombre_ciudad | uppercase}} Details</h2>
+    <div><span>id: </span>{{juego.nombre_ciudad}}</div>
+    <div>
+      <label>name:
+        <input [(ngModel)]="juego.nombre_ciudad" placeholder="name"/>
+      </label>
+    </div>
+  
+  </div>
