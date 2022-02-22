@@ -69,9 +69,7 @@ public class JuegosCiudades {
         this.nombre_ciudad = nombre_ciudad;
     }
 
-    public Integer getAño() {
-        return año;
-    }
+
 
     public void setAño(Integer año) {
         this.año = año;
