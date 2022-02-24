@@ -52,6 +52,7 @@ export class JuegosComponent implements OnInit {
   getJuegos(): void {
     this.juegoService.getJuegos()
         .subscribe(juegos => {this.juegos=juegos   ;this.dataSource = new MatTableDataSource<Juego>(this.juegos);
+          this.dataSource.paginator = this.paginator;
           })
   }
  
