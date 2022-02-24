@@ -6,7 +6,7 @@ export interface Juego{
     nombre_ciudad:string,
     id_pais:number,
     nombre_pais:string,
-    tipo_sede:string,
-    numero_veces:number,
-    valor:number
+    descripcion_tipo_jjoo:string,
+    numero_veces_sede:number,
+    valor:number,
 }

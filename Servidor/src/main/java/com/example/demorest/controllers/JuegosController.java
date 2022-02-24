@@ -56,7 +56,6 @@ public class JuegosController {
 
 
     }
-
     @PostMapping("/juegos/anadir")
     ResponseEntity<Juegos> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
                                      @RequestParam(value = "pais", required = false) String nombre_pais,

@@ -18,22 +18,22 @@ public class Sede {
 
 
 
-    public Integer getAño() {
-        return año;
+    public Integer getAno() {
+        return ano;
     }
 
-    public void setAño(Integer año) {
-        this.año = año;
+    public void setAno(Integer año) {
+        this.ano = año;
     }
 
     private String descripcion_tipo_jjoo;
-    private Integer año;
+    private Integer ano;
 
 
     public Sede( String descripcion_tipo_jjoo, Integer año) {
 
         this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
 
-        this.año = año;
+        this.ano = año;
     }
 }

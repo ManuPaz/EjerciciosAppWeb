@@ -1,44 +1,36 @@
 /* JuegosComponent's private CSS styles */
-.juegos {
-    margin: 0 0 2em 0;
-    list-style-type: none;
-    padding: 0;
-    width: 15em;
-  }
-  .juegos li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-  }
-  .juegos li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  .juegos li.selected {
-    background-color: #CFD8DC;
-    color: white;
-  }
-  .juegos li.selected:hover {
-    background-color: #BBD8DC;
-    color: white;
-  }
-  .juegos .badge {
-    display: inline-block;
-    font-size: small;
-    color: white;
-    padding: 0.8em 0.7em 0 0.7em;
-    background-color:#405061;
-    line-height: 1em;
-    position: relative;
-    left: -1px;
-    top: -4px;
-    height: 1.8em;
-    margin-right: .8em;
-    border-radius: 4px 0 0 4px;
-  }
+h2{
+text-align: center;
+}
+
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding : 20px 8px 8px 0 !important;
+}
+.column1{
+  width: 40%;
+
+}
+.column2{
+  width: 50%;
+}
+button{
+  width: 30%;
+
+}
+.button2{
+  width: 20%;
+
+}
+.demo-table {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+
