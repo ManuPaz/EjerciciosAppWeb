@@ -1,10 +1,10 @@
 import { Component, OnInit ,Input} from '@angular/core';
-import { Juego } from '../juego';
+import { Juego } from '../intefaces/juego';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { JuegoService } from '../juego.service';
-import { MessageService } from '../message.service';
-import { Sede } from '../sede';
+import { JuegoService } from '../servicios/juego.service';
+import { MessageService } from '../servicios/message.service';
+import { Sede } from '../intefaces/sede';
 @Component({
   selector: 'app-juego-detail',
   templateUrl: './juego-detail.component.html',

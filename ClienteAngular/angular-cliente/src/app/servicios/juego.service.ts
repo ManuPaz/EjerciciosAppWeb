@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Juego } from './juego';
-import { Sede } from './sede';
-import { JUEGOS } from './mock-juegos';
+import { Juego } from '../intefaces/juego';
+import { JuegoAñadido } from '../intefaces/juegoAñadido';
+import { Sede } from '../intefaces/sede';
+import { JUEGOS } from '../intefaces/mock-juegos';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders,HttpParams } from '@angular/common/http';
@@ -40,7 +41,7 @@ export class JuegoService {
     
    
   }
-  editarJuego( sede:Sede, nuevoAño , nuevoTipoSede ,nuevaCiudad):Observable<any>{
+  editarJuego( sede:Sede, nuevoAño , nuevoTipoSede ,nuevaCiudad):Observable<JuegoAñadido>{
 
    
     let params = new HttpParams()
@@ -57,22 +58,21 @@ export class JuegoService {
    }
     
             let options={params:params,headers:this.httpOptions.headers};
-            return this.http.put<string>(this.juegosUrl+"/modificar",params,options).pipe(
-              catchError(this.handleError<string>('getJuegos'))
+            return this.http.put<JuegoAñadido>(this.juegosUrl+"/modificar",params,options).pipe(
+              catchError(this.handleError<JuegoAñadido>('getJuegos'))
             );
   
 
 
 }
-añadirJuego(  nuevoAño , nuevaSede ,nuevaCiudad):Observable<any> {
+añadirJuego(  nuevoAño , nuevaSede ,nuevaCiudad):Observable<JuegoAñadido> {
   
   const params = new HttpParams()
   .set('año',nuevoAño ).set("tipoSede",nuevaSede )
   .set("ciudad",nuevaCiudad);
-  this.messageService.add(nuevoAño+" "+nuevaCiudad+ " "+nuevaSede);
   let options={params:params,headers:this. httpOptions .headers};
-  return this.http.post(this.juegosUrl+"/anadir",params,options).pipe(
-    catchError(this.handleError<string>('anadirJuego'))
+  return this.http.post<JuegoAñadido>(this.juegosUrl+"/anadir",params,options).pipe(
+    catchError(this.handleError<JuegoAñadido>('anadirJuego'))
   );
 
 

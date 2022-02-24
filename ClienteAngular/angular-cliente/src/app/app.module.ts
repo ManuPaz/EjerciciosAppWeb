@@ -13,13 +13,19 @@ import { EdicionJuegosComponent } from './edicion-juegos/edicion-juegos.componen
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatPaginatorModule} from '@angular/material/paginator'
+import { MatPaginator } from '@angular/material/paginator';
+import { AnadirComponent } from './anadir/anadir.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     JuegosComponent,
     JuegoDetailComponent,
     MessagesComponent,
-    EdicionJuegosComponent
+    EdicionJuegosComponent,
+    AnadirComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatTableModule,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    
+    
+   
     
     
     
