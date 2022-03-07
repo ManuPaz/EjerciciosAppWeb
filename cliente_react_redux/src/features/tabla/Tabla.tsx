@@ -4,8 +4,10 @@ import { useAppSelector, useAppDispatch, useRows, useColumns } from "./hooks";
 import './Tabla.css';
 import { useSelector } from "react-redux";
 import { juegosChanged,jugar } from "../../app/redux/juegosSlice";
+import { editted,edit,setSede } from "../../app/redux/editSlice";
+import { added} from "../../app/redux/adderSlice";
 import { useDispatch } from "react-redux";
-import {getJuegos} from "../../app/services/juegos";
+import {getJuegos,removeJuego,getJuegoCiudad} from "../../app/services/juegos";
 export function Tabla() {
   
   const dispatch = useAppDispatch();
@@ -14,10 +16,42 @@ export function Tabla() {
   const incrementValue = Number(incrementAmount) || 0;
   const columns = useColumns();
   const data = juegos;
+  const add=useSelector(added);
+  
   const table = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     table;
+   
+    function handleEditar(cell:any,row:any){
+      if(cell.column.id=="eliminar"){
+        //alert(row.original.nombre_ciudad+" "+cell.column.id);
+        
+        getJuegoCiudad(row.original.id_ciudad,row.original.descripcion_tipo_jjoo).
+        then(response=>{
+         
+          response.data.forEach(element => {
+           
+            
+            removeJuego(element).then(response1=>{dispatch(juegosChanged(response1.data))})
+          })})
+        //
+      }
 
+    
+    if(cell.column.id=="editar" && add==true){
+      //alert(row.original.nombre_ciudad+" "+cell.column.id);
+      getJuegoCiudad(row.original.id_ciudad,row.original.descripcion_tipo_jjoo).
+        then(response=>{
+      dispatch(setSede({historia:response.data,ciudad:row.original.nombre_ciudad,tipo:row.original.descripcion_tipo_jjoo}));
+      //dispatch(edit());
+
+    })
+
+    }
+  }
+
+
+    
 
     const fetchData = React.useCallback(() => {
       getJuegos().then((response:any) => {
@@ -49,9 +83,9 @@ export function Tabla() {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} onClick={() => alert(row.original.nombre_ciudad)}>
+            <tr {...row.getRowProps()} >
               {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return <td {...cell.getCellProps()} onClick={() => { handleEditar(cell,row);}}>{cell.render("Cell")}</td>;
               })}
             </tr>
           );

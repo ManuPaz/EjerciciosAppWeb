@@ -5,6 +5,7 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {Tabla} from './features/tabla/Tabla';
 import {AddJuego} from './features/añadirJuego/AddJuego';
+import {EditJuego} from './features/editarJuego/EditJuego';
 import {
   cancel,
   add,
@@ -18,7 +19,7 @@ function App() {
     <div className="App">
       <header className="App-header">
       
-
+        <EditJuego />
         <AddJuego />
         <Tabla />
       

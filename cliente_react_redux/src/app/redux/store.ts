@@ -2,11 +2,13 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 //import counterReducer from '../features/selectorJuego/counterSlice';
 import adderReducer from './adderSlice';
 import juegosReducer from './juegosSlice';
+import editerReducer from './editSlice';
 export const store = configureStore({
   reducer: {
     
     adder: adderReducer,
-    juegos: juegosReducer
+    juegos: juegosReducer,
+    editer:editerReducer
   },
 });
 

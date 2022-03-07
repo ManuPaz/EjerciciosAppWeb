@@ -13,8 +13,9 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export function useColumns() {
-
+    
     function handleDelete() {
+    
     alert("hola");
     
   }
@@ -60,8 +61,8 @@ export function useColumns() {
       {
         Header: "Eliminar",
         Cell: (row) => {
-          const data1=row.original;
-          return <button onClick={ handleDelete} className='button2' ><img className='img2'  src={logo2}/></button>
+          
+          return <button  onClick={() => alert(row.original.nombre_ciudad)} className='button2' ><img className='img2'  src={logo2}/></button>
         },
         id: "eliminar"
       }

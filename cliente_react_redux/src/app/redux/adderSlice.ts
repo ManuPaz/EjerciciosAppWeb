@@ -17,6 +17,8 @@ export const adderSlice= createSlice({
     cancel (state)  {
       state.value=true;
     },
+     juegosChanged(state, action) {
+      state.value=(action.payload)}
    
   },
 });

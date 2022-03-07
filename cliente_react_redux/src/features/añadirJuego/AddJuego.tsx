@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useAppSelector, useAppDispatch } from "../tabla/hooks";
 import { cancel, add, added } from "../../app/redux/adderSlice";
+import { editted } from "../../app/redux/editSlice";
 import { juegosChanged,jugar } from "../../app/redux/juegosSlice";
 import { addJuego } from "../../app/services/juegos";
 import { nanoid } from "@reduxjs/toolkit";
@@ -53,6 +54,8 @@ export function AddJuego() {
   // Declara una nueva variable de estado, la cual llamaremos “count”  const [count, setCount] = useState(0);
   const [count, setCount] = useState(0);
   const adde = useSelector(added);
+  const edit=useSelector(editted)
+  if (edit==false){
   if (adde) {
     return (
       <div>
@@ -110,4 +113,7 @@ export function AddJuego() {
       </div>
     );
   }
+}else{
+  return (<div></div>)
+}
 }
