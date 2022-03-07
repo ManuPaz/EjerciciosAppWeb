@@ -19,19 +19,19 @@ public class MAIN {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/juegos").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/juegos").allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET")
                         .maxAge(3600);
-                registry.addMapping("/juegos/ciudad").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/juegos/ciudad").allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET")
                         .maxAge(3600);
-                registry.addMapping("/juegos/eliminar").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/juegos/eliminar").allowedOrigins("http://localhost:3000")
                         .allowedMethods( "DELETE")
                         .maxAge(3600);
-                registry.addMapping("/juegos/anadir").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/juegos/anadir").allowedOrigins("http://localhost:3000")
                         .allowedMethods( "POST")
                         .maxAge(3600);
-                registry.addMapping("/juegos/modificar").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/juegos/modificar").allowedOrigins("http://localhost:3000")
                         .allowedMethods( "PUT")
                         .maxAge(3600);
             }

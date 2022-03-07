@@ -57,7 +57,7 @@ public class JuegosController {
 
     }
     @PostMapping("/juegos/anadir")
-    ResponseEntity<Juegos> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
+    ResponseEntity<List<JuegosCiudades>> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
                                      @RequestParam(value = "pais", required = false) String nombre_pais,
                                      @RequestParam(value = "codigoPais", required = false) String codigoPais,
                                      @RequestParam(value = "valorPais", required = false) Integer valor_pais,
@@ -80,11 +80,11 @@ public class JuegosController {
         }
 
 
-        return new ResponseEntity<Juegos>(j, codigo);
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
     }
 
     @DeleteMapping("/juegos/eliminar")
-    ResponseEntity<String> deleteJuegos(
+    ResponseEntity<List<JuegosCiudades>> deleteJuegos(
 
 
             @RequestParam(value = "año", required = true) Integer año,
@@ -101,22 +101,16 @@ public class JuegosController {
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
             LOGGER.info(ex.getMessage());
-            return new ResponseEntity<String>("Error ", codigo);
+
 
         }
-        if (borrar)
-
-            return new ResponseEntity<String>("Eliminado correctamente ", codigo);
-        else {
-            return new ResponseEntity<String>("No existe ", codigo);
-
-        }
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
 
 
     }
 
     @PutMapping("/juegos/modificar")
-    ResponseEntity<Juegos> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
+    ResponseEntity<List<JuegosCiudades>> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
                                       @RequestParam(value = "pais", required = false) String nombre_pais,
                                       @RequestParam(value = "codigoPais", required = false) String codigoPais,
                                       @RequestParam(value = "valorPais", required = false) Integer valorPais,
@@ -145,7 +139,7 @@ public class JuegosController {
             codigo = HttpStatus.BAD_REQUEST;
         }
 
-        return new ResponseEntity<Juegos>(j, codigo);
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
     }
 
 
