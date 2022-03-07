@@ -46,7 +46,8 @@ export function AddJuego() {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(cancel());
+      alert("No se ha añadido la sede");
+      //dispatch(cancel());
     })
     
   }

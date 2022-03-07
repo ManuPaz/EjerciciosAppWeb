@@ -19,6 +19,7 @@ export function EditJuego() {
   const [tipoText, setTipo] = useState("VERANO");
   
   function removeComponents() {
+    setCiudad("");
     dispatch(cancelEdit());
   }
   function handleCiudadChange(event: any) {
@@ -50,7 +51,8 @@ export function EditJuego() {
     an=sedesPosibles[0].ano;
     
     setAñoSede(an);
-  }, )
+    
+  })
   function modificar(){
     modifyJuego(añoSede,tipo1,año,tipoText,ciudadText).then((response) => {
       dispatch(juegosChanged(response.data))
@@ -61,6 +63,7 @@ export function EditJuego() {
     })
     .catch((error) => {
       console.log(error);
+      alert("No se ha modificado la sede");
       //dispatch(cancelEdit());
     })
 
@@ -79,6 +82,7 @@ export function EditJuego() {
         <h2> Editar sede: {ciudad1}-{tipo1}</h2>
         
         <form>
+          <div>
         <label>
             Sede :
             <select name="sede" value={añoSede}  onChange={handleAñoSedeChange} >
@@ -90,6 +94,7 @@ export function EditJuego() {
               
         
           </label>
+          </div>
           <label>
             Nueva ciudad:
             <input
@@ -99,7 +104,7 @@ export function EditJuego() {
               onChange={handleCiudadChange}
             ></input>
           </label>
-
+          <div>
           <label>
             Nuevo tipo de juegos:
             <select name="tipoSede" value={tipoText} onChange={handleTipoChange}>
@@ -107,6 +112,7 @@ export function EditJuego() {
               <option value="INVIERNO">INVIERNO</option>
             </select>
           </label>
+          </div>
           <label>
             Nuevo año:
             <input
@@ -119,7 +125,7 @@ export function EditJuego() {
               onChange={handleAñoChange}
             ></input>
           </label>
-
+         
           <button type="button"onClick={modificar} >
             ENVIAR
           </button>
