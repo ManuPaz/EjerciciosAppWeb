@@ -2,16 +2,14 @@ package com.example.demorest.controllers;
 
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.services.JuegosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,8 +34,30 @@ public class JuegosController {
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), HttpStatus.OK);
     }
 
-    @PostMapping("/juegos/añadir")
-    ResponseEntity<Juegos> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
+    @GetMapping("/juegos/ciudad")
+    ResponseEntity<List<Sede>> buscarJuegosPorCiudad(
+
+
+
+
+            @RequestParam(value = "ciudad", required = true) Integer ciudad,
+            @RequestParam(value = "tipo", required = true) String tipo
+
+
+    ) {
+
+        HttpStatus codigo = HttpStatus.OK;
+
+       List<Sede> j=juegosService.findJuegosCiudad(ciudad,tipo);
+
+       return new ResponseEntity<List<Sede>>(j, codigo);
+
+
+
+
+    }
+    @PostMapping("/juegos/anadir")
+    ResponseEntity<List<JuegosCiudades>> newJuegos(@RequestParam(value = "ciudad", required = true) String nombre_ciudad,
                                      @RequestParam(value = "pais", required = false) String nombre_pais,
                                      @RequestParam(value = "codigoPais", required = false) String codigoPais,
                                      @RequestParam(value = "valorPais", required = false) Integer valor_pais,
@@ -60,11 +80,11 @@ public class JuegosController {
         }
 
 
-        return new ResponseEntity<Juegos>(j, codigo);
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
     }
 
-    @PostMapping("/juegos/eliminar")
-    ResponseEntity<String> deleteJuegos(
+    @DeleteMapping("/juegos/eliminar")
+    ResponseEntity<List<JuegosCiudades>> deleteJuegos(
 
 
             @RequestParam(value = "año", required = true) Integer año,
@@ -81,36 +101,31 @@ public class JuegosController {
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
             LOGGER.info(ex.getMessage());
-            return new ResponseEntity<String>("Error ", codigo);
+
 
         }
-        if (borrar)
-
-            return new ResponseEntity<String>("Eliminado correctamente ", codigo);
-        else {
-            return new ResponseEntity<String>("No existe ", codigo);
-
-        }
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
 
 
     }
 
-    @PostMapping("/juegos/modificar")
-    ResponseEntity<Juegos> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
+    @PutMapping("/juegos/modificar")
+    ResponseEntity<List<JuegosCiudades>> editJuegos(@RequestParam(value = "ciudad", required = false) String nombre_ciudad,
                                       @RequestParam(value = "pais", required = false) String nombre_pais,
                                       @RequestParam(value = "codigoPais", required = false) String codigoPais,
+                                      @RequestParam(value = "valorPais", required = false) Integer valorPais,
 
 
                                       @RequestParam(value = "año", required = true) Integer año,
                                       @RequestParam(value = "nuevoAño", required = false) Integer nuevoAño,
                                       @RequestParam(value = "tipoSede", required = true) String tipo,
                                       @RequestParam(value = "idCiudad", required = false) Integer id_ciudad,
-                                      @RequestParam(value = "idPais", required = false) Integer id_pais,
+
                                       @RequestParam(value = "nuevoTipoSede", required = false) String nuevoTipoSede
 
 
     ) {
-        JuegosDTO juegosdto = new JuegosDTO(nombre_pais, nombre_ciudad, id_ciudad, codigoPais, tipo, año, nuevoAño, nuevoTipoSede);
+        JuegosDTO juegosdto = new JuegosDTO(nombre_pais, nombre_ciudad, id_ciudad, codigoPais, tipo, año, nuevoAño, nuevoTipoSede,valorPais);
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {
@@ -124,7 +139,7 @@ public class JuegosController {
             codigo = HttpStatus.BAD_REQUEST;
         }
 
-        return new ResponseEntity<Juegos>(j, codigo);
+        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
     }
 
 
