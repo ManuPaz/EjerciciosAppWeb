@@ -57,6 +57,7 @@ export function EditJuego() {
     modifyJuego(añoSede,tipo1,año,tipoText,ciudadText).then((response) => {
       dispatch(juegosChanged(response.data))
       //alert(juegos[0]);
+      setCiudad("");
       dispatch(cancelEdit());
      
      

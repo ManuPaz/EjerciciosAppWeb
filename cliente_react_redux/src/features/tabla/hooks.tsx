@@ -72,6 +72,62 @@ export function useColumns() {
 
  return columns;
 }
+export function useColumnsPaginacion() {
+    
+ 
+const columns = useMemo(
+ () => [
+   {
+     Header: "Nombre de ciudad",
+     accessor: "nombre_ciudad"
+   },
+   {
+     Header: "ID de ciudad",
+     accessor: "id_ciudad"
+   },
+   {
+     Header: "Nombre de pais",
+     accessor: "nombre_pais"
+   },
+   {
+     Header: "ID de pais",
+     accessor: "id_pais"
+   },
+
+   {
+      Header: "Tipo de sede",
+      accessor: "descripcion_tipo_jjoo"
+    },
+    {
+      Header: "Numero de veces sede",
+      accessor: "numero_veces_sede"
+    },
+    {
+      Header: "Valor",
+      accessor: "valor"
+    },
+    {
+      Header: "Editar",
+      Cell: (row:any) => {
+        
+        return <button  className='button1' ><img className='img1' src={logo} /></button>
+      },
+      id: "editar"
+    },
+    {
+      Header: "Eliminar",
+      Cell: (row) => {
+        
+        return <button  onClick={() => alert(row.original.nombre_ciudad)} className='button2' ><img className='img2'  src={logo2}/></button>
+      },
+      id: "eliminar"
+    }
+ ],
+ []
+);
+
+return columns;
+}
 
 
 

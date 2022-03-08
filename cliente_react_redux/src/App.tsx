@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {Tabla} from './features/tabla/Tabla';
+import {TablaPaginacion} from './features/tabla/TablaPaginacion';
 import {AddJuego} from './features/añadirJuego/AddJuego';
 import {EditJuego} from './features/editarJuego/EditJuego';
 import {
@@ -21,7 +22,7 @@ function App() {
       
         <EditJuego />
         <AddJuego />
-        <Tabla />
+        <TablaPaginacion />
       
       </header>
     </div>

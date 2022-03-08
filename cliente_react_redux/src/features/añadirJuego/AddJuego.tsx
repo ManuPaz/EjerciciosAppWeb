@@ -13,7 +13,7 @@ import ReactDOM from "react-dom";
 import {useRows} from "../tabla/hooks";
 export function AddJuego() {
   const dispatch = useDispatch();
-  const [ciudad, setCiudad] = useState("Barcelona");
+  const [ciudad, setCiudad] = useState("");
   const [año, setAño] = useState(2000);
   const [tipo, setTipo] = useState("VERANO");
   
@@ -22,6 +22,7 @@ export function AddJuego() {
   }
   function removeComponents() {
     dispatch(cancel());
+    setCiudad("");
   }
   function handleCiudadChange(event: any) {
     setCiudad(event.target.value);
@@ -41,6 +42,7 @@ export function AddJuego() {
       dispatch(juegosChanged(response.data))
       //alert(juegos[0]);
       dispatch(cancel());
+      setCiudad("");
      
      
     })
