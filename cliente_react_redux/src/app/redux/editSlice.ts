@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import Juego from "../entidades/juegos.type";
-
-const initialState={value:false,sedes:[],ciudad:"",tipo:""};
+import Sede  from "../entidades/sede.type";
+const initialState={value:false,sedes :[],ciudad:"",tipo:"",ano:0};
 
 
 
@@ -23,12 +23,18 @@ export const editerSlice= createSlice({
       state.ciudad=action.payload.ciudad;
       state.tipo=action.payload.tipo;
       state.sedes=action.payload.historia
+      state.ano=(state.sedes[0] as Sede).ano;
+    },
+    setAno(state, action) {
+      state.ano=action.payload;
+
     }
+    
    
   },
 });
 
-export const { edit,cancelEdit,setSede } = editerSlice.actions;
+export const { edit,cancelEdit,setSede,setAno } = editerSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -37,6 +43,7 @@ export const editted = (state: RootState) => state.editer.value;
 export const sedes= (state: RootState) => state.editer.sedes;
 export const ciudad= (state: RootState) => state.editer.ciudad;
 export const tipo= (state: RootState) => state.editer.tipo;
+export const ano= (state: RootState) => state.editer.ano;
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
 

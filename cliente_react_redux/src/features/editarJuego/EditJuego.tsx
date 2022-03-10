@@ -4,7 +4,7 @@ import Sede  from "../../app/entidades/sede.type";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useAppSelector, useAppDispatch } from "../tabla/hooks";
-import { cancelEdit, edit, editted,sedes,ciudad,tipo } from "../../app/redux/editSlice";
+import { cancelEdit, edit, editted,sedes,ciudad,tipo,ano,setAno } from "../../app/redux/editSlice";
 import Select from 'react-select';
 import { juegosChanged, jugar } from "../../app/redux/juegosSlice";
 import { addJuego,modifyJuego } from "../../app/services/juegos";
@@ -38,23 +38,16 @@ export function EditJuego() {
    const sedesPosibles:Sede[] = useSelector(sedes);
    const ciudad1 = useSelector(ciudad);
    const tipo1 = useSelector(tipo);
-   var an:number=2000;
-   if (sedesPosibles.length>0)
-     an=sedesPosibles[0].ano;
-   const [añoSede, setAñoSede] = useState(an);
+   const an= useSelector(ano);
+   
+   
    function handleAñoSedeChange(event: any) {
-     
-    setAñoSede(event.target.value);
+    dispatch(setAno(event.target.value));
+    
   }
-  React.useEffect(() => {
-    if (sedesPosibles.length>0)
-    an=sedesPosibles[0].ano;
-    
-    setAñoSede(an);
-    
-  })
+ 
   function modificar(){
-    modifyJuego(añoSede,tipo1,año,tipoText,ciudadText).then((response) => {
+    modifyJuego(an,tipo1,año,tipoText,ciudadText).then((response) => {
       dispatch(juegosChanged(response.data))
       //alert(juegos[0]);
       setCiudad("");
@@ -86,9 +79,9 @@ export function EditJuego() {
           <div>
         <label>
             Sede :
-            <select name="sede" value={añoSede}  onChange={handleAñoSedeChange} >
+            <select name="sede" value={an}  onChange={handleAñoSedeChange} >
             {sedesPosibles.map((item:Sede) => {
-              return (<option  value={item.ano}>{item.ano}</option>);
+              return (<option key={item.ano}  value={item.ano}>{item.ano}</option>);
           })}
 
             </select>
