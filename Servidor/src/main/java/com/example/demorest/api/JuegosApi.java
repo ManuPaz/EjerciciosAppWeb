@@ -49,7 +49,9 @@ public interface JuegosApi {
      *         or Atributos de sede no válidos (status code 400)
      *         or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = Juegos.class, tags={ "juegos", })
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = Juegos.class, tags={ "juegos", },authorizations = {
+            @Authorization(value = "basicAuth")
+    })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
         @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
@@ -72,7 +74,9 @@ public interface JuegosApi {
      *         or Atributos de sede no válidos (status code 400)
      *         or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Borrar sede", nickname = "borrarSede", notes = "Borra la sede.", response = Juegos.class, tags={ "juegos", })
+    @ApiOperation(value = "Borrar sede", nickname = "borrarSede", notes = "Borra la sede.", response = Juegos.class, tags={ "juegos", },authorizations = {
+            @Authorization(value = "basicAuth")
+    })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
         @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
@@ -94,7 +98,9 @@ public interface JuegosApi {
      * @return successful operation (status code 200)
      *         or bad request (status code 404)
      */
-    @ApiOperation(value = "Buscar los anos que una ciudad fue sede", nickname = "buscarSedes", notes = "Anos en que una ciudad fue sede y el tipo de sede que fue", response = Sede.class, responseContainer = "List", tags={ "juegos", })
+    @ApiOperation(value = "Buscar los anos que una ciudad fue sede", nickname = "buscarSedes", notes = "Anos en que una ciudad fue sede y el tipo de sede que fue", response = Sede.class, responseContainer = "List", tags={ "juegos", },authorizations = {
+            @Authorization(value = "basicAuth")
+    })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Sede.class, responseContainer = "List"),
         @ApiResponse(code = 404, message = "bad request") })
@@ -122,7 +128,9 @@ public interface JuegosApi {
      *         or Atributos de sede no válidos (status code 400)
      *         or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Modificar sedes", nickname = "editarJuegos", notes = "", response = Juegos.class, tags={ "juegos", })
+    @ApiOperation(value = "Modificar sedes", nickname = "editarJuegos", notes = "", response = Juegos.class, tags={ "juegos", },authorizations = {
+            @Authorization(value = "basicAuth")
+    })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
         @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
@@ -142,7 +150,9 @@ public interface JuegosApi {
      * @return successful operation (status code 200)
      *         or bad request (status code 404)
      */
-    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = Juegos.class, tags={ "juegos", })
+    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = Juegos.class, tags={ "juegos", },authorizations = {
+            @Authorization(value = "basicAuth")
+    })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
         @ApiResponse(code = 404, message = "bad request") })
