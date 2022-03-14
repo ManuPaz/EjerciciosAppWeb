@@ -3,7 +3,9 @@ package com.example.demorest.services;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.JJOO;
 import com.example.demorest.repositories.JJOORepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -24,26 +26,38 @@ class JuegosServiceEditTest {
     JuegosService jjoo;
     @Autowired
     JJOORepository juegosRepository;
+    private  ArrayList<JuegosDTO> sedes;
+    @BeforeEach
+    public void init() {
+        this.sedes=new ArrayList();
 
+        JuegosDTO sede1 = new JuegosDTO("ESPAÑA","Madrid",null,null,"VERANO",1992,2023,"INVIERNO",null);
+        sedes.add(sede1);
+        sede1 = new JuegosDTO("ESPAÑA","Madrid",null,null,"INVIERNO",1924,2023,"VERANO",null);
+        sedes.add(sede1);
+
+
+
+    }
 
     @DisplayName("Editar juegos")
-    @ParameterizedTest(name = "Sede   a editar año:{2} ,tipo:{3}, nuevo nombre_ciudad:{1}")
-    @CsvSource({"ESPAÑA,Madrid,1992,VERANO,2023,INVIERNO","ESPAÑA,Madrid,1924,INVIERNO,2023,VERANO"})
-    public void editarJuegos(String nombre_pais,String nombre_ciudad,int año, String tipo, int nuevoAño,String nuevoTipo) {
+    @Test
+    public void editarJuegos() {
 
-        JuegosDTO sede = new JuegosDTO(nombre_pais,nombre_ciudad,null,null,tipo,año,nuevoAño,nuevoTipo,null);
-        jjoo.editarJuegos(sede);
-        List<JJOO> juegos = jjoo.findAll();
-        ArrayList <String> nombres=new ArrayList<>();
-        for (JJOO juego : juegos) {
-            if (juego.getNombre_ciuddad()== nombre_ciudad) {
+        for (JuegosDTO sede: sedes) {
+            jjoo.editarJuegos(sede);
+            List<JJOO> juegos = jjoo.findAll();
+            ArrayList<String> nombres = new ArrayList<>();
+            String nombre_ciudad=sede.getNombre_ciudad();
+            for (JJOO juego : juegos) {
+                if (juego.getNombre_ciuddad() == nombre_ciudad) {
 
-                assertEquals(1,juego.getNumero_veces_sede(), "Se esperaba 1 vez y se obtuvo " + juego.getNumero_veces_sede());
+                    assertEquals(1, juego.getNumero_veces_sede(), "Se esperaba 1 vez y se obtuvo " + juego.getNumero_veces_sede());
+                }
+                nombres.add(juego.getNombre_ciuddad());
             }
-            nombres.add(juego.getNombre_ciuddad());
+            assertTrue(nombres.contains(nombre_ciudad));
         }
-        assertTrue(nombres.contains(nombre_ciudad));
-
 
 
     }
