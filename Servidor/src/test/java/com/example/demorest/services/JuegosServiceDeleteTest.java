@@ -28,36 +28,36 @@ class JuegosServiceDeleteTest {
     @Autowired
     JJOORepository juegosRepository;
     private  ArrayList<JuegosDTO> sedes;
-    private  ArrayList<Integer> numVeces;
+    private  ArrayList<Integer> ciudades;
     @BeforeEach
     public void init() {
         this.sedes=new ArrayList();
-        this.numVeces=new ArrayList();
+        this.ciudades=new ArrayList();
         JuegosDTO sede1 = new JuegosDTO(1992, "VERANO");
         sedes.add(sede1);
-        sede1 = new JuegosDTO(1992, "VERANO");
+        sede1 = new JuegosDTO(1924, "INVIERNO");
         sedes.add(sede1);
-        numVeces.add(3);
-        numVeces.add(7);
+        ciudades.add(3);
+        ciudades.add(7);
 
 
     }
     @DisplayName("Eliminar juegos")
-    @ParameterizedTest(name = "Sede   a eliminar año:{0} ,tipo:{1}, id_ciudad:{2}")
-    @CsvSource({"1992,1992,3", "1924,INVIERNO,7"})
-    public void eliminarJuegos(int año, String tipo, int id_ciudad) {
-
-        JuegosDTO sede = new JuegosDTO(año, tipo);
+    @Test
+    public void eliminarJuegos() {
+        for (int i=0;i<ciudades.size();i++){
+        JuegosDTO sede = sedes.get(i);
+        int ciudad=ciudades.get(i);
         jjoo.borrarJuegos(sede);
         List<JJOO> juegos = jjoo.findAll();
         for (JJOO juego : juegos) {
 
-            if (juego.getId_ciudad() == id_ciudad) {
+            if (juego.getId_ciudad() == ciudad) {
 
                 assertEquals(0,juego.getNumero_veces_sede(), "Se esperaba 0 veces y se obtuvo " + juego.getNumero_veces_sede());
             }
         }
-
+ }
 
     }
 
