@@ -2,7 +2,7 @@ package com.example.demorest.repositories;
 
 
 import com.example.demorest.dtos.JuegosCiudades;
-import com.example.demorest.dtos.Sede;
+import com.example.demorest.model.Sede;
 import com.example.demorest.entities.Ciudad;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.entities.JuegosId;
@@ -21,7 +21,7 @@ public interface JuegosRepository extends CrudRepository<Juegos, JuegosId> {
 
     List<JuegosCiudades> findJuegosCiudades();
     @Transactional(readOnly = true)
-    @Query("Select new com.example.demorest.dtos.Sede(t.descripciontipo,j.id.año) from Ciudad c inner join c.juegos j inner join j.tipo_jjoo as t where c.id_ciudad= :id_ciudad and  j.id.tipo=:tipo_sede")
+    @Query("Select new com.example.demorest.model.Sede(t.descripciontipo,j.id.año) from Ciudad c inner join c.juegos j inner join j.tipo_jjoo as t where c.id_ciudad= :id_ciudad and  j.id.tipo=:tipo_sede")
     List<Sede> findJuegosByCiudad(@Param("id_ciudad")int id_ciudad, @Param("tipo_sede")Integer tipo_sede);
 
 

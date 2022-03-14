@@ -1,0 +1,295 @@
+openapi: 3.0.2
+info:
+  title: Juegos Olímpicos
+  description: "API para anadir, editar y modficar sedes de juegos olímpicos"
+  
+  contact:
+    email: manuelpazpintor@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1-SNAPSHOT
+externalDocs:
+  description: Find out more about Reflectoring
+  url: https://reflectoring.io/about/
+servers:
+- url: https://reflectoring.swagger.io/v2
+tags:
+- name: sedes
+  description: Operaciones sobre sedes
+- name: juegos
+  description: Operaciones sobre juegos
+ 
+paths:
+  /juegos:
+    get:
+      tags:
+      - juegos
+      summary: Lista de sedes 
+      description: Listar las ciudades que fueron  sede 
+      operationId: obtenerSedes
+     
+      responses:
+        200:
+          description: successful operation
+          content:
+              application/json:
+                schema:
+                 $ref: '#/components/schemas/Juegos'
+        404:
+          description: bad request
+      x-codegen-request-body-name: body
+  /juegos/buscar:
+    get:
+      tags:
+      - juegos
+      summary: Buscar los anos que una ciudad fue sede 
+      description: Anos en que una ciudad fue sede y el tipo de sede que fue
+      operationId: buscarSedes
+      parameters:
+      - name: ciudad
+        in: query
+        description: 'Id de la ciudad. '
+        required: true
+        schema:
+          type: integer
+      - name: tipo
+        in: query
+        description: 'Tipo de sede: invierno o verano.'
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+              application/json:
+              
+                schema:
+                 
+                 $ref: '#/components/schemas/SedesArray'
+        404:
+          description: bad request
+      x-codegen-request-body-name: body
+  /juegos/{ano}/{tipo}:
+    post:
+      tags:
+      - juegos
+      summary: Anadir sedes
+      operationId: anadirSedes
+      parameters:
+      - name: ano
+        in: path
+        description: 'Ano de la edicion '
+        required: true
+        schema:
+          type: integer
+      - name: tipo
+        in: path
+        description: 'Tipo de edicion: invierno y verano '
+        required: true
+        schema:
+          type: string
+      - name: pais
+        in: query
+        description: 'Nombre del pais '
+        required: false
+        schema:
+          type: string
+      - name: codigoPais
+        in: query
+        description: 'Codigo del pais '
+        required: false
+        schema:
+          type: string
+         
+      - name: ciudad
+        in: query
+        description: 'Nombre de  la ciudad '
+        required: true
+        schema:
+          type: string
+      - name: valorPais
+        in: query
+        description: 'Valor del pais '
+        required: false
+        schema:
+          type: integer
+      - name: valorCiudad
+        in: query
+        description: 'Valor de la ciudad '
+        required: false
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Juegos'
+        400:
+          description: Atributos de sede no válidos
+          content: {}
+        404:
+          description: Sede no encontrada
+          content: {}
+    put:
+      tags:
+      - juegos
+      summary: Modificar sedes
+      
+      operationId: editarJuegos
+      parameters:
+      - name: ano
+        in: path
+        description: 'Ano de la edicion '
+        required: true
+        schema:
+          type: integer
+      - name: tipo
+        in: path
+        description:  'Tipo de edicion: invierno y verano '
+        required: true
+        schema:
+          type: string
+      - name: nuevoAno
+        in: query
+        description: 'Nuevo ano de la edicion '
+        required: false
+        schema:
+          type: integer
+      - name: nuevoTipo
+        in: query
+        description:  'Nuevo tipo de edicion: invierno y verano '
+        required: false
+        schema:
+          type: string
+      - name: pais
+        in: query
+        description: 'Nombre del pais '
+        required: false
+        schema:
+          type: string
+      - name: codigoPais
+        in: query
+        description: 'Codigo del pais '
+        required: false
+        schema:
+          type: string
+         
+      - name: ciudad
+        in: query
+        description: 'Nombre de  la nueva  ciudad '
+        required: false
+        schema:
+          type: string
+      - name: valorPais
+        in: query
+        description: 'Valor del pais '
+        required: false
+        schema:
+          type: integer
+      - name: idCiudad
+        in: query
+        description: 'Id de la nueva ciudad '
+        required: false
+        schema:
+          type: integer
+      
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Juegos'
+        400:
+          description: Atributos de sede no válidos
+          content: {}
+        404:
+          description: Sede no encontrada
+          content: {}
+    delete:
+      tags:
+      - juegos
+      summary: Borrar sede
+      description: Borra la sede.
+      operationId: borrarSede
+      parameters:
+      - name: ano
+        in: path
+        description: 'Ano de la edicion '
+        required: true
+        schema:
+          type: integer
+      - name: tipo
+        in: path
+        description: 'Tipo de edicion: invierno y verano '
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Juegos'
+        400:
+          description: Atributos de sede no válidos
+          content: {}
+        404:
+          description: Sede no encontrada
+          content: {}
+components:
+  schemas:
+    Juegos:
+      type: object
+      properties:
+        nombre_ciudad:
+          type: string
+        nombre_pais:
+          type: string
+        id_pais:
+          type: integer
+          format: int64
+        id_ciudad:
+          type: integer
+          format: int64
+        valor:
+          type: integer
+          format: int64
+        descripcion_tipo_jjoo:
+          type: string
+        numero_veces_sede:
+          type: integer
+          format: int64
+    Sede:
+      type: object
+      properties:
+        descripcion_tipo:
+          type: string
+        ano:
+         type: integer
+          
+          
+    SedesArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Sede'
+
+        
+  securitySchemes:
+    reflectoring_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://reflectoring.swagger.io/oauth/dialog
+          scopes:
+            write:users: modify users
+            read:users: read users
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

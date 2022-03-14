@@ -28,7 +28,7 @@ public class JuegosController {
         return new ResponseEntity<List<JJOO>>(juegosService.findAll(), HttpStatus.OK);
     }*/
 
-    @GetMapping("/juegos")
+    /*@GetMapping("/juegos")
     public ResponseEntity<List<JuegosCiudades>> juego1() {
 
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), HttpStatus.OK);
@@ -140,7 +140,7 @@ public class JuegosController {
         }
 
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
-    }
+    }*/
 
 
 }

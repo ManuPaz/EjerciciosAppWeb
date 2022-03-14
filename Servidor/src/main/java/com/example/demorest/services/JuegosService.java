@@ -2,7 +2,7 @@ package com.example.demorest.services;
 
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.dtos.Sede;
+import com.example.demorest.model.Sede;
 import com.example.demorest.entities.*;
 import com.example.demorest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
