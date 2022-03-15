@@ -7,7 +7,6 @@ public class Sede {
     }
 
 
-
     public String getDescripcion_tipo_jjoo() {
         return descripcion_tipo_jjoo;
     }
@@ -15,7 +14,6 @@ public class Sede {
     public void setDescripcion_tipo_jjoo(String descripcion_tipo_jjoo) {
         this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
     }
-
 
 
     public Integer getAno() {
@@ -30,7 +28,7 @@ public class Sede {
     private Integer ano;
 
 
-    public Sede( String descripcion_tipo_jjoo, Integer año) {
+    public Sede(String descripcion_tipo_jjoo, Integer año) {
 
         this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
 

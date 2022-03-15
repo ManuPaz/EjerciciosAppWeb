@@ -1,19 +1,8 @@
 package com.example.demorest.controllers;
 
-import com.example.demorest.dtos.JuegosCiudades;
-import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.dtos.Sede;
-import com.example.demorest.entities.Juegos;
 import com.example.demorest.services.JuegosService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class JuegosController {

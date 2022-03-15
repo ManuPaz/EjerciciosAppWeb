@@ -15,7 +15,6 @@ public class JuegosCiudades {
     }
 
 
-
     public Integer getId_pais() {
         return id_pais;
     }
@@ -68,7 +67,6 @@ public class JuegosCiudades {
     public void setNombre_ciudad(String nombre_ciudad) {
         this.nombre_ciudad = nombre_ciudad;
     }
-
 
 
     public void setAño(Integer año) {

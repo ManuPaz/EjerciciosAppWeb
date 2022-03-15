@@ -12,9 +12,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Pais {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_pais;
-    @Column(name="nombre_pais")
+    @Column(name = "nombre_pais")
     private String nombrepais;
     private String codigo_pais;
     private Integer valor_pais;

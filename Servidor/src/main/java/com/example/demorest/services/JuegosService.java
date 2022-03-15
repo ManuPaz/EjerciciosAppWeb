@@ -2,8 +2,8 @@ package com.example.demorest.services;
 
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.model.Sede;
 import com.example.demorest.entities.*;
+import com.example.demorest.model.Sede;
 import com.example.demorest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,15 +43,15 @@ public class JuegosService {
     public List<JuegosCiudades> findJuegosCiudades() {
         return juegosRepository.findJuegosCiudades();
     }
+
     public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(tipo);
         Ciudad ciudad = null;
         if (tiposede != null) {
 
 
-            return juegosRepository.findJuegosByCiudad(idciudad,tiposede.getId_tipo_jjoo());
-        }
-        else{
+            return juegosRepository.findJuegosByCiudad(idciudad, tiposede.getId_tipo_jjoo());
+        } else {
 
             return new ArrayList<>();
         }
@@ -144,6 +144,7 @@ public class JuegosService {
 
 
     }
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos editarJuegos(JuegosDTO sede) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
@@ -163,31 +164,32 @@ public class JuegosService {
                 juegos1 = juegos.get();
 
 
-                if (sede.getNuevoTipoSede() != null ) {
+                if (sede.getNuevoTipoSede() != null) {
 
-                    if (tipoSedeRepository.existsTipoSedeBydescripciontipo(sede.getNuevoTipoSede())){
-                        if( !sede.getNuevoTipoSede().equals(sede.getDescripcion_tipo_jjoo()) ) {
+                    if (tipoSedeRepository.existsTipoSedeBydescripciontipo(sede.getNuevoTipoSede())) {
+                        if (!sede.getNuevoTipoSede().equals(sede.getDescripcion_tipo_jjoo())) {
 
 
-                        TipoSede tiposede1 = tipoSedeRepository.findBydescripciontipo(sede.getNuevoTipoSede());
-                        JuegosId id2 = new JuegosId();
-                        id2.setAño(juegos1.getId().getAño());
-                        id2.setTipo(tiposede1.getId_tipo_jjoo());
-                        juegos2 = new Juegos();
-                        juegos2.setId(id2);
-                        juegos2.setCiudad(juegos1.getCiudad());
-                        juegos2.setTipo_jjoo(tiposede1);
-                        juegosRepository.save(juegos2);
-                        juegosRepository.deleteById(juegos1.getId());
+                            TipoSede tiposede1 = tipoSedeRepository.findBydescripciontipo(sede.getNuevoTipoSede());
+                            JuegosId id2 = new JuegosId();
+                            id2.setAño(juegos1.getId().getAño());
+                            id2.setTipo(tiposede1.getId_tipo_jjoo());
+                            juegos2 = new Juegos();
+                            juegos2.setId(id2);
+                            juegos2.setCiudad(juegos1.getCiudad());
+                            juegos2.setTipo_jjoo(tiposede1);
+                            juegosRepository.save(juegos2);
+                            juegosRepository.deleteById(juegos1.getId());
 
-                    }}else{
-                        finalizar=true;
+                        }
+                    } else {
+                        finalizar = true;
                     }
                 }
 
                 if (juegos2 != null) {
                     juegos1 = juegos2;
-                    juegos2=null;
+                    juegos2 = null;
                 }
                 if (finalizar == false) {
                     if (sede.getId_ciudad() != null) {
@@ -217,7 +219,7 @@ public class JuegosService {
                                 finalizar = guardarCiudad(sede);
 
 
-                                if (finalizar==false){
+                                if (finalizar == false) {
                                     ciudad1 = ciudadRepository.findBynombreciudad(sede.getNombre_ciudad());
                                     juegos1.setCiudad(ciudad1);
                                 }

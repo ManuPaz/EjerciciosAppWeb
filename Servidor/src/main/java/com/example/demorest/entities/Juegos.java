@@ -17,7 +17,6 @@ import javax.persistence.*;
 public class Juegos {
 
 
-
     @EmbeddedId
     private JuegosId id;
     @JsonManagedReference

@@ -64,12 +64,12 @@ public class JuegosDTO {
 
     }
 
-    public JuegosDTO(String nombre_pais, String nombre_ciudad, Integer idCiudad, String codigoPais, String descripcion_tipo_jjoo, Integer año, Integer nuevoAño, String nuevoTipoSede,Integer valorPais) {
+    public JuegosDTO(String nombre_pais, String nombre_ciudad, Integer idCiudad, String codigoPais, String descripcion_tipo_jjoo, Integer año, Integer nuevoAño, String nuevoTipoSede, Integer valorPais) {
         this.nombre_pais = nombre_pais;
         this.nombre_ciudad = nombre_ciudad;
         this.codigoPais = codigoPais;
         this.id_ciudad = idCiudad;
-        this.valor_pais=valorPais;
+        this.valor_pais = valorPais;
 
         this.nuevoAño = nuevoAño;
         this.valor_pais = valor_pais;

@@ -6,60 +6,53 @@
 package com.example.demorest.api;
 
 import com.example.demorest.dtos.JuegosCiudades;
-import com.example.demorest.entities.JJOO;
-import  com.example.demorest.model.Juegos;
-import  com.example.demorest.model.Sede;
+import com.example.demorest.model.Juegos;
+import com.example.demorest.model.Sede;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
+
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-14T09:36:03.661556900+01:00[Europe/Madrid]")
 
 @Validated
 @Api(value = "juegos", description = "the juegos API")
-public interface JuegosApi {
+public abstract class JuegosApi {
 
-    default com.example.demorest.api.JuegosApiDelegate getDelegate() {
-        return null;
-    }
+    public abstract JuegosApiDelegate getDelegate();
 
     /**
      * POST /juegos/{ano}/{tipo} : Anadir sedes
      *
-     * @param ano Ano de la edicion  (required)
-     * @param tipo Tipo de edicion: invierno y verano  (required)
-     * @param ciudad Nombre de  la ciudad  (required)
-     * @param pais Nombre del pais  (optional)
-     * @param codigoPais Codigo del pais  (optional)
-     * @param valorPais Valor del pais  (optional)
+     * @param ano         Ano de la edicion  (required)
+     * @param tipo        Tipo de edicion: invierno y verano  (required)
+     * @param ciudad      Nombre de  la ciudad  (required)
+     * @param pais        Nombre del pais  (optional)
+     * @param codigoPais  Codigo del pais  (optional)
+     * @param valorPais   Valor del pais  (optional)
      * @param valorCiudad Valor de la ciudad  (optional)
      * @return successful operation (status code 200)
-     *         or Atributos de sede no válidos (status code 400)
-     *         or Sede no encontrada (status code 404)
+     * or Atributos de sede no válidos (status code 400)
+     * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = Juegos.class, tags={ "juegos", },authorizations = {
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = Juegos.class, tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
-        @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
-        @ApiResponse(code = 404, message = "Sede no encontrada") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/{ano}/{tipo}",
-        produces = { "application/json" }, 
-        method = RequestMethod.POST)
-    default ResponseEntity<List<JuegosCiudades>> anadirSedes(@ApiParam(value = "Ano de la edicion ",required=true) @PathVariable("ano") Integer ano,@ApiParam(value = "Tipo de edicion: invierno y verano ",required=true) @PathVariable("tipo") String tipo,@NotNull @ApiParam(value = "Nombre de  la ciudad ", required = true) @Valid @RequestParam(value = "ciudad", required = true) String ciudad,@ApiParam(value = "Nombre del pais ") @Valid @RequestParam(value = "pais", required = false) String pais,@ApiParam(value = "Codigo del pais ") @Valid @RequestParam(value = "codigoPais", required = false) String codigoPais,@ApiParam(value = "Valor del pais ") @Valid @RequestParam(value = "valorPais", required = false) Integer valorPais,@ApiParam(value = "Valor de la ciudad ") @Valid @RequestParam(value = "valorCiudad", required = false) Integer valorCiudad) {
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<List<JuegosCiudades>> anadirSedes(@ApiParam(value = "Ano de la edicion ", required = true) @PathVariable("ano") Integer ano, @ApiParam(value = "Tipo de edicion: invierno y verano ", required = true) @PathVariable("tipo") String tipo, @NotNull @ApiParam(value = "Nombre de  la ciudad ", required = true) @Valid @RequestParam(value = "ciudad", required = true) String ciudad, @ApiParam(value = "Nombre del pais ") @Valid @RequestParam(value = "pais", required = false) String pais, @ApiParam(value = "Codigo del pais ") @Valid @RequestParam(value = "codigoPais", required = false) String codigoPais, @ApiParam(value = "Valor del pais ") @Valid @RequestParam(value = "valorPais", required = false) Integer valorPais, @ApiParam(value = "Valor de la ciudad ") @Valid @RequestParam(value = "valorCiudad", required = false) Integer valorCiudad) {
         return getDelegate().anadirSedes(ano, tipo, ciudad, pais, codigoPais, valorPais, valorCiudad);
     }
 
@@ -68,23 +61,23 @@ public interface JuegosApi {
      * DELETE /juegos/{ano}/{tipo} : Borrar sede
      * Borra la sede.
      *
-     * @param ano Ano de la edicion  (required)
+     * @param ano  Ano de la edicion  (required)
      * @param tipo Tipo de edicion: invierno y verano  (required)
      * @return successful operation (status code 200)
-     *         or Atributos de sede no válidos (status code 400)
-     *         or Sede no encontrada (status code 404)
+     * or Atributos de sede no válidos (status code 400)
+     * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Borrar sede", nickname = "borrarSede", notes = "Borra la sede.", response = Juegos.class, tags={ "juegos", },authorizations = {
+    @ApiOperation(value = "Borrar sede", nickname = "borrarSede", notes = "Borra la sede.", response = Juegos.class, tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
-        @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
-        @ApiResponse(code = 404, message = "Sede no encontrada") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/{ano}/{tipo}",
-        produces = { "application/json" }, 
-        method = RequestMethod.DELETE)
-    default ResponseEntity<List<JuegosCiudades>> borrarSede(@ApiParam(value = "Ano de la edicion ",required=true) @PathVariable("ano") Integer ano,@ApiParam(value = "Tipo de edicion: invierno y verano ",required=true) @PathVariable("tipo") String tipo) {
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
+    ResponseEntity<List<JuegosCiudades>> borrarSede(@ApiParam(value = "Ano de la edicion ", required = true) @PathVariable("ano") Integer ano, @ApiParam(value = "Tipo de edicion: invierno y verano ", required = true) @PathVariable("tipo") String tipo) {
         return getDelegate().borrarSede(ano, tipo);
     }
 
@@ -94,20 +87,20 @@ public interface JuegosApi {
      * Anos en que una ciudad fue sede y el tipo de sede que fue
      *
      * @param ciudad Id de la ciudad.  (required)
-     * @param tipo Tipo de sede: invierno o verano. (required)
+     * @param tipo   Tipo de sede: invierno o verano. (required)
      * @return successful operation (status code 200)
-     *         or bad request (status code 404)
+     * or bad request (status code 404)
      */
-    @ApiOperation(value = "Buscar los anos que una ciudad fue sede", nickname = "buscarSedes", notes = "Anos en que una ciudad fue sede y el tipo de sede que fue", response = Sede.class, responseContainer = "List", tags={ "juegos", },authorizations = {
+    @ApiOperation(value = "Buscar los anos que una ciudad fue sede", nickname = "buscarSedes", notes = "Anos en que una ciudad fue sede y el tipo de sede que fue", response = Sede.class, responseContainer = "List", tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Sede.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "bad request") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Sede.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "bad request")})
     @RequestMapping(value = "/juegos/buscar",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    default ResponseEntity<List<Sede>> buscarSedes(@NotNull @ApiParam(value = "Id de la ciudad. ", required = true) @Valid @RequestParam(value = "ciudad", required = true) Integer ciudad,@NotNull @ApiParam(value = "Tipo de sede: invierno o verano.", required = true) @Valid @RequestParam(value = "tipo", required = true) String tipo) {
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Sede>> buscarSedes(@NotNull @ApiParam(value = "Id de la ciudad. ", required = true) @Valid @RequestParam(value = "ciudad", required = true) Integer ciudad, @NotNull @ApiParam(value = "Tipo de sede: invierno o verano.", required = true) @Valid @RequestParam(value = "tipo", required = true) String tipo) {
         return getDelegate().buscarSedes(ciudad, tipo);
     }
 
@@ -115,30 +108,30 @@ public interface JuegosApi {
     /**
      * PUT /juegos/{ano}/{tipo} : Modificar sedes
      *
-     * @param ano Ano de la edicion  (required)
-     * @param tipo Tipo de edicion: invierno y verano  (required)
-     * @param nuevoAno Nuevo ano de la edicion  (optional)
-     * @param nuevoTipo Nuevo tipo de edicion: invierno y verano  (optional)
-     * @param pais Nombre del pais  (optional)
+     * @param ano        Ano de la edicion  (required)
+     * @param tipo       Tipo de edicion: invierno y verano  (required)
+     * @param nuevoAno   Nuevo ano de la edicion  (optional)
+     * @param nuevoTipo  Nuevo tipo de edicion: invierno y verano  (optional)
+     * @param pais       Nombre del pais  (optional)
      * @param codigoPais Codigo del pais  (optional)
-     * @param ciudad Nombre de  la nueva  ciudad  (optional)
-     * @param valorPais Valor del pais  (optional)
-     * @param idCiudad Id de la nueva ciudad  (optional)
+     * @param ciudad     Nombre de  la nueva  ciudad  (optional)
+     * @param valorPais  Valor del pais  (optional)
+     * @param idCiudad   Id de la nueva ciudad  (optional)
      * @return successful operation (status code 200)
-     *         or Atributos de sede no válidos (status code 400)
-     *         or Sede no encontrada (status code 404)
+     * or Atributos de sede no válidos (status code 400)
+     * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Modificar sedes", nickname = "editarJuegos", notes = "", response = Juegos.class, tags={ "juegos", },authorizations = {
+    @ApiOperation(value = "Modificar sedes", nickname = "editarJuegos", notes = "", response = Juegos.class, tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
-        @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
-        @ApiResponse(code = 404, message = "Sede no encontrada") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/{ano}/{tipo}",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    default ResponseEntity<List<JuegosCiudades>>  editarJuegos(@ApiParam(value = "Ano de la edicion ",required=true) @PathVariable("ano") Integer ano,@ApiParam(value = "Tipo de edicion: invierno y verano ",required=true) @PathVariable("tipo") String tipo,@ApiParam(value = "Nuevo ano de la edicion ") @Valid @RequestParam(value = "nuevoAno", required = false) Integer nuevoAno,@ApiParam(value = "Nuevo tipo de edicion: invierno y verano ") @Valid @RequestParam(value = "nuevoTipo", required = false) String nuevoTipo,@ApiParam(value = "Nombre del pais ") @Valid @RequestParam(value = "pais", required = false) String pais,@ApiParam(value = "Codigo del pais ") @Valid @RequestParam(value = "codigoPais", required = false) String codigoPais,@ApiParam(value = "Nombre de  la nueva  ciudad ") @Valid @RequestParam(value = "ciudad", required = false) String ciudad,@ApiParam(value = "Valor del pais ") @Valid @RequestParam(value = "valorPais", required = false) Integer valorPais,@ApiParam(value = "Id de la nueva ciudad ") @Valid @RequestParam(value = "idCiudad", required = false) Integer idCiudad) {
+            produces = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<List<JuegosCiudades>> editarJuegos(@ApiParam(value = "Ano de la edicion ", required = true) @PathVariable("ano") Integer ano, @ApiParam(value = "Tipo de edicion: invierno y verano ", required = true) @PathVariable("tipo") String tipo, @ApiParam(value = "Nuevo ano de la edicion ") @Valid @RequestParam(value = "nuevoAno", required = false) Integer nuevoAno, @ApiParam(value = "Nuevo tipo de edicion: invierno y verano ") @Valid @RequestParam(value = "nuevoTipo", required = false) String nuevoTipo, @ApiParam(value = "Nombre del pais ") @Valid @RequestParam(value = "pais", required = false) String pais, @ApiParam(value = "Codigo del pais ") @Valid @RequestParam(value = "codigoPais", required = false) String codigoPais, @ApiParam(value = "Nombre de  la nueva  ciudad ") @Valid @RequestParam(value = "ciudad", required = false) String ciudad, @ApiParam(value = "Valor del pais ") @Valid @RequestParam(value = "valorPais", required = false) Integer valorPais, @ApiParam(value = "Id de la nueva ciudad ") @Valid @RequestParam(value = "idCiudad", required = false) Integer idCiudad) {
         return getDelegate().editarJuegos(ano, tipo, nuevoAno, nuevoTipo, pais, codigoPais, ciudad, valorPais, idCiudad);
     }
 
@@ -148,19 +141,20 @@ public interface JuegosApi {
      * Listar las ciudades que fueron  sede
      *
      * @return successful operation (status code 200)
-     *         or bad request (status code 404)
+     * or bad request (status code 404)
      */
-    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = Juegos.class, tags={ "juegos", },authorizations = {
+    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = Juegos.class, tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
-        @ApiResponse(code = 404, message = "bad request") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
+            @ApiResponse(code = 404, message = "bad request")})
     @RequestMapping(value = "/juegos",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    default ResponseEntity<List<JuegosCiudades>>obtenerSedes() {
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<JuegosCiudades>> obtenerSedes() {
         return getDelegate().obtenerSedes();
     }
+
 
 }

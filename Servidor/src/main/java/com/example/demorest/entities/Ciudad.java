@@ -32,9 +32,8 @@ public class Ciudad {
     @JoinColumn(name = "id_pais", referencedColumnName = "id_pais")
     private Pais pais;
     @JsonBackReference
-    @OneToMany(mappedBy = "ciudad") private List<Juegos> juegos;
-
-
+    @OneToMany(mappedBy = "ciudad")
+    private List<Juegos> juegos;
 
 
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +19,6 @@ public class JuegosId implements Serializable {
 
     @Column(name = "id_tipo_jjoo")
     private Integer tipo;
-
 
 
     @Override

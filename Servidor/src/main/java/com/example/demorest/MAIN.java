@@ -14,6 +14,7 @@ public class MAIN {
 
 
     }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -26,13 +27,13 @@ public class MAIN {
                         .allowedMethods("GET")
                         .maxAge(3600);
                 registry.addMapping("/juegos/eliminar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods( "DELETE")
+                        .allowedMethods("DELETE")
                         .maxAge(3600);
                 registry.addMapping("/juegos/anadir").allowedOrigins("http://localhost:3000")
-                        .allowedMethods( "POST")
+                        .allowedMethods("POST")
                         .maxAge(3600);
                 registry.addMapping("/juegos/modificar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods( "PUT")
+                        .allowedMethods("PUT")
                         .maxAge(3600);
             }
 

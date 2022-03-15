@@ -38,7 +38,7 @@ class JuegosServiceTest {
 
     //select count(sede),sede from  sede_jjoo group by sede;
     @DisplayName("Numero de juegos totales")
-    @ParameterizedTest(name="Numero de juegos totales")
+    @ParameterizedTest(name = "Numero de juegos totales")
     @CsvSource({"12"})
     public void numeroDeJuegos(int numeroDeJuegos) {
 
