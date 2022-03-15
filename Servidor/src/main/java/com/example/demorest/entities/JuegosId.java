@@ -1,9 +1,15 @@
 package com.example.demorest.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Embeddable
 public class JuegosId implements Serializable {
 
@@ -13,26 +19,7 @@ public class JuegosId implements Serializable {
     @Column(name = "id_tipo_jjoo")
     private Integer tipo;
 
-    public Integer getAño() {
-        return año;
-    }
 
-    public void setAño(Integer año) {
-        this.año = año;
-    }
-
-
-    public JuegosId() {
-
-    }
-
-    public Integer getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
 
     @Override
     public boolean equals(Object o) {

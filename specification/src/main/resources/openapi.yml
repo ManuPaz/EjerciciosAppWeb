@@ -28,6 +28,8 @@ paths:
       summary: Lista de sedes 
       description: Listar las ciudades que fueron  sede 
       operationId: obtenerSedes
+      security:
+        - basicAuth: [user] 
      
       responses:
         200:
@@ -35,12 +37,14 @@ paths:
           content:
               application/json:
                 schema:
-                 $ref: '#/components/schemas/Juegos'
+                 $ref: '#/components/schemas/JuegosArray'
         404:
           description: bad request
       x-codegen-request-body-name: body
   /juegos/buscar:
     get:
+      security:
+        - basicAuth: [user] 
       tags:
       - juegos
       summary: Buscar los anos que una ciudad fue sede 
@@ -73,6 +77,8 @@ paths:
       x-codegen-request-body-name: body
   /juegos/{ano}/{tipo}:
     post:
+      security:
+        - basicAuth: [user] 
       tags:
       - juegos
       summary: Anadir sedes
@@ -127,7 +133,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Juegos'
+                $ref: '#/components/schemas/JuegosArray'
         400:
           description: Atributos de sede no válidos
           content: {}
@@ -135,6 +141,8 @@ paths:
           description: Sede no encontrada
           content: {}
     put:
+      security:
+        - basicAuth: [user] 
       tags:
       - juegos
       summary: Modificar sedes
@@ -203,7 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Juegos'
+                $ref: '#/components/schemas/JuegosArray'
         400:
           description: Atributos de sede no válidos
           content: {}
@@ -211,6 +219,8 @@ paths:
           description: Sede no encontrada
           content: {}
     delete:
+      security:
+        - basicAuth: [user] 
       tags:
       - juegos
       summary: Borrar sede
@@ -235,7 +245,7 @@ paths:
           content:
             application/json:
                 schema:
-                  $ref: '#/components/schemas/Juegos'
+                  $ref: '#/components/schemas/JuegosArray'
         400:
           description: Atributos de sede no válidos
           content: {}
@@ -278,18 +288,17 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Sede'
+    JuegosArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Juegos'
 
-        
   securitySchemes:
-    reflectoring_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: http://reflectoring.swagger.io/oauth/dialog
-          scopes:
-            write:users: modify users
-            read:users: read users
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    basicAuth:
+        type: http
+        scheme: basic
+        
+security:
+  -    basicAuth: []
+
+      

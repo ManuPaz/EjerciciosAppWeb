@@ -4,7 +4,7 @@ import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.JJOO;
 import com.example.demorest.model.Sede;
-import com.example.demorest.model.Juegos;
+import com.example.demorest.entities.*;
 import com.example.demorest.services.JuegosService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +74,9 @@ public class JuegosApiDelegate {
         JuegosDTO juegosdto = new JuegosDTO(pais, ciudad, codigoPais, valorPais, valorPais, tipo, ano);
 
         HttpStatus codigo = HttpStatus.OK;
-
+    Juegos j=null;
         try {
-            juegosService.guardarJuegos(juegosdto);
+            j=juegosService.guardarJuegos(juegosdto);
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
 
@@ -191,7 +191,7 @@ public class JuegosApiDelegate {
          HttpStatus codigo = HttpStatus.OK;
          Juegos j = null;
          try {
-              juegosService.editarJuegos(juegosdto);
+            j=  juegosService.editarJuegos(juegosdto);
          } catch (DataIntegrityViolationException ex) {
              codigo = HttpStatus.BAD_REQUEST;
 

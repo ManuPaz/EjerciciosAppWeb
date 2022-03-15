@@ -1,12 +1,17 @@
 package com.example.demorest.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class Ciudad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,44 +32,8 @@ public class Ciudad {
     @JoinColumn(name = "id_pais", referencedColumnName = "id_pais")
     private Pais pais;
     @JsonBackReference
-    @OneToMany(mappedBy = "ciudad")
+    @OneToMany(mappedBy = "ciudad") private List<Juegos> juegos;
 
-    private List<Juegos> juegos;
-
-
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
-    }
-
-    public Integer getId_ciudad() {
-        return id_ciudad;
-    }
-
-    public void setId_ciudad(int id_ciudad) {
-        this.id_ciudad = id_ciudad;
-    }
-
-    public Integer getValor_ciudad() {
-        return valor_ciudad;
-    }
-
-    public void setValor_ciudad(Integer valor_ciudad) {
-
-        this.valor_ciudad = (valor_ciudad);
-    }
-
-    public String getNombreciudad() {
-        return nombreciudad;
-    }
-
-
-    public void setNombreciudad(String nombreciudad) {
-        this.nombreciudad = nombreciudad;
-    }
 
 
 
