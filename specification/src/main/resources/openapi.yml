@@ -75,58 +75,41 @@ paths:
         404:
           description: bad request
       x-codegen-request-body-name: body
-  /juegos/{ano}/{tipo}:
+  /juegos/anadir:
     post:
       security:
         - basicAuth: [user] 
       tags:
-      - juegos
+        - juegos
       summary: Anadir sedes
       operationId: anadirSedes
-      parameters:
-      - name: ano
-        in: path
-        description: 'Ano de la edicion '
+     
+      requestBody:
         required: true
-        schema:
-          type: integer
-      - name: tipo
-        in: path
-        description: 'Tipo de edicion: invierno y verano '
-        required: true
-        schema:
-          type: string
-      - name: pais
-        in: query
-        description: 'Nombre del pais '
-        required: false
-        schema:
-          type: string
-      - name: codigoPais
-        in: query
-        description: 'Codigo del pais '
-        required: false
-        schema:
-          type: string
-         
-      - name: ciudad
-        in: query
-        description: 'Nombre de  la ciudad '
-        required: true
-        schema:
-          type: string
-      - name: valorPais
-        in: query
-        description: 'Valor del pais '
-        required: false
-        schema:
-          type: integer
-      - name: valorCiudad
-        in: query
-        description: 'Valor de la ciudad '
-        required: false
-        schema:
-          type: integer
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ano
+              - tipo
+              properties:
+                  ano:
+                    type: integer
+                  tipo:
+                    type: string
+                  ciudad:
+                    type: string
+                  pais:
+                     type: string
+                  codigoPais:
+                    type: string
+                  valorPais:
+                    type: integer
+                  valorCiudad:
+                    type: integer
+                  
+
       responses:
         200:
           description: successful operation
@@ -140,71 +123,46 @@ paths:
         404:
           description: Sede no encontrada
           content: {}
-    put:
+          
+  /juegos/modificar:
+    post:
       security:
         - basicAuth: [user] 
       tags:
-      - juegos
+        - juegos
       summary: Modificar sedes
-      
-      operationId: editarJuegos
-      parameters:
-      - name: ano
-        in: path
-        description: 'Ano de la edicion '
+      operationId: modificarSedes
+     
+      requestBody:
         required: true
-        schema:
-          type: integer
-      - name: tipo
-        in: path
-        description:  'Tipo de edicion: invierno y verano '
-        required: true
-        schema:
-          type: string
-      - name: nuevoAno
-        in: query
-        description: 'Nuevo ano de la edicion '
-        required: false
-        schema:
-          type: integer
-      - name: nuevoTipo
-        in: query
-        description:  'Nuevo tipo de edicion: invierno y verano '
-        required: false
-        schema:
-          type: string
-      - name: pais
-        in: query
-        description: 'Nombre del pais '
-        required: false
-        schema:
-          type: string
-      - name: codigoPais
-        in: query
-        description: 'Codigo del pais '
-        required: false
-        schema:
-          type: string
-         
-      - name: ciudad
-        in: query
-        description: 'Nombre de  la nueva  ciudad '
-        required: false
-        schema:
-          type: string
-      - name: valorPais
-        in: query
-        description: 'Valor del pais '
-        required: false
-        schema:
-          type: integer
-      - name: idCiudad
-        in: query
-        description: 'Id de la nueva ciudad '
-        required: false
-        schema:
-          type: integer
-      
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ano
+              - tipo
+              properties:
+                  ano:
+                    type: integer
+                  tipo:
+                    type: string
+                  ciudad:
+                    type: string
+                  pais:
+                     type: string
+                  codigoPais:
+                    type: string
+                  valorPais:
+                    type: integer
+                  idCiudad:
+                    type: integer
+                  nuevoAno:
+                    type: integer
+                  nuevoTipo:
+                    type: string
+                  
+
       responses:
         200:
           description: successful operation
@@ -218,40 +176,47 @@ paths:
         404:
           description: Sede no encontrada
           content: {}
-    delete:
+          
+  /juegos/eliminar:
+    post:
       security:
         - basicAuth: [user] 
       tags:
-      - juegos
-      summary: Borrar sede
-      description: Borra la sede.
-      operationId: borrarSede
-      parameters:
-      - name: ano
-        in: path
-        description: 'Ano de la edicion '
+        - juegos
+      summary: Eliminar sedes
+      operationId: eliminarSedes
+     
+      requestBody:
         required: true
-        schema:
-          type: integer
-      - name: tipo
-        in: path
-        description: 'Tipo de edicion: invierno y verano '
-        required: true
-        schema:
-          type: string
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ano
+              - tipo
+              properties:
+                  ano:
+                    type: integer
+                  tipo:
+                    type: string
+                  
+
       responses:
         200:
           description: successful operation
           content:
             application/json:
-                schema:
-                  $ref: '#/components/schemas/JuegosArray'
+              schema:
+                $ref: '#/components/schemas/JuegosArray'
         400:
           description: Atributos de sede no válidos
           content: {}
         404:
           description: Sede no encontrada
           content: {}
+
+   
 components:
   schemas:
     Juegos:

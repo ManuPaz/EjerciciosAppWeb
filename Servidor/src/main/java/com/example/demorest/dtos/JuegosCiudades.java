@@ -88,4 +88,15 @@ public class JuegosCiudades {
         this.id_pais = id_pais;
         this.año = año;
     }
+
+    public JuegosCiudades(Integer id_ciudad, String nombre_ciudad, Integer id_pais, String nombre_pais, Integer valor, Long numero_veces_sede, String descripcion_tipo_jjoo) {
+        this.nombre_pais = nombre_pais;
+        this.nombre_ciudad = nombre_ciudad;
+        this.id_ciudad = id_ciudad;
+        this.valor = valor;
+        this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
+        this.numero_veces_sede = numero_veces_sede;
+        this.id_pais = id_pais;
+
+    }
 }

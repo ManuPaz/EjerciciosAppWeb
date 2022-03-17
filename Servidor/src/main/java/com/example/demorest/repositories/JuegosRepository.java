@@ -16,7 +16,7 @@ public interface JuegosRepository extends CrudRepository<Juegos, JuegosId> {
 
     @Transactional(readOnly = true)
     @Query(value = "select   new com.example.demorest.dtos.JuegosCiudades(c.id_ciudad,c.nombreciudad, p.id_pais  ,p.nombrepais , CASE WHEN c.valor_ciudad is NULL THEN p.valor_pais ELSE c.valor_ciudad  END , count(j.id.año),t.descripciontipo ,max(j.id.año)) from " +
-            "Ciudad c inner join c.pais as p left join c.juegos j left join j.tipo_jjoo  t group by c.id_ciudad,c.nombreciudad,p.id_pais,p.nombrepais,c.valor_ciudad,p.valor_pais,j.tipo_jjoo")
+            "Ciudad c inner join c.pais as p left join c.juegos j left join j.tipo_jjoo  t group by c,p,t")
     List<JuegosCiudades> findJuegosCiudades();
 
     @Transactional(readOnly = true)

@@ -3,7 +3,7 @@ package com.example.demorest.api;
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.Juegos;
-import com.example.demorest.model.Sede;
+import com.example.demorest.model.*;
 import com.example.demorest.services.JuegosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,27 +37,15 @@ public class JuegosApiDelegate {
     }
 
     /**
-     * POST /juegos/{ano}/{tipo} : Anadir sedes
+     * POST /juegos/anadir : Anadir sedes
      *
-     * @param ano         Ano de la edicion  (required)
-     * @param tipo        Tipo de edicion: invierno y verano  (required)
-     * @param ciudad      Nombre de  la ciudad  (required)
-     * @param pais        Nombre del pais  (optional)
-     * @param codigoPais  Codigo del pais  (optional)
-     * @param valorPais   Valor del pais  (optional)
-     * @param valorCiudad Valor de la ciudad  (optional)
+     * @param inlineObject (required)
      * @return successful operation (status code 200)
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#anadirSedes
      */
-    ResponseEntity<List<JuegosCiudades>> anadirSedes(Integer ano,
-                                                     String tipo,
-                                                     String ciudad,
-                                                     String pais,
-                                                     String codigoPais,
-                                                     Integer valorPais,
-                                                     Integer valorCiudad) {
+    ResponseEntity<List<JuegosCiudades>> anadirSedes(InlineObject inlineObject) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -67,7 +55,7 @@ public class JuegosApiDelegate {
                 }
             }
         });
-        JuegosDTO juegosdto = new JuegosDTO(pais, ciudad, codigoPais, valorPais, valorPais, tipo, ano);
+        JuegosDTO juegosdto = new JuegosDTO(inlineObject.getPais(), inlineObject.getCiudad(), inlineObject.getCodigoPais(), inlineObject.getValorCiudad(), inlineObject.getValorPais(), inlineObject.getTipo(), inlineObject.getAno());
 
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
@@ -85,18 +73,15 @@ public class JuegosApiDelegate {
     }
 
     /**
-     * DELETE /juegos/{ano}/{tipo} : Borrar sede
-     * Borra la sede.
+     * POST /juegos/eliminar : Eliminar sedes
      *
-     * @param ano  Ano de la edicion  (required)
-     * @param tipo Tipo de edicion: invierno y verano  (required)
+     * @param inlineObject2 (required)
      * @return successful operation (status code 200)
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
-     * @see JuegosApi#borrarSede
+     * @see JuegosApi#eliminarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> borrarSede(Integer ano,
-                                                    String tipo) {
+    ResponseEntity<List<JuegosCiudades>> eliminarSedes(InlineObject2 inlineObject2) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -106,17 +91,53 @@ public class JuegosApiDelegate {
                 }
             }
         });
-        JuegosDTO juegosdto = new JuegosDTO(ano, tipo);
+        JuegosDTO juegosdto = new JuegosDTO(inlineObject2.getAno(), inlineObject2.getTipo());
         HttpStatus codigo = HttpStatus.OK;
         boolean borrar = false;
         try {
             borrar = juegosService.borrarJuegos(juegosdto);
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
+            System.out.println(ex.getMessage());
 
 
         }
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
+
+    }
+
+    /**
+     * POST /juegos/filtrar : Filtrar sedes
+     *
+     * @param inlineObject1 (required)
+     * @return successful operation (status code 200)
+     * or Atributos de sede no válidos (status code 400)
+     * or Sede no encontrada (status code 404)
+     * @see JuegosApi#filtrarSedes
+     */
+    ResponseEntity<List<JuegosCiudades>> filtrarSedes(InlineObject3 inlineObject3) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        HttpStatus codigo = HttpStatus.OK;
+        List<JuegosCiudades> juegos;
+        try {
+            juegos = juegosService.filtrarJuegos(inlineObject3.getFiltro());
+        } catch (Exception ex) {
+            codigo = HttpStatus.BAD_REQUEST;
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
+
+
+        }
+        return new ResponseEntity<List<JuegosCiudades>>(juegos, codigo);
+
 
     }
 
@@ -148,31 +169,15 @@ public class JuegosApiDelegate {
     }
 
     /**
-     * PUT /juegos/{ano}/{tipo} : Modificar sedes
+     * POST /juegos/modificar : Modificar sedes
      *
-     * @param ano        Ano de la edicion  (required)
-     * @param tipo       Tipo de edicion: invierno y verano  (required)
-     * @param nuevoAno   Nuevo ano de la edicion  (optional)
-     * @param nuevoTipo  Nuevo tipo de edicion: invierno y verano  (optional)
-     * @param pais       Nombre del pais  (optional)
-     * @param codigoPais Codigo del pais  (optional)
-     * @param ciudad     Nombre de  la nueva  ciudad  (optional)
-     * @param valorPais  Valor del pais  (optional)
-     * @param idCiudad   Id de la nueva ciudad  (optional)
+     * @param inlineObject1 (required)
      * @return successful operation (status code 200)
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
-     * @see JuegosApi#editarJuegos
+     * @see JuegosApi#modificarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> editarJuegos(Integer ano,
-                                                      String tipo,
-                                                      Integer nuevoAno,
-                                                      String nuevoTipo,
-                                                      String pais,
-                                                      String codigoPais,
-                                                      String ciudad,
-                                                      Integer valorPais,
-                                                      Integer idCiudad) {
+    ResponseEntity<List<JuegosCiudades>> modificarSedes(InlineObject1 inlineObject1) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -182,7 +187,7 @@ public class JuegosApiDelegate {
                 }
             }
         });
-        JuegosDTO juegosdto = new JuegosDTO(pais, ciudad, idCiudad, codigoPais, tipo, ano, nuevoAno, nuevoTipo, valorPais);
+        JuegosDTO juegosdto = new JuegosDTO(inlineObject1.getPais(), inlineObject1.getCiudad(), inlineObject1.getIdCiudad(), inlineObject1.getCodigoPais(), inlineObject1.getTipo(), inlineObject1.getAno(), inlineObject1.getNuevoAno(), inlineObject1.getNuevoTipo(), inlineObject1.getValorPais());
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {
@@ -190,7 +195,7 @@ public class JuegosApiDelegate {
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
 
-
+            System.out.println(ex.getMessage());
         }
         if (j == null) {
             codigo = HttpStatus.BAD_REQUEST;

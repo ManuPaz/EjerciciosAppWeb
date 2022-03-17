@@ -5,12 +5,17 @@ import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.*;
 import com.example.demorest.model.Sede;
 import com.example.demorest.repositories.*;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +34,9 @@ public class JuegosService {
     @Autowired
     private TipoSedeRepository tipoSedeRepository;
     @Autowired
+    private EntityManager manager;
 
-
+    @Autowired
     private PaisRepository paisRepository;
 
 
@@ -40,7 +46,72 @@ public class JuegosService {
 
     }
 
+    public List<JuegosCiudades> filtrarJuegos(String parametro) {
+        Iterable<Pais> paises = paisRepository.findAll(QPais.pais.codigo_pais.eq("ES"));
+        JPAQueryFactory queryFactory = new JPAQueryFactory(manager);
+        QCiudad ciudad = QCiudad.ciudad;
+        QPais pais = QPais.pais;
+        QJuegos juegos = QJuegos.juegos;
+        QTipoSede tiposede = QTipoSede.tipoSede;
+
+        NumberPath<Long> count = Expressions.numberPath(Long.class, "c");
+        try {
+            Integer ano = Integer.parseInt(parametro);
+            List<Tuple> juego = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais, pais.nombrepais, Expressions.cases()
+                            .when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad)
+                            .otherwise(pais.valor_pais), tiposede.descripciontipo, juegos.id.año.count()).
+                    from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede).where(juegos.id.año.eq(ano).or(ciudad.valor_ciudad.eq(ano).or(pais.valor_pais.eq(ano)))).
+                    groupBy(ciudad, pais, tiposede).
+                    fetch();
+            List<Tuple> juego2 = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais, pais.nombrepais, Expressions.cases()
+                            .when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad)
+                            .otherwise(pais.valor_pais), tiposede.descripciontipo, juegos.id.año.count()).
+                    from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede).
+                    groupBy(ciudad, pais, tiposede).having(juegos.id.año.count().eq(Long.valueOf(ano))).
+                    fetch();
+            List<JuegosCiudades> juegosCiudades = new ArrayList<>();
+
+            for (Tuple juegoAux : juego) {
+                JuegosCiudades j = new JuegosCiudades(juegoAux.get(0, Integer.class), juegoAux.get(1, String.class), juegoAux.get(2, Integer.class), juegoAux.get(3, String.class),
+                        juegoAux.get(4, Integer.class), juegoAux.get(6, Long.class), juegoAux.get(5, String.class));
+                juegosCiudades.add(j);
+
+            }
+            for (Tuple juegoAux : juego2) {
+                JuegosCiudades j = new JuegosCiudades(juegoAux.get(0, Integer.class), juegoAux.get(1, String.class), juegoAux.get(2, Integer.class), juegoAux.get(3, String.class),
+                        juegoAux.get(4, Integer.class), juegoAux.get(6, Long.class), juegoAux.get(5, String.class));
+                juegosCiudades.add(j);
+
+            }
+            return juegosCiudades;
+
+
+        } catch (Exception ex) {
+
+            List<Tuple> juego = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais, pais.nombrepais, Expressions.cases()
+                            .when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad)
+                            .otherwise(pais.valor_pais), tiposede.descripciontipo, juegos.id.año.count()).
+                    from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede).
+                    where(ciudad.nombreciudad.eq(parametro).or(pais.nombrepais.eq(parametro)).or(tiposede.descripciontipo.eq(parametro))).
+                    groupBy(ciudad, pais, tiposede).
+                    fetch();
+            List<JuegosCiudades> juegosCiudades = new ArrayList<>();
+            for (Tuple juegoAux : juego) {
+                JuegosCiudades j = new JuegosCiudades(juegoAux.get(0, Integer.class), juegoAux.get(1, String.class), juegoAux.get(2, Integer.class), juegoAux.get(3, String.class),
+                        juegoAux.get(4, Integer.class), juegoAux.get(6, Long.class), juegoAux.get(5, String.class));
+                juegosCiudades.add(j);
+
+            }
+            return juegosCiudades;
+
+        }
+
+
+    }
+
     public List<JuegosCiudades> findJuegosCiudades() {
+
+
         return juegosRepository.findJuegosCiudades();
     }
 

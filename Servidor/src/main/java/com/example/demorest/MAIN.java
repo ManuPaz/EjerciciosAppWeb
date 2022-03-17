@@ -23,17 +23,20 @@ public class MAIN {
                 registry.addMapping("/juegos").allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET")
                         .maxAge(3600);
-                registry.addMapping("/juegos/ciudad").allowedOrigins("http://localhost:3000")
+                registry.addMapping("/juegos/buscar").allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET")
                         .maxAge(3600);
                 registry.addMapping("/juegos/eliminar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("DELETE")
+                        .allowedMethods("POST")
                         .maxAge(3600);
                 registry.addMapping("/juegos/anadir").allowedOrigins("http://localhost:3000")
                         .allowedMethods("POST")
                         .maxAge(3600);
                 registry.addMapping("/juegos/modificar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("PUT")
+                        .allowedMethods("POST")
+                        .maxAge(3600);
+                registry.addMapping("/juegos/filtrar").allowedOrigins("http://localhost:3000")
+                        .allowedMethods("POST")
                         .maxAge(3600);
             }
 
