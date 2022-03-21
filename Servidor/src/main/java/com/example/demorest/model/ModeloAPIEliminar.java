@@ -11,14 +11,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-15T18:36:55.532623100+01:00[Europe/Madrid]")
 
-public class InlineObject2 {
+public class ModeloAPIEliminar {
     @JsonProperty("ano")
     private Integer ano;
 
     @JsonProperty("tipo")
     private String tipo;
 
-    public InlineObject2 ano(Integer ano) {
+    public ModeloAPIEliminar ano(Integer ano) {
         this.ano = ano;
         return this;
     }
@@ -40,7 +40,7 @@ public class InlineObject2 {
         this.ano = ano;
     }
 
-    public InlineObject2 tipo(String tipo) {
+    public ModeloAPIEliminar tipo(String tipo) {
         this.tipo = tipo;
         return this;
     }
@@ -71,7 +71,7 @@ public class InlineObject2 {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InlineObject2 inlineObject2 = (InlineObject2) o;
+        ModeloAPIEliminar inlineObject2 = (ModeloAPIEliminar) o;
         return Objects.equals(this.ano, inlineObject2.ano) &&
                 Objects.equals(this.tipo, inlineObject2.tipo);
     }

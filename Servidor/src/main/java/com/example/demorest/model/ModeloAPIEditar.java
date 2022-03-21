@@ -7,11 +7,11 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * InlineObject
+ * InlineObject1
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-15T18:36:55.532623100+01:00[Europe/Madrid]")
 
-public class InlineObject {
+public class ModeloAPIEditar {
     @JsonProperty("ano")
     private Integer ano;
 
@@ -30,10 +30,16 @@ public class InlineObject {
     @JsonProperty("valorPais")
     private Integer valorPais;
 
-    @JsonProperty("valorCiudad")
-    private Integer valorCiudad;
+    @JsonProperty("idCiudad")
+    private Integer idCiudad;
 
-    public InlineObject ano(Integer ano) {
+    @JsonProperty("nuevoAno")
+    private Integer nuevoAno;
+
+    @JsonProperty("nuevoTipo")
+    private String nuevoTipo;
+
+    public ModeloAPIEditar ano(Integer ano) {
         this.ano = ano;
         return this;
     }
@@ -55,7 +61,7 @@ public class InlineObject {
         this.ano = ano;
     }
 
-    public InlineObject tipo(String tipo) {
+    public ModeloAPIEditar tipo(String tipo) {
         this.tipo = tipo;
         return this;
     }
@@ -77,7 +83,7 @@ public class InlineObject {
         this.tipo = tipo;
     }
 
-    public InlineObject ciudad(String ciudad) {
+    public ModeloAPIEditar ciudad(String ciudad) {
         this.ciudad = ciudad;
         return this;
     }
@@ -98,7 +104,7 @@ public class InlineObject {
         this.ciudad = ciudad;
     }
 
-    public InlineObject pais(String pais) {
+    public ModeloAPIEditar pais(String pais) {
         this.pais = pais;
         return this;
     }
@@ -119,7 +125,7 @@ public class InlineObject {
         this.pais = pais;
     }
 
-    public InlineObject codigoPais(String codigoPais) {
+    public ModeloAPIEditar codigoPais(String codigoPais) {
         this.codigoPais = codigoPais;
         return this;
     }
@@ -140,7 +146,7 @@ public class InlineObject {
         this.codigoPais = codigoPais;
     }
 
-    public InlineObject valorPais(Integer valorPais) {
+    public ModeloAPIEditar valorPais(Integer valorPais) {
         this.valorPais = valorPais;
         return this;
     }
@@ -161,25 +167,67 @@ public class InlineObject {
         this.valorPais = valorPais;
     }
 
-    public InlineObject valorCiudad(Integer valorCiudad) {
-        this.valorCiudad = valorCiudad;
+    public ModeloAPIEditar idCiudad(Integer idCiudad) {
+        this.idCiudad = idCiudad;
         return this;
     }
 
     /**
-     * Get valorCiudad
+     * Get idCiudad
      *
-     * @return valorCiudad
+     * @return idCiudad
      */
     @ApiModelProperty(value = "")
 
 
-    public Integer getValorCiudad() {
-        return valorCiudad;
+    public Integer getIdCiudad() {
+        return idCiudad;
     }
 
-    public void setValorCiudad(Integer valorCiudad) {
-        this.valorCiudad = valorCiudad;
+    public void setIdCiudad(Integer idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+
+    public ModeloAPIEditar nuevoAno(Integer nuevoAno) {
+        this.nuevoAno = nuevoAno;
+        return this;
+    }
+
+    /**
+     * Get nuevoAno
+     *
+     * @return nuevoAno
+     */
+    @ApiModelProperty(value = "")
+
+
+    public Integer getNuevoAno() {
+        return nuevoAno;
+    }
+
+    public void setNuevoAno(Integer nuevoAno) {
+        this.nuevoAno = nuevoAno;
+    }
+
+    public ModeloAPIEditar nuevoTipo(String nuevoTipo) {
+        this.nuevoTipo = nuevoTipo;
+        return this;
+    }
+
+    /**
+     * Get nuevoTipo
+     *
+     * @return nuevoTipo
+     */
+    @ApiModelProperty(value = "")
+
+
+    public String getNuevoTipo() {
+        return nuevoTipo;
+    }
+
+    public void setNuevoTipo(String nuevoTipo) {
+        this.nuevoTipo = nuevoTipo;
     }
 
 
@@ -191,25 +239,27 @@ public class InlineObject {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InlineObject inlineObject = (InlineObject) o;
-        return Objects.equals(this.ano, inlineObject.ano) &&
-                Objects.equals(this.tipo, inlineObject.tipo) &&
-                Objects.equals(this.ciudad, inlineObject.ciudad) &&
-                Objects.equals(this.pais, inlineObject.pais) &&
-                Objects.equals(this.codigoPais, inlineObject.codigoPais) &&
-                Objects.equals(this.valorPais, inlineObject.valorPais) &&
-                Objects.equals(this.valorCiudad, inlineObject.valorCiudad);
+        ModeloAPIEditar inlineObject1 = (ModeloAPIEditar) o;
+        return Objects.equals(this.ano, inlineObject1.ano) &&
+                Objects.equals(this.tipo, inlineObject1.tipo) &&
+                Objects.equals(this.ciudad, inlineObject1.ciudad) &&
+                Objects.equals(this.pais, inlineObject1.pais) &&
+                Objects.equals(this.codigoPais, inlineObject1.codigoPais) &&
+                Objects.equals(this.valorPais, inlineObject1.valorPais) &&
+                Objects.equals(this.idCiudad, inlineObject1.idCiudad) &&
+                Objects.equals(this.nuevoAno, inlineObject1.nuevoAno) &&
+                Objects.equals(this.nuevoTipo, inlineObject1.nuevoTipo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ano, tipo, ciudad, pais, codigoPais, valorPais, valorCiudad);
+        return Objects.hash(ano, tipo, ciudad, pais, codigoPais, valorPais, idCiudad, nuevoAno, nuevoTipo);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class InlineObject {\n");
+        sb.append("class InlineObject1 {\n");
 
         sb.append("    ano: ").append(toIndentedString(ano)).append("\n");
         sb.append("    tipo: ").append(toIndentedString(tipo)).append("\n");
@@ -217,7 +267,9 @@ public class InlineObject {
         sb.append("    pais: ").append(toIndentedString(pais)).append("\n");
         sb.append("    codigoPais: ").append(toIndentedString(codigoPais)).append("\n");
         sb.append("    valorPais: ").append(toIndentedString(valorPais)).append("\n");
-        sb.append("    valorCiudad: ").append(toIndentedString(valorCiudad)).append("\n");
+        sb.append("    idCiudad: ").append(toIndentedString(idCiudad)).append("\n");
+        sb.append("    nuevoAno: ").append(toIndentedString(nuevoAno)).append("\n");
+        sb.append("    nuevoTipo: ").append(toIndentedString(nuevoTipo)).append("\n");
         sb.append("}");
         return sb.toString();
     }

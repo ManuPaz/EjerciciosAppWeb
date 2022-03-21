@@ -11,11 +11,11 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-17T09:04:58.822522600+01:00[Europe/Madrid]")
 
-public class InlineObject3 {
+public class ModeloAPIFiltrar {
     @JsonProperty("filtro")
     private String filtro;
 
-    public InlineObject3 filtro(String filtro) {
+    public ModeloAPIFiltrar filtro(String filtro) {
         this.filtro = filtro;
         return this;
     }
@@ -46,7 +46,7 @@ public class InlineObject3 {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InlineObject3 inlineObject3 = (InlineObject3) o;
+        ModeloAPIFiltrar inlineObject3 = (ModeloAPIFiltrar) o;
         return Objects.equals(this.filtro, inlineObject3.filtro);
     }
 

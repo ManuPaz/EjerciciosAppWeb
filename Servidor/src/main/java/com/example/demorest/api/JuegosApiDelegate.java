@@ -45,7 +45,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#anadirSedes
      */
-    ResponseEntity<List<JuegosCiudades>> anadirSedes(InlineObject inlineObject) {
+    ResponseEntity<List<JuegosCiudades>> anadirSedes(ModeloAPIAnadir inlineObject) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -81,7 +81,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#eliminarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> eliminarSedes(InlineObject2 inlineObject2) {
+    ResponseEntity<List<JuegosCiudades>> eliminarSedes(ModeloAPIEliminar inlineObject2) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -115,7 +115,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#filtrarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> filtrarSedes(InlineObject3 inlineObject3) {
+    ResponseEntity<List<JuegosCiudades>> filtrarSedes(ModeloAPIFiltrar inlineObject3) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -177,7 +177,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#modificarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> modificarSedes(InlineObject1 inlineObject1) {
+    ResponseEntity<List<JuegosCiudades>> modificarSedes(ModeloAPIEditar inlineObject1) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

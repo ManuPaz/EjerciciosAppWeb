@@ -46,7 +46,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody InlineObject inlineObject) {
+    ResponseEntity<List<JuegosCiudades>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
         return getDelegate().anadirSedes(inlineObject);
     }
 
@@ -70,7 +70,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody InlineObject2 inlineObject2) {
+    ResponseEntity<List<JuegosCiudades>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
         return getDelegate().eliminarSedes(inlineObject2);
     }
 
@@ -117,7 +117,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody InlineObject1 inlineObject1) {
+    ResponseEntity<List<JuegosCiudades>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEditar inlineObject1) {
         return getDelegate().modificarSedes(inlineObject1);
     }
 
@@ -140,7 +140,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> filtrarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody InlineObject3 inlineObject3) {
+    ResponseEntity<List<JuegosCiudades>> filtrarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIFiltrar inlineObject3) {
         return getDelegate().filtrarSedes(inlineObject3);
     }
 

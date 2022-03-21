@@ -89,6 +89,7 @@ paths:
         content:
           application/json:
             schema:
+              title: modeloAnadir
               type: object
               required:
               - ano
@@ -123,7 +124,45 @@ paths:
         404:
           description: Sede no encontrada
           content: {}
-          
+  /juegos/filtrar:
+    post:
+      security:
+        - basicAuth: [user] 
+      tags:
+        - juegos
+      summary: Filtrar sedes
+      operationId: filtrarSedes
+     
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: modeloFiltrar
+              type: object
+              required:
+              - filtro
+              properties:
+                  
+                filtro:
+                  type: string
+                  
+                  
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JuegosArray'
+        400:
+          description: Atributos de sede no válidos
+          content: {}
+        404:
+          description: Sede no encontrada
+          content: {}
+               
   /juegos/modificar:
     post:
       security:
@@ -135,10 +174,12 @@ paths:
      
       requestBody:
         required: true
+        
         content:
           application/json:
             schema:
               type: object
+              title: modeloEditar
               required:
               - ano
               - tipo
@@ -192,6 +233,7 @@ paths:
           application/json:
             schema:
               type: object
+              title: modeloEliminar
               required:
               - ano
               - tipo

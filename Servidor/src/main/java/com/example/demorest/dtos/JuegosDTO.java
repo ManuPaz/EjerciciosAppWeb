@@ -46,7 +46,9 @@ public class JuegosDTO {
     public void setId_pais(Integer id_pais) {
         this.id_pais = id_pais;
     }
+    public JuegosDTO(){
 
+    }
     public JuegosDTO(String nombre_pais, String nombre_ciudad, String codigoPais, Integer valor_ciudad, Integer valor_pais, String descripcion_tipo_jjoo, Integer año) {
         this.nombre_pais = nombre_pais;
         this.nombre_ciudad = nombre_ciudad;
