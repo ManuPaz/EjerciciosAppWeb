@@ -3,10 +3,7 @@ package com.example.demorest.services;
 import com.example.demorest.dtos.JuegosCiudades;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.*;
-import com.example.demorest.mapings.JuegosDtoToCiudad;
-import com.example.demorest.mapings.JuegosDtoToJuegos;
-import com.example.demorest.mapings.JuegosDtoToJuegosId;
-import com.example.demorest.mapings.JuegosDtoToPais;
+import com.example.demorest.mapings.*;
 import com.example.demorest.model.Sede;
 import com.example.demorest.repositories.*;
 import com.querydsl.core.Tuple;
@@ -30,6 +27,8 @@ import java.util.Optional;
 public class JuegosService {
     @Autowired
     private  JuegosDtoToJuegosId juegosDtoToJuegosId  ;
+    @Autowired
+    private JuegosToJuegosDTO juegosToJuegosDTO  ;
     @Autowired
     private JuegosDtoToCiudad juegosDtoToCiudad   ;
     @Autowired
@@ -221,6 +220,8 @@ public class JuegosService {
             juegos2=juegosDtoToJuegos.juegodDtoToJuegos(sede);
             juegosRepository.save(juegos2);
         }
+        JuegosDTO j=juegosToJuegosDTO.juegosToJuegosDTO(juegos2);
+        System.out.println(j.getAño());
         return juegos2;
     }
 
