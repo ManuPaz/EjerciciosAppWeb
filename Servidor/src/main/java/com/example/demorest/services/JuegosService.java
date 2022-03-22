@@ -29,13 +29,14 @@ public class JuegosService {
     @Autowired
     private JuegosToJuegosDTO juegosToJuegosDTO;
     @Autowired
+    private JuegosCiudadesToJJOO juegosCiudadesToJJOO;
+    @Autowired
     private JuegosDtoToCiudad juegosDtoToCiudad;
     @Autowired
     private JuegosDtoToPais juegosDtoToPais;
     @Autowired
     private JuegosDtoToJuegos juegosDtoToJuegos;
-    @Autowired
-    private JJOORepository jjooRepository;
+
     @Autowired
     private JuegosRepository juegosRepository;
     @Autowired
@@ -48,7 +49,12 @@ public class JuegosService {
     private PaisRepository paisRepository;
 
     public List<JJOO> findAll() {
-        return jjooRepository.findAll();
+        List<JuegosCiudades> juegos= juegosRepository.findJuegosCiudades();
+        ArrayList<JJOO> juegosAux=new ArrayList<>();
+        for (JuegosCiudades j:juegos){
+            juegosAux.add(juegosCiudadesToJJOO.juegosToJJOO(j));
+        }
+        return juegosAux;
     }
 
     public List<JuegosCiudades> filtrarJuegos(String parametro) {

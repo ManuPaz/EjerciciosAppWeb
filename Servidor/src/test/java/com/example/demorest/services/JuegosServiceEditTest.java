@@ -49,7 +49,6 @@ class JuegosServiceEditTest {
             String nombre_ciudad = sede.getNombre_ciudad();
             for (JJOO juego : juegos) {
                 if (juego.getNombre_ciudad() == nombre_ciudad) {
-
                     assertEquals(1, juego.getNumero_veces_sede(), "Se esperaba 1 vez y se obtuvo " + juego.getNumero_veces_sede());
                 }
                 nombres.add(juego.getNombre_ciudad());

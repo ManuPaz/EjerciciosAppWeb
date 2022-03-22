@@ -50,9 +50,7 @@ class JuegosServiceDeleteTest {
             jjoo.borrarJuegos(sede);
             List<JJOO> juegos = jjoo.findAll();
             for (JJOO juego : juegos) {
-
                 if (juego.getId_ciudad() == ciudad) {
-
                     assertEquals(0, juego.getNumero_veces_sede(), "Se esperaba 0 veces y se obtuvo " + juego.getNumero_veces_sede());
                 }
             }

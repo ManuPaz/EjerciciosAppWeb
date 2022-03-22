@@ -52,7 +52,6 @@ class JuegosServiceTest {
     @CsvSource({"3,1", "4,0", "8,2", "7,1"})
     public void numeroVeces(int id, int numveces) {
         HashMap<Integer, Integer> ciudades = new HashMap<>();
-
         List<JJOO> juegos = jjoo.findAll();
         for (JJOO juego : juegos) {
             if (juego.getId_ciudad() == id) {

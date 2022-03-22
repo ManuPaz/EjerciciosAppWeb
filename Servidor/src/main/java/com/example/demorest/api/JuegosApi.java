@@ -6,6 +6,7 @@
 package com.example.demorest.api;
 
 import com.example.demorest.dtos.JuegosCiudades;
+import com.example.demorest.entities.JJOO;
 import com.example.demorest.model.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +71,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
+    ResponseEntity<List<JJOO>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
         return getDelegate().eliminarSedes(inlineObject2);
     }
 
@@ -117,7 +118,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEditar inlineObject1) {
+    ResponseEntity<List<JJOO>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEditar inlineObject1) {
         return getDelegate().modificarSedes(inlineObject1);
     }
 
@@ -161,7 +162,7 @@ public abstract class JuegosApi {
     @RequestMapping(value = "/juegos",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<JuegosCiudades>> obtenerSedes() {
+    ResponseEntity<List<JJOO>> obtenerSedes() {
         return getDelegate().obtenerSedes();
     }
 

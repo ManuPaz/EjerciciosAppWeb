@@ -27,6 +27,7 @@ public class JJOO {
         this.nombre_pais = nombre_pais;
         this.nombre_ciudad = nombre_ciudad;
         this.id_ciudad = id_ciudad;
+        this.id_pais=id_pais;
         this.valor = valor;
         this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
         this.numero_veces_sede = numero_veces_sede;
