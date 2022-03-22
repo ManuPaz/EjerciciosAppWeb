@@ -24,12 +24,10 @@ import java.util.Optional;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-14T09:36:03.661556900+01:00[Europe/Madrid]")
 @Component("beanName2")
 public class JuegosApiDelegate {
-
     @Autowired
     JuegosService juegosService;
 
     public JuegosApiDelegate() {
-
     }
 
     Optional<NativeWebRequest> getRequest() {
@@ -63,11 +61,7 @@ public class JuegosApiDelegate {
             j = juegosService.guardarJuegos(juegosdto);
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
-
-
         }
-
-
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
 
     }
@@ -99,11 +93,8 @@ public class JuegosApiDelegate {
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
             System.out.println(ex.getMessage());
-
-
         }
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
-
     }
 
     /**
@@ -133,12 +124,8 @@ public class JuegosApiDelegate {
             codigo = HttpStatus.BAD_REQUEST;
             System.out.println(ex.getMessage());
             return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
-
-
         }
         return new ResponseEntity<List<JuegosCiudades>>(juegos, codigo);
-
-
     }
 
     /**
@@ -165,7 +152,6 @@ public class JuegosApiDelegate {
         HttpStatus codigo = HttpStatus.OK;
         List<com.example.demorest.model.Sede> j = juegosService.findJuegosCiudad(ciudad, tipo);
         return new ResponseEntity<List<Sede>>(j, codigo);
-
     }
 
     /**
@@ -194,16 +180,12 @@ public class JuegosApiDelegate {
             j = juegosService.editarJuegos(juegosdto);
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
-
             System.out.println(ex.getMessage());
         }
         if (j == null) {
             codigo = HttpStatus.BAD_REQUEST;
         }
-
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
-
-
     }
 
     /**
@@ -225,7 +207,5 @@ public class JuegosApiDelegate {
             }
         });
         return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), HttpStatus.OK);
-
     }
-
 }

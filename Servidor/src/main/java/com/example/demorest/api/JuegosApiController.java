@@ -19,7 +19,6 @@ public class JuegosApiController extends JuegosApi {
         });
     }
 
-
     public JuegosApiDelegate getDelegate() {
         return delegate;
     }

@@ -1,7 +1,6 @@
 package com.example.demorest.mapings;
 
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.entities.Ciudad;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.services.MappingService;
 import org.mapstruct.Mapper;
@@ -15,8 +14,9 @@ public abstract class JuegosDtoToJuegos {
     protected MappingService mappingService;
     @Autowired
     protected JuegosDtoToJuegosId juegosDtoToJuegosId;
-    @Mappings({ @Mapping(target="ciudad", expression = "java(mappingService.findByNombreCiudad(source.getNombre_ciudad()))"),
-            @Mapping(target="tipo_jjoo", expression = "java(mappingService.findTipoSede(source))"),
-    @Mapping(target = "id", expression = "java(juegosDtoToJuegosId.juegodDtoToJuegosId(source))")})
+
+    @Mappings({@Mapping(target = "ciudad", expression = "java(mappingService.findByNombreCiudad(source.getNombre_ciudad()))"),
+            @Mapping(target = "tipo_jjoo", expression = "java(mappingService.findTipoSede(source))"),
+            @Mapping(target = "id", expression = "java(juegosDtoToJuegosId.juegodDtoToJuegosId(source))")})
     public abstract Juegos juegodDtoToJuegos(JuegosDTO source);
 }

@@ -14,8 +14,6 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 public class JJOO {
-
-
     private String nombre_pais;
     private String nombre_ciudad;
     private Integer id_pais;

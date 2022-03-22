@@ -16,10 +16,8 @@ public class JuegosId implements Serializable {
 
     @Column(name = "año")
     private Integer año;
-
     @Column(name = "id_tipo_jjoo")
     private Integer tipo;
-
 
     @Override
     public boolean equals(Object o) {

@@ -9,7 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TipoSedeRepository extends CrudRepository<TipoSede, Integer> {
     TipoSede findBydescripciontipo(String descripcion_tipo);
-
     boolean existsTipoSedeBydescripciontipo(String descripcion_tipo);
 
 

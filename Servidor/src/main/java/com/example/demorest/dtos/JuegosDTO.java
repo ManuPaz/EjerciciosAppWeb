@@ -22,7 +22,6 @@ public class JuegosDTO {
         this.nuevoTipoSede = nuevoTipoSede;
     }
 
-
     public Integer getNuevoAño() {
         return nuevoAño;
     }
@@ -46,9 +45,10 @@ public class JuegosDTO {
     public void setId_pais(Integer id_pais) {
         this.id_pais = id_pais;
     }
-    public JuegosDTO(){
 
+    public JuegosDTO() {
     }
+
     public JuegosDTO(String nombre_pais, String nombre_ciudad, String codigoPais, Integer valor_ciudad, Integer valor_pais, String descripcion_tipo_jjoo, Integer año) {
         this.nombre_pais = nombre_pais;
         this.nombre_ciudad = nombre_ciudad;
@@ -62,8 +62,6 @@ public class JuegosDTO {
     public JuegosDTO(Integer año, String tipo) {
         this.año = año;
         this.descripcion_tipo_jjoo = tipo;
-
-
     }
 
     public JuegosDTO(String nombre_pais, String nombre_ciudad, Integer idCiudad, String codigoPais, String descripcion_tipo_jjoo, Integer año, Integer nuevoAño, String nuevoTipoSede, Integer valorPais) {
@@ -79,7 +77,6 @@ public class JuegosDTO {
         this.año = año;
         this.nuevoTipoSede = nuevoTipoSede;
     }
-
 
     public String getNombre_pais() {
         return nombre_pais;

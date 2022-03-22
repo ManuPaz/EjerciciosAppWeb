@@ -20,7 +20,6 @@ public class Juegos {
     @EmbeddedId
     private JuegosId id;
     @JsonManagedReference
-
     @ManyToOne()
     //@JoinColumn(name = "sede", referencedColumnName = "id_ciudad")
     @JoinColumn(name = "sede", referencedColumnName = "id_ciudad")

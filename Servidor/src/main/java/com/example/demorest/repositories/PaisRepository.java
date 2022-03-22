@@ -10,7 +10,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PaisRepository extends CrudRepository<Pais, Integer>, QuerydslPredicateExecutor<Pais> {
     boolean existsPaisByNombrepais(String pais);
-
     Pais findPaisByNombrepais(String pais);
 
 }

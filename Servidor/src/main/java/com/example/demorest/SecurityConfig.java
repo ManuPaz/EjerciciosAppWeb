@@ -32,6 +32,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("{noop}" + password)
                 .roles("USER");
     }
-
-
 }

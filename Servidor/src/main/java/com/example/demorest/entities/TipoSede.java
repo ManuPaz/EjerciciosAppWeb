@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "tipo_jjoo")
 public class TipoSede {
-
     @Id
     private Integer id_tipo_jjoo;
     @Column(name = "descripcion_tipo")

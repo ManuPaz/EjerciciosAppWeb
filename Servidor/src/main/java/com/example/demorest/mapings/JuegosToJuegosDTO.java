@@ -1,7 +1,6 @@
 package com.example.demorest.mapings;
 
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.entities.Ciudad;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.services.MappingService;
 import org.mapstruct.Mapper;
@@ -13,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class JuegosToJuegosDTO {
     @Autowired
     protected MappingService mappingService;
-    @Mappings({ @Mapping(target="nombre_pais", source="source.ciudad.pais.nombrepais"),
-            @Mapping(target="nombre_ciudad", source="source.ciudad.nombreciudad"),
-            @Mapping(target="codigoPais", source="source.ciudad.pais.codigo_pais"),
-            @Mapping(target="descripcion_tipo_jjoo", source="source.tipo_jjoo.descripciontipo"),
-            @Mapping(target="año", source="source.id.año"),
+
+    @Mappings({@Mapping(target = "nombre_pais", source = "source.ciudad.pais.nombrepais"),
+            @Mapping(target = "nombre_ciudad", source = "source.ciudad.nombreciudad"),
+            @Mapping(target = "codigoPais", source = "source.ciudad.pais.codigo_pais"),
+            @Mapping(target = "descripcion_tipo_jjoo", source = "source.tipo_jjoo.descripciontipo"),
+            @Mapping(target = "año", source = "source.id.año"),
     })
     public abstract JuegosDTO juegosToJuegosDTO(Juegos source);
 }
