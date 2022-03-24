@@ -3,6 +3,8 @@ import Juego from "../entidades/juegos.type";
 import JuegoAdded from "../entidades/juegoAdded.type";
 import Sede from "../entidades/sede.type";
 import { disposeEmitNodes } from "typescript";
+var sha256 = require('js-sha256');
+
 export function  getJuegos() {
     return http.get<Array<Juego>>("")
   }
@@ -47,6 +49,17 @@ export function modifyJuego( año:number,tipo:string, nuevoAño:number , nuevoTi
 export function buscarJuego(parametro:string){
     
     return http.post<Array<Juego>>("filtrar", {filtro:parametro});
+
+
+}
+export function login(userName:string,password:string){
+    var hash=sha256(password);
+    
+
+    return http.post<Boolean>("/login", {user:userName,password:hash});
+     
+    
+   
 
 
 }

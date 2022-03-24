@@ -1,6 +1,11 @@
 .App {
   text-align: center;
 }
+.user{
+  position: relative;
+  top: 3%; left: 45%;
+
+}
 
 .App-logo {
   height: 40vmin;

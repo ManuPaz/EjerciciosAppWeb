@@ -167,4 +167,27 @@ public abstract class JuegosApi {
     }
 
 
+    /**
+     * POST /juegos/login : LogIn
+     *
+     * @param modeloLogin  (required)
+     * @return successful operation (status code 200)
+     *         or Log in incorrecto (status code 400)
+     *         or Not found (status code 404)
+     */
+    @ApiOperation(value = "LogIn", nickname = "login", notes = "", authorizations = {
+            @Authorization(value = "basicAuth")
+    }, tags={ "juegos,login", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation"),
+            @ApiResponse(code = 400, message = "Log in incorrecto"),
+            @ApiResponse(code = 404, message = "Not found") })
+    @RequestMapping(value = "/juegos/login",
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> login(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ModeloLogin modeloLogin) {
+        return getDelegate().login(modeloLogin);
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.example.demorest.entities.JJOO;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.model.*;
 import com.example.demorest.services.JuegosService;
+import com.example.demorest.services.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ import java.util.Optional;
 public class JuegosApiDelegate {
     @Autowired
     JuegosService juegosService;
+    @Autowired
+    LogInService logInService;
 
     public JuegosApiDelegate() {
     }
@@ -208,5 +211,25 @@ public class JuegosApiDelegate {
             }
         });
         return new ResponseEntity<List<JJOO>>(juegosService.findAll(), HttpStatus.OK);
+    }
+
+    /**
+     * POST /juegos/login : LogIn
+     *
+     * @param modeloLogin  (required)
+     * @return successful operation (status code 200)
+     *         or Log in incorrecto (status code 400)
+     *         or Not found (status code 404)
+     * @see JuegosApi#login
+     */
+    ResponseEntity<Void> login(ModeloLogin modeloLogin) {
+        
+        boolean resp=logInService.checkLogin(modeloLogin.getUser(), modeloLogin.getPassword());
+        if (resp){
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 }

@@ -128,7 +128,7 @@ public class JuegosService {
         }
         if (finalizar == false) {
             ciudad = juegosDtoToCiudad.juegodDtoToJuegosCiudad(sede);
-            System.out.println(ciudad.getNombreciudad());
+
             ciudadRepository.save(ciudad);
         }
         return finalizar;
@@ -225,8 +225,7 @@ public class JuegosService {
             juegos2 = juegosDtoToJuegos.juegodDtoToJuegos(sede);
             juegosRepository.save(juegos2);
         }
-        JuegosDTO j = juegosToJuegosDTO.juegosToJuegosDTO(juegos2);
-        System.out.println(j.getAño());
+
         return juegos2;
     }
 

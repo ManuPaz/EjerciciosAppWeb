@@ -257,8 +257,44 @@ paths:
         404:
           description: Sede no encontrada
           content: {}
+  /juegos/login:
+    post:
+      security:
+        - basicAuth: [user] 
+      tags:
+        - juegos,login
+      summary: LogIn
+      operationId: login
+     
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: modeloLogin
+              required:
+              - user
+              - password
+              properties:
+                  user:
+                    type: string
+                  password:
+                    type: string
+                  
 
-   
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Log in incorrecto
+          content: {}
+        404:
+          description: Not found
+          content: {}
+
+ 
 components:
   schemas:
     Juegos:

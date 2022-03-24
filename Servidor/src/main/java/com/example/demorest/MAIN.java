@@ -36,6 +36,9 @@ public class MAIN {
                 registry.addMapping("/juegos/filtrar").allowedOrigins("http://localhost:3000")
                         .allowedMethods("POST")
                         .maxAge(3600);
+                registry.addMapping("/juegos/login").allowedOrigins("http://localhost:3000")
+                        .allowedMethods("POST")
+                        .maxAge(3600);
             }
 
             ;
