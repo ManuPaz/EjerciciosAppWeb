@@ -11,6 +11,14 @@ import reactor.core.publisher.Mono;
 public class LogInService {
     @Autowired
     private UsuariosRepository usuariosRepository;
+
+    /**
+     * Check login boolean.
+     *
+     * @param nombre   el nombre
+     * @param password la contrasena
+     * @return True si los credenciales son correctos
+     */
     public  boolean checkLogin(String nombre,String password) {
         Flux<Usuario> usuarioFlux = usuariosRepository.findByNombreAndPassword(nombre, password);
         Mono<Long> numero = usuarioFlux.count();

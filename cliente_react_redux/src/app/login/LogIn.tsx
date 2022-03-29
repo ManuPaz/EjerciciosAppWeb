@@ -3,9 +3,18 @@ import React, { useState} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from "../services/juegos";
 import { loguear} from "../../app/redux/tokenSlice";
+export function setCookie(name:string,value:string,days:any) {
+  var expires = "";
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
 export  function Login() {
         const dispatch = useDispatch();
-   
+        
         const [password, setPassword] = useState("");
         const [userName, setUser] = useState("");
         function handleUserChange(event: any) {
@@ -17,7 +26,8 @@ export  function Login() {
       function log() {
         login(userName,password).then((response) => {
           if(response.status==200){
-            dispatch(loguear({user:userName,password:password}));
+            dispatch(loguear(userName));
+            setCookie("user", userName,30); //set "user_email" cookie, expires in 30 days
           }
          
          

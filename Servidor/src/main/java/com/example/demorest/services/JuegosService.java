@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Juegos service.
+ */
 @Service
 public class JuegosService {
     @Autowired
@@ -48,6 +51,11 @@ public class JuegosService {
     @Autowired
     private PaisRepository paisRepository;
 
+    /**
+     * Find all list.
+     *
+     * @return the list
+     */
     public List<JJOO> findAll() {
         List<JuegosCiudades> juegos= juegosRepository.findJuegosCiudades();
         ArrayList<JJOO> juegosAux=new ArrayList<>();
@@ -57,6 +65,12 @@ public class JuegosService {
         return juegosAux;
     }
 
+    /**
+     * Filtrar juegos list.
+     *
+     * @param parametro the parametro
+     * @return the list
+     */
     public List<JuegosCiudades> filtrarJuegos(String parametro) {
         Iterable<Pais> paises = paisRepository.findAll(QPais.pais.codigo_pais.eq("ES"));
         JPAQueryFactory queryFactory = new JPAQueryFactory(manager);
@@ -101,10 +115,23 @@ public class JuegosService {
         return juegosCiudades;
     }
 
+    /**
+     * Find juegos ciudades list.
+     *
+     * @return the list
+     */
     public List<JuegosCiudades> findJuegosCiudades() {
         return juegosRepository.findJuegosCiudades();
     }
 
+    /**
+     * Find juegos ciudad list.
+     *
+     * @param idciudad id de la ciudad de la que se buscan juego
+     * @param tipo     tipo de juegos que se buscan INVIERNO
+     *                 or VERANO
+     * @return lista de dtos de sedes
+     */
     public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(tipo);
         Ciudad ciudad = null;
@@ -134,6 +161,13 @@ public class JuegosService {
         return finalizar;
     }
 
+    /**
+     * Guardar juegos .
+     *
+     * @param sede el dto con la sede que se quiere guardar (debe tener como minimo los atributos descripcion_tipo_jjoo y ano para poder guardarla)
+     * @return entity Juegos con la nueva sede
+     * @throws DataIntegrityViolationException
+     */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos guardarJuegos(JuegosDTO sede) {
         Juegos juegos = new Juegos();
@@ -160,6 +194,13 @@ public class JuegosService {
         return juegos;
     }
 
+    /**
+     * Editar juegos .
+     *
+     * @param sede JuegosDto con la sede que se va a editar (debe tener como minimo los atributos descripcion_tipo_jjoo y ano)para poder editar)
+     * @return entity Juegos con la sede modificada
+     * @throws DataIntegrityViolationException
+     */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos editarJuegos(JuegosDTO sede) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
@@ -229,6 +270,13 @@ public class JuegosService {
         return juegos2;
     }
 
+    /**
+     * Borrar juegos boolean.
+     *
+     * @param sede JuegdosDTO con la sede que se va a eliminar (solo tiene que tener cubiertos loa  atributos descripcion_tipo_jjoo y ano)
+     * @return True si se ha eliminado la sede
+     * or False si no se ha eliminado la sede
+     */
     public boolean borrarJuegos(JuegosDTO sede) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
         if (tiposede != null) {

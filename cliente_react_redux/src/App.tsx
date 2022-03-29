@@ -9,23 +9,31 @@ import {AddJuego} from './features/añadirJuego/AddJuego';
 import {EditJuego} from './features/editarJuego/EditJuego';
 import {BuscarJuego} from './features/buscar/BuscarJuego';
 import { logged,loguear,user, salir } from "./app/redux/tokenSlice";
-import {Login} from "./app/login/LogIn";
+import {Login,setCookie} from "./app/login/LogIn";
 
 import {
   cancel,
   add,
  added
 } from './app/redux/adderSlice'
+
 function App() {
   const logueado = useSelector(logged);
   const username = useSelector(user);
   const dispatch = useDispatch();
   function logOut() {
+    setCookie("user", username,-10); 
     dispatch(salir());
+  
 
   }
-  if (logueado){
-  
+  if (document.cookie.search("user=.*")==0){
+    dispatch(loguear(document.cookie.split("=")[1]))
+
+  }
+  if (logueado ){
+   
+    
   return (
     <div className="App">
       <header className="App-header">

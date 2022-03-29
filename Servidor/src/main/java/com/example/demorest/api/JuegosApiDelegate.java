@@ -223,7 +223,7 @@ public class JuegosApiDelegate {
      * @see JuegosApi#login
      */
     ResponseEntity<Void> login(ModeloLogin modeloLogin) {
-        
+
         boolean resp=logInService.checkLogin(modeloLogin.getUser(), modeloLogin.getPassword());
         if (resp){
 

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import Juego from "../entidades/juegos.type";
 import Sede  from "../entidades/sede.type";
-const initialState={user:"",password:"",logged:false};
+const initialState={user:"",logged:false};
 
 
 
@@ -13,11 +13,10 @@ export const tokenSlice= createSlice({
   reducers: {
     loguear: (state,action) => {
       state.logged=true;
-      state.user=action.payload.user;
-      state.password=action.payload.password;
+      state.user=action.payload;
+
     },
     salir: (state) => {
-      state.user=state.password="";
       state.logged=false;
     },     
     
