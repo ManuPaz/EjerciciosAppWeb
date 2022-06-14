@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class JuegosService {
     private CiudadRepository ciudadRepository;
     @Autowired
     private TipoSedeRepository tipoSedeRepository;
-    @Autowired
+    @PersistenceContext
     private EntityManager manager;
     @Autowired
     private PaisRepository paisRepository;
