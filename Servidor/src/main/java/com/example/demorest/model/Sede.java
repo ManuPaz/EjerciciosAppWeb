@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Sede
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-14T09:36:03.661556900+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 
 public class Sede {
     @JsonProperty("descripcion_tipo")
@@ -16,6 +16,13 @@ public class Sede {
 
     @JsonProperty("ano")
     private Integer ano;
+
+    public Sede(String descripcion_tipo_jjoo, Integer año) {
+
+        this.descripcionTipo = descripcion_tipo_jjoo;
+
+        this.ano = año;
+    }
 
     public Sede descripcionTipo(String descripcionTipo) {
         this.descripcionTipo = descripcionTipo;
@@ -59,13 +66,6 @@ public class Sede {
         this.ano = ano;
     }
 
-    public Sede(String descripcion_tipo_jjoo, Integer año) {
-
-        this.descripcionTipo = descripcion_tipo_jjoo;
-
-        this.ano = año;
-    }
-
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -75,8 +75,7 @@ public class Sede {
             return false;
         }
         Sede sede = (Sede) o;
-        return Objects.equals(this.descripcionTipo, sede.descripcionTipo) &&
-                Objects.equals(this.ano, sede.ano);
+        return Objects.equals(this.descripcionTipo, sede.descripcionTipo) && Objects.equals(this.ano, sede.ano);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * InlineObject3
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-17T09:04:58.822522600+01:00[Europe/Madrid]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 
 public class ModeloAPIFiltrar {
     @JsonProperty("filtro")

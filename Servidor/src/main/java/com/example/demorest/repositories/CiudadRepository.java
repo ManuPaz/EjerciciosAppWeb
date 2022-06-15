@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CiudadRepository extends CrudRepository<Ciudad, Integer> {
     boolean existsCiudadBynombreciudad(String nombre);
+
     Ciudad findBynombreciudad(String nombre);
 
 }

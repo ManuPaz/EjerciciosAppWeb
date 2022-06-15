@@ -1,8 +1,7 @@
 package com.example.demorest.api;
 
-import com.example.demorest.dtos.JuegosCiudades;
+import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.entities.JJOO;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.model.*;
 import com.example.demorest.services.JuegosService;
@@ -47,7 +46,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#anadirSedes
      */
-    ResponseEntity<List<JuegosCiudades>> anadirSedes(ModeloAPIAnadir inlineObject) {
+    ResponseEntity<List<CiudadSede>> anadirSedes(ModeloAPIAnadir inlineObject) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -66,7 +65,7 @@ public class JuegosApiDelegate {
         } catch (DataIntegrityViolationException ex) {
             codigo = HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
+        return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
 
     }
 
@@ -79,7 +78,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#eliminarSedes
      */
-    ResponseEntity<List<JJOO>> eliminarSedes(ModeloAPIEliminar inlineObject2) {
+    ResponseEntity<List<CiudadSede>> eliminarSedes(ModeloAPIEliminar inlineObject2) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -98,7 +97,7 @@ public class JuegosApiDelegate {
             codigo = HttpStatus.BAD_REQUEST;
             System.out.println(ex.getMessage());
         }
-        return new ResponseEntity<List<JJOO>>(juegosService.findAll(), codigo);
+        return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
     }
 
     /**
@@ -110,7 +109,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#filtrarSedes
      */
-    ResponseEntity<List<JuegosCiudades>> filtrarSedes(ModeloAPIFiltrar inlineObject3) {
+    ResponseEntity<List<CiudadSede>> filtrarSedes(ModeloAPIFiltrar inlineObject3) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -121,15 +120,15 @@ public class JuegosApiDelegate {
             }
         });
         HttpStatus codigo = HttpStatus.OK;
-        List<JuegosCiudades> juegos;
+        List<CiudadSede> juegos;
         try {
             juegos = juegosService.filtrarJuegos(inlineObject3.getFiltro());
         } catch (Exception ex) {
             codigo = HttpStatus.BAD_REQUEST;
             System.out.println(ex.getMessage());
-            return new ResponseEntity<List<JuegosCiudades>>(juegosService.findJuegosCiudades(), codigo);
+            return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
         }
-        return new ResponseEntity<List<JuegosCiudades>>(juegos, codigo);
+        return new ResponseEntity<List<CiudadSede>>(juegos, codigo);
     }
 
     /**
@@ -167,7 +166,7 @@ public class JuegosApiDelegate {
      * or Sede no encontrada (status code 404)
      * @see JuegosApi#modificarSedes
      */
-    ResponseEntity<List<JJOO>> modificarSedes(ModeloAPIEditar inlineObject1) {
+    ResponseEntity<List<CiudadSede>> modificarSedes(ModeloAPIEditar inlineObject1) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -189,7 +188,7 @@ public class JuegosApiDelegate {
         if (j == null) {
             codigo = HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<List<JJOO>>(juegosService.findAll(), codigo);
+        return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
     }
 
     /**
@@ -200,7 +199,7 @@ public class JuegosApiDelegate {
      * or bad request (status code 404)
      * @see JuegosApi#obtenerSedes
      */
-    ResponseEntity<List<JJOO>> obtenerSedes() {
+    ResponseEntity<List<CiudadSede>> obtenerSedes() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -210,7 +209,7 @@ public class JuegosApiDelegate {
                 }
             }
         });
-        return new ResponseEntity<List<JJOO>>(juegosService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.OK);
     }
 
     /**

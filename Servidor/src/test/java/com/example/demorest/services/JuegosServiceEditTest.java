@@ -1,13 +1,13 @@
 package com.example.demorest.services;
-
+import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
-import com.example.demorest.entities.JJOO;
-import com.example.demorest.repositories.JJOORepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -16,14 +16,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@EnableAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class JuegosServiceEditTest {
     @Autowired
     JuegosService jjoo;
-    @Autowired
-    JJOORepository juegosRepository;
     private ArrayList<JuegosDTO> sedes;
 
     @BeforeEach
@@ -44,12 +42,13 @@ class JuegosServiceEditTest {
 
         for (JuegosDTO sede : sedes) {
             jjoo.editarJuegos(sede);
-            List<JJOO> juegos = jjoo.findAll();
+            List<CiudadSede> juegos = jjoo.findAll();
             ArrayList<String> nombres = new ArrayList<>();
             String nombre_ciudad = sede.getNombre_ciudad();
-            for (JJOO juego : juegos) {
+            for (CiudadSede juego : juegos) {
                 if (juego.getNombre_ciudad() == nombre_ciudad) {
-                    assertEquals(1, juego.getNumero_veces_sede(), "Se esperaba 1 vez y se obtuvo " + juego.getNumero_veces_sede());
+                    assertEquals(1, juego.getNumero_veces_sede(),
+                            "Se esperaba 1 vez y se obtuvo " + juego.getNumero_veces_sede());
                 }
                 nombres.add(juego.getNombre_ciudad());
             }

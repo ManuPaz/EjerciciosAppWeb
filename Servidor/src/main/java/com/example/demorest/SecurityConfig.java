@@ -12,8 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${spring.datasource.password}")
+    //clean code: cargar nombre de usuario y password de archivo properties
+    @Value("${web.admin.password}")
     private String password;
+    @Value("${web.admin.username}")
+    private String username;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin")
+                .withUser(username)
                 .password("{noop}" + password)
                 .roles("USER");
     }

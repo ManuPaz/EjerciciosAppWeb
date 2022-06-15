@@ -12,8 +12,7 @@ import javax.persistence.EntityManager;
 
 @Service
 public class MappingService {
-    @Autowired
-    private JJOORepository jjooRepository;
+
     @Autowired
     private JuegosRepository juegosRepository;
     @Autowired

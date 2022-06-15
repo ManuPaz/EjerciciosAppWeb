@@ -18,30 +18,18 @@ public class MAIN {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/juegos").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("GET")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/buscar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("GET")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/eliminar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("POST")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/anadir").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("POST")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/modificar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("POST")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/filtrar").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("POST")
-                        .maxAge(3600);
-                registry.addMapping("/juegos/login").allowedOrigins("http://localhost:3000")
-                        .allowedMethods("POST")
-                        .maxAge(3600);
+                //clean code: sustituir literals por variables
+                final int   maxAge=3600;
+                final String baseUrl="http://localhost:3000";
+                registry.addMapping("/juegos").allowedOrigins(baseUrl).allowedMethods("GET").maxAge(maxAge);
+                registry.addMapping("/juegos/buscar").allowedOrigins(baseUrl).allowedMethods("GET").maxAge(maxAge);
+                registry.addMapping("/juegos/eliminar").allowedOrigins(baseUrl).allowedMethods("POST").maxAge(maxAge);
+                registry.addMapping("/juegos/anadir").allowedOrigins(baseUrl).allowedMethods("POST").maxAge(maxAge);
+                registry.addMapping("/juegos/modificar").allowedOrigins(baseUrl).allowedMethods("POST").maxAge(maxAge);
+                registry.addMapping("/juegos/filtrar").allowedOrigins(baseUrl).allowedMethods("POST").maxAge(maxAge);
+                registry.addMapping("/juegos/login").allowedOrigins(baseUrl).allowedMethods("POST").maxAge(maxAge);
             }
 
-            ;
         };
     }
 

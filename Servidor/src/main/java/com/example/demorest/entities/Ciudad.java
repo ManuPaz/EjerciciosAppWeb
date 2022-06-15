@@ -19,6 +19,12 @@ public class Ciudad {
     private Integer valor_ciudad;
     @Column(name = "nombre_ciudad")
     private String nombreciudad;
+    @ManyToOne
+    @JoinColumn(name = "id_pais", referencedColumnName = "id_pais")
+    private Pais pais;
+    @JsonBackReference
+    @OneToMany(mappedBy = "ciudad")
+    private List<Juegos> juegos;
 
     public List<Juegos> getJuegos() {
         return juegos;
@@ -27,13 +33,6 @@ public class Ciudad {
     public void setJuegos(List<Juegos> juegos) {
         this.juegos = juegos;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "id_pais", referencedColumnName = "id_pais")
-    private Pais pais;
-    @JsonBackReference
-    @OneToMany(mappedBy = "ciudad")
-    private List<Juegos> juegos;
 
 
 }

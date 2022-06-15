@@ -1,27 +1,12 @@
 package com.example.demorest.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 
+//clean code: añadir lombok
+@Getter
+@Setter
 public class Sede {
-    public Sede() {
-
-    }
-
-    public String getDescripcion_tipo_jjoo() {
-        return descripcion_tipo_jjoo;
-    }
-
-    public void setDescripcion_tipo_jjoo(String descripcion_tipo_jjoo) {
-        this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
-    }
-
-    public Integer getAno() {
-        return ano;
-    }
-
-    public void setAno(Integer año) {
-        this.ano = año;
-    }
-
     private String descripcion_tipo_jjoo;
     private Integer ano;
 

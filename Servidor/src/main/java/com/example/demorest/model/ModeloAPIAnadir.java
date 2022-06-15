@@ -192,13 +192,10 @@ public class ModeloAPIAnadir {
             return false;
         }
         ModeloAPIAnadir inlineObject = (ModeloAPIAnadir) o;
-        return Objects.equals(this.ano, inlineObject.ano) &&
-                Objects.equals(this.tipo, inlineObject.tipo) &&
-                Objects.equals(this.ciudad, inlineObject.ciudad) &&
-                Objects.equals(this.pais, inlineObject.pais) &&
-                Objects.equals(this.codigoPais, inlineObject.codigoPais) &&
-                Objects.equals(this.valorPais, inlineObject.valorPais) &&
-                Objects.equals(this.valorCiudad, inlineObject.valorCiudad);
+        return Objects.equals(this.ano, inlineObject.ano) && Objects.equals(this.tipo, inlineObject.tipo)
+                && Objects.equals(this.ciudad, inlineObject.ciudad) && Objects.equals(this.pais, inlineObject.pais)
+                && Objects.equals(this.codigoPais, inlineObject.codigoPais) && Objects.equals(this.valorPais, inlineObject.valorPais)
+                && Objects.equals(this.valorCiudad, inlineObject.valorCiudad);
     }
 
     @Override

@@ -5,8 +5,7 @@
  */
 package com.example.demorest.api;
 
-import com.example.demorest.dtos.JuegosCiudades;
-import com.example.demorest.entities.JJOO;
+import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.model.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +46,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
+    ResponseEntity<List<CiudadSede>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
         return getDelegate().anadirSedes(inlineObject);
     }
 
@@ -71,7 +70,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JJOO>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
+    ResponseEntity<List<CiudadSede>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
         return getDelegate().eliminarSedes(inlineObject2);
     }
 
@@ -118,7 +117,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JJOO>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEditar inlineObject1) {
+    ResponseEntity<List<CiudadSede>> modificarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEditar inlineObject1) {
         return getDelegate().modificarSedes(inlineObject1);
     }
 
@@ -141,7 +140,7 @@ public abstract class JuegosApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<JuegosCiudades>> filtrarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIFiltrar inlineObject3) {
+    ResponseEntity<List<CiudadSede>> filtrarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIFiltrar inlineObject3) {
         return getDelegate().filtrarSedes(inlineObject3);
     }
 
@@ -162,7 +161,7 @@ public abstract class JuegosApi {
     @RequestMapping(value = "/juegos",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<JJOO>> obtenerSedes() {
+    ResponseEntity<List<CiudadSede>> obtenerSedes() {
         return getDelegate().obtenerSedes();
     }
 

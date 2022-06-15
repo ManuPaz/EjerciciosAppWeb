@@ -189,13 +189,10 @@ public class Juegos {
             return false;
         }
         Juegos juegos = (Juegos) o;
-        return Objects.equals(this.nombreCiudad, juegos.nombreCiudad) &&
-                Objects.equals(this.nombrePais, juegos.nombrePais) &&
-                Objects.equals(this.idPais, juegos.idPais) &&
-                Objects.equals(this.idCiudad, juegos.idCiudad) &&
-                Objects.equals(this.valor, juegos.valor) &&
-                Objects.equals(this.descripcionTipoJjoo, juegos.descripcionTipoJjoo) &&
-                Objects.equals(this.numeroVecesSede, juegos.numeroVecesSede);
+        return Objects.equals(this.nombreCiudad, juegos.nombreCiudad) && Objects.equals(this.nombrePais,
+                juegos.nombrePais)  && Objects.equals(this.idPais, juegos.idPais) && Objects.equals(this.idCiudad,
+                juegos.idCiudad)  && Objects.equals(this.valor, juegos.valor) && Objects.equals(this.descripcionTipoJjoo, juegos.descripcionTipoJjoo)
+                && Objects.equals(this.numeroVecesSede, juegos.numeroVecesSede);
     }
 
     @Override
