@@ -1,68 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
-
 import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import {Tabla} from './features/tabla/Tabla';
+import {useDispatch, useSelector} from 'react-redux';
 import {TablaPaginacion} from './features/tabla/TablaPaginacion';
 import {AddJuego} from './features/añadirJuego/AddJuego';
 import {EditJuego} from './features/editarJuego/EditJuego';
 import {BuscarJuego} from './features/buscar/BuscarJuego';
-import { logged,loguear,user, salir } from "./app/redux/tokenSlice";
-import {Login,setCookie} from "./app/login/LogIn";
-
-import {
-  cancel,
-  add,
- added
-} from './app/redux/adderSlice'
+import {logged, loguear, salir, user} from "./app/redux/tokenSlice";
+import {Login, setCookie} from "./app/login/LogIn";
 
 function App() {
-  const logueado = useSelector(logged);
-  const username = useSelector(user);
-  const dispatch = useDispatch();
-  function logOut() {
-    setCookie("user", username,-10); 
-    dispatch(salir());
-  
+    const logueado = useSelector(logged);
+    const username = useSelector(user);
+    const dispatch = useDispatch();
 
-  }
-  if (document.cookie.search("user=.*")==0){
-    dispatch(loguear(document.cookie.split("=")[1]))
+    function logOut() {
+        setCookie("user", username, -10);
+        dispatch(salir());
+    }
 
-  }
-  if (logueado ){
-   
-    
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="user">
-        <label>{username} </label>
-        <button  onClick={logOut}>Log out</button>
-        </div>
-     
-        <BuscarJuego />
-        <EditJuego />
-        <AddJuego />
-        <TablaPaginacion />
-      
-      </header>
-    </div>
-  );
-}else{
-  return(
-    <div className="App">
-      <header className="App-header">
+    if (document.cookie.search("user=.*") == 0) {
+        dispatch(loguear(document.cookie.split("=")[1]))
+    }
+    if (logueado) {
+        return (<div className="App">
+                <header className="App-header">
+                    <div className="user">
+                        <label>{username} </label>
+                        <button onClick={logOut}>Log out</button>
+                    </div>
 
-        <Login/>
-      
-      </header>
-    </div>
+                    <BuscarJuego/>
+                    <EditJuego/>
+                    <AddJuego/>
+                    <TablaPaginacion/>
 
+                </header>
+            </div>);
+    } else {
+        return (<div className="App">
+                <header className="App-header">
 
-  )
-}
+                    <Login/>
+
+                </header>
+            </div>)
+    }
 }
 
 export default App;

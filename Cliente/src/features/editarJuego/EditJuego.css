@@ -1,5 +1,5 @@
-.boton2{
-    width:100%;
+.boton2 {
+    width: 100%;
     text-decoration: none;
     padding: 10px;
     font-weight: 600;
@@ -9,9 +9,10 @@
     border-radius: 6px;
     border: 2px solid #0016b0;
     margin: 2%;
-  }
-  button{
-   
+}
+
+button {
+
     text-decoration: none;
     padding: 10px;
     font-weight: 600;
@@ -21,64 +22,72 @@
     border-radius: 6px;
     border: 2px solid #0016b0;
     margin: 2%;
-  }
-  button:hover{
+}
+
+button:hover {
     color: #1883ba;
     background-color: #ffffff;
 }
 
-*{
-    margin:1%;
-    font-size:90%
-   
+* {
+    margin: 1%;
+    font-size: 90%
+
 }
 
 
 .wrapper {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 .wrapper > div {
-  flex: 1 1 200px;
+    flex: 1 1 200px;
 }
-.div2{
+
+.div2 {
     position: relative;
-    left:40%;
+    left: 40%;
 }
-.heroes  {
-  cursor: pointer;
-  position: relative;
-  left: 0;
-  background-color: #EEE;
-  margin: 2em;
-  padding: .3em 0;
-  height: 1.6em;
-  border-radius: 4px;
+
+.heroes {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: 2em;
+    padding: .3em 0;
+    height: 1.6em;
+    border-radius: 4px;
 }
+
 .heroes li:hover {
-  color: #607D8B;
-  background-color: #DDD;
-  left: .1em;
+    color: #607D8B;
+    background-color: #DDD;
+    left: .1em;
 }
+
 .heroes li.selected {
-  background-color: #CFD8DC;
-  color: white;
+    background-color: #CFD8DC;
+    color: white;
 }
+
 .heroes li.selected:hover {
-  background-color: #BBD8DC;
-  color: white;
+    background-color: #BBD8DC;
+    color: white;
 }
+
 .heroes .badge {
-  display: inline-block;
-  font-size: small;
-  color: white;
-  padding: 0.8em 0.7em 0 0.7em;
-  background-color:#405061;
-  line-height: 1em;
-  position: relative;
-  left: -1px;
-  top: -4px;
-  height: 1.8em;
-  margin-right: .8em;
-  border-radius: 4px 0 0 4px;
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 0.8em 0.7em 0 0.7em;
+    background-color: #405061;
+    line-height: 1em;
+    position: relative;
+    left: -1px;
+    top: -4px;
+    height: 1.8em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
 }

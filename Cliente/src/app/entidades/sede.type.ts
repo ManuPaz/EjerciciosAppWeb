@@ -1,6 +1,4 @@
-export default  interface Sede{
-
-    ano:number,
-    descripcion_tipo:string,
-    
+export default interface Sede {
+    ano: number,
+    descripcion_tipo: string,
 }

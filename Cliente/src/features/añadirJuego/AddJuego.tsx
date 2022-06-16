@@ -1,122 +1,113 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./AddJuego.css";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useAppSelector, useAppDispatch } from "../tabla/hooks";
-import { cancel, add, added } from "../../app/redux/adderSlice";
-import { editted } from "../../app/redux/editSlice";
-import { juegosChanged,jugar } from "../../app/redux/juegosSlice";
-import { addJuego } from "../../app/services/juegos";
-import { nanoid } from "@reduxjs/toolkit";
-import App from "../../App";
-import ReactDOM from "react-dom";
-import {useRows} from "../tabla/hooks";
+import {useDispatch, useSelector} from "react-redux";
+import {add, added, cancel} from "../../app/redux/adderSlice";
+import {editted} from "../../app/redux/editSlice";
+import {juegosChanged} from "../../app/redux/juegosSlice";
+import {addJuego} from "../../app/services/juegos";
+
+//clean code: eliminar estados que no se usan
+//clean code: renombrar variables
 export function AddJuego() {
-  const dispatch = useDispatch();
-  const [ciudad, setCiudad] = useState("");
-  const [año, setAño] = useState(2000);
-  const [tipo, setTipo] = useState("VERANO");
-  
-  function addComponents() {
-    dispatch(add());
-  }
-  function removeComponents() {
-    dispatch(cancel());
-    setCiudad("");
-  }
-  function handleCiudadChange(event: any) {
-    setCiudad(event.target.value);
-  }
-  function handleAñoChange(event: any) {
-    setAño(event.target.value);
-  }
-  function handleTipoChange(event: any) {
-    setTipo(event.target.value);
-  } 
-  const juegos = useSelector(jugar);
-  
-  function anadir() {
- 
-   
-    addJuego(ciudad,tipo,año).then((response) => {
-      dispatch(juegosChanged(response.data))
-      //alert(juegos[0]);
-      dispatch(cancel());
-      setCiudad("");
-     
-     
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("No se ha añadido la sede");
-      //dispatch(cancel());
-    })
-    
-  }
+    const dispatch = useDispatch();
+    const [ciudad, setCiudad] = useState("");
+    const [año, setAño] = useState(2000);
+    const [tipo, setTipo] = useState("VERANO");
 
-  // Declara una nueva variable de estado, la cual llamaremos “count”  const [count, setCount] = useState(0);
-  const [count, setCount] = useState(0);
-  const adde = useSelector(added);
-  const edit=useSelector(editted)
-  if (edit==false){
-  if (adde) {
-    return (
-      <div>
-        <button className="boton2" type="button" onClick={addComponents}>
-          Añadir sede
-        </button>
-        {adde}
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h2> Añadir sede</h2>
-        <form>
-          <label>
-            Ciudad:
-            <input
-              type="text"
-              name="ciudad"
-              value={ciudad}
-              onChange={handleCiudadChange}
-            ></input>
-          </label>
+    function addComponents() {
+        dispatch(add());
+    }
 
-          <label>
-            Tipo de juegos:
-            <select name="tipoSede" value={tipo} onChange={handleTipoChange}>
-              <option value="VERANO">VERANO</option>
-              <option value="INVIERNO">
-                INVIERNO
-              </option>
-            </select>
-          </label>
-          <label>
-            Año:
-            <input
-              type="number"
-              placeholder=""
-              name="ano"
-              value={año}
-              min="1896"
-              max="2050"
-              onChange={handleAñoChange}
-            ></input>
-          </label>
+    function removeComponents() {
+        dispatch(cancel());
+        setCiudad("");
+    }
 
-          <button type="button"  onClick={anadir}>ENVIAR</button>
-        </form>
+    function handleCiudadChange(event: any) {
+        setCiudad(event.target.value);
+    }
 
-        <div>
-          <button type="button" onClick={removeComponents}>
-            Cancelar
-          </button>
-        </div>
-      </div>
-    );
-  }
-}else{
-  return (<div></div>)
-}
+    function handleAñoChange(event: any) {
+        setAño(event.target.value);
+    }
+
+    function handleTipoChange(event: any) {
+        setTipo(event.target.value);
+    }
+
+    function anadir() {
+        addJuego(ciudad, tipo, año).then((response) => {
+            dispatch(juegosChanged(response.data));
+            dispatch(cancel());
+            setCiudad("");
+        })
+            .catch((error) => {
+                console.log(error);
+                alert("No se ha añadido la sede");
+            })
+    }
+
+    const anadir_sede = useSelector(added);
+    const editar_sede = useSelector(editted)
+    if (!editar_sede) {
+        if (anadir_sede) {
+            return (
+                <div>
+                    <button className="boton2" type="button" onClick={addComponents}>
+                        Añadir sede
+                    </button>
+                    {anadir_sede}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <h2> Añadir sede</h2>
+                    <form>
+                        <label>
+                            Ciudad:
+                            <input
+                                type="text"
+                                name="ciudad"
+                                value={ciudad}
+                                onChange={handleCiudadChange}
+                            ></input>
+                        </label>
+
+                        <label>
+                            Tipo de juegos:
+                            <select name="tipoSede" value={tipo} onChange={handleTipoChange}>
+                                <option value="VERANO">VERANO</option>
+                                <option value="INVIERNO">
+                                    INVIERNO
+                                </option>
+                            </select>
+                        </label>
+                        <label>
+                            Año:
+                            <input
+                                type="number"
+                                placeholder=""
+                                name="ano"
+                                value={año}
+                                min="1896"
+                                max="2050"
+                                onChange={handleAñoChange}
+                            ></input>
+                        </label>
+
+                        <button type="button" onClick={anadir}>ENVIAR</button>
+                    </form>
+
+                    <div>
+                        <button type="button" onClick={removeComponents}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+    } else {
+        return (<div></div>)
+    }
 }
