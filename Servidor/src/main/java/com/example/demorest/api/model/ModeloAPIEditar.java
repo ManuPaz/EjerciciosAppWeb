@@ -1,41 +1,31 @@
-package com.example.demorest.model;
+package com.example.demorest.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.Objects;
 
-/**
- * InlineObject1
- */
+//clean code: anadir lombok
+@Getter
+@Setter
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-
 public class ModeloAPIEditar {
     @JsonProperty("ano")
     private Integer ano;
-
     @JsonProperty("tipo")
     private String tipo;
-
     @JsonProperty("ciudad")
     private String ciudad;
-
     @JsonProperty("pais")
     private String pais;
-
     @JsonProperty("codigoPais")
     private String codigoPais;
-
     @JsonProperty("valorPais")
     private Integer valorPais;
-
     @JsonProperty("idCiudad")
     private Integer idCiudad;
-
     @JsonProperty("nuevoAno")
     private Integer nuevoAno;
-
     @JsonProperty("nuevoTipo")
     private String nuevoTipo;
 
@@ -44,43 +34,9 @@ public class ModeloAPIEditar {
         return this;
     }
 
-    /**
-     * Get ano
-     *
-     * @return ano
-     */
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public Integer getAno() {
-        return ano;
-    }
-
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
-
     public ModeloAPIEditar tipo(String tipo) {
         this.tipo = tipo;
         return this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return tipo
-     */
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public ModeloAPIEditar ciudad(String ciudad) {
@@ -88,41 +44,9 @@ public class ModeloAPIEditar {
         return this;
     }
 
-    /**
-     * Get ciudad
-     *
-     * @return ciudad
-     */
-    @ApiModelProperty(value = "")
-
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
     public ModeloAPIEditar pais(String pais) {
         this.pais = pais;
         return this;
-    }
-
-    /**
-     * Get pais
-     *
-     * @return pais
-     */
-    @ApiModelProperty(value = "")
-
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 
     public ModeloAPIEditar codigoPais(String codigoPais) {
@@ -130,41 +54,9 @@ public class ModeloAPIEditar {
         return this;
     }
 
-    /**
-     * Get codigoPais
-     *
-     * @return codigoPais
-     */
-    @ApiModelProperty(value = "")
-
-
-    public String getCodigoPais() {
-        return codigoPais;
-    }
-
-    public void setCodigoPais(String codigoPais) {
-        this.codigoPais = codigoPais;
-    }
-
     public ModeloAPIEditar valorPais(Integer valorPais) {
         this.valorPais = valorPais;
         return this;
-    }
-
-    /**
-     * Get valorPais
-     *
-     * @return valorPais
-     */
-    @ApiModelProperty(value = "")
-
-
-    public Integer getValorPais() {
-        return valorPais;
-    }
-
-    public void setValorPais(Integer valorPais) {
-        this.valorPais = valorPais;
     }
 
     public ModeloAPIEditar idCiudad(Integer idCiudad) {
@@ -172,64 +64,15 @@ public class ModeloAPIEditar {
         return this;
     }
 
-    /**
-     * Get idCiudad
-     *
-     * @return idCiudad
-     */
-    @ApiModelProperty(value = "")
-
-
-    public Integer getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Integer idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
     public ModeloAPIEditar nuevoAno(Integer nuevoAno) {
         this.nuevoAno = nuevoAno;
         return this;
-    }
-
-    /**
-     * Get nuevoAno
-     *
-     * @return nuevoAno
-     */
-    @ApiModelProperty(value = "")
-
-
-    public Integer getNuevoAno() {
-        return nuevoAno;
-    }
-
-    public void setNuevoAno(Integer nuevoAno) {
-        this.nuevoAno = nuevoAno;
     }
 
     public ModeloAPIEditar nuevoTipo(String nuevoTipo) {
         this.nuevoTipo = nuevoTipo;
         return this;
     }
-
-    /**
-     * Get nuevoTipo
-     *
-     * @return nuevoTipo
-     */
-    @ApiModelProperty(value = "")
-
-
-    public String getNuevoTipo() {
-        return nuevoTipo;
-    }
-
-    public void setNuevoTipo(String nuevoTipo) {
-        this.nuevoTipo = nuevoTipo;
-    }
-
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -260,7 +103,6 @@ public class ModeloAPIEditar {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class InlineObject1 {\n");
-
         sb.append("    ano: ").append(toIndentedString(ano)).append("\n");
         sb.append("    tipo: ").append(toIndentedString(tipo)).append("\n");
         sb.append("    ciudad: ").append(toIndentedString(ciudad)).append("\n");

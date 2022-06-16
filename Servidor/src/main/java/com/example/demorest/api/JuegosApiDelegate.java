@@ -1,9 +1,10 @@
 package com.example.demorest.api;
 
+import com.example.demorest.api.model.*;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.Juegos;
-import com.example.demorest.model.*;
 import com.example.demorest.services.JuegosService;
 import com.example.demorest.services.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * A delegate to be called by the {@link JuegosApiController}}.
@@ -57,7 +57,6 @@ public class JuegosApiDelegate {
             }
         });
         JuegosDTO juegosdto = new JuegosDTO(inlineObject.getPais(), inlineObject.getCiudad(), inlineObject.getCodigoPais(), inlineObject.getValorCiudad(), inlineObject.getValorPais(), inlineObject.getTipo(), inlineObject.getAno());
-
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {
@@ -66,7 +65,6 @@ public class JuegosApiDelegate {
             codigo = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
-
     }
 
     /**
@@ -141,8 +139,7 @@ public class JuegosApiDelegate {
      * or bad request (status code 404)
      * @see JuegosApi#buscarSedes
      */
-    ResponseEntity<List<Sede>> buscarSedes(Integer ciudad,
-                                           String tipo) {
+    ResponseEntity<List<Sede>> buscarSedes(Integer ciudad, String tipo) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -153,7 +150,7 @@ public class JuegosApiDelegate {
             }
         });
         HttpStatus codigo = HttpStatus.OK;
-        List<com.example.demorest.model.Sede> j = juegosService.findJuegosCiudad(ciudad, tipo);
+        List<Sede> j = juegosService.findJuegosCiudad(ciudad, tipo);
         return new ResponseEntity<List<Sede>>(j, codigo);
     }
 
@@ -215,20 +212,17 @@ public class JuegosApiDelegate {
     /**
      * POST /juegos/login : LogIn
      *
-     * @param modeloLogin  (required)
+     * @param modeloLogin (required)
      * @return successful operation (status code 200)
-     *         or Log in incorrecto (status code 400)
-     *         or Not found (status code 404)
+     * or Log in incorrecto (status code 400)
+     * or Not found (status code 404)
      * @see JuegosApi#login
      */
     ResponseEntity<Void> login(ModeloLogin modeloLogin) {
-
-        boolean resp=logInService.checkLogin(modeloLogin.getUser(), modeloLogin.getPassword());
-        if (resp){
-
+        boolean resp = logInService.checkLogin(modeloLogin.getUser(), modeloLogin.getPassword());
+        if (resp) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+        } else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

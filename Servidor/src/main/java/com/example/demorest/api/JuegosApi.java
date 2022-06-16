@@ -5,8 +5,9 @@
  */
 package com.example.demorest.api;
 
+import com.example.demorest.api.model.*;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.dtos.CiudadSede;
-import com.example.demorest.model.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,11 +21,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-03-14T09:36:03.661556900+01:00[Europe/Madrid]")
-
 @Validated
 @Api(value = "juegos", description = "the juegos API")
 public abstract class JuegosApi {
-
     public abstract JuegosApiDelegate getDelegate();
 
     /**
@@ -35,11 +34,11 @@ public abstract class JuegosApi {
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = CiudadSede.class, responseContainer = "List", authorizations = {
             @Authorization(value = "basicAuth")
     }, tags = {"juegos",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class, responseContainer = "List"),
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
             @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/anadir",
@@ -50,7 +49,6 @@ public abstract class JuegosApi {
         return getDelegate().anadirSedes(inlineObject);
     }
 
-
     /**
      * POST /juegos/eliminar : Eliminar sedes
      *
@@ -59,11 +57,11 @@ public abstract class JuegosApi {
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Eliminar sedes", nickname = "eliminarSedes", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Eliminar sedes", nickname = "eliminarSedes", notes = "", response = CiudadSede.class, responseContainer = "List", authorizations = {
             @Authorization(value = "basicAuth")
     }, tags = {"juegos",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class, responseContainer = "List"),
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
             @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/eliminar",
@@ -73,7 +71,6 @@ public abstract class JuegosApi {
     ResponseEntity<List<CiudadSede>> eliminarSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIEliminar inlineObject2) {
         return getDelegate().eliminarSedes(inlineObject2);
     }
-
 
     /**
      * GET /juegos/buscar : Buscar los anos que una ciudad fue sede
@@ -97,7 +94,6 @@ public abstract class JuegosApi {
         return getDelegate().buscarSedes(ciudad, tipo);
     }
 
-
     /**
      * POST /juegos/modificar : Modificar sedes
      *
@@ -106,11 +102,11 @@ public abstract class JuegosApi {
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Modificar sedes", nickname = "modificarSedes", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Modificar sedes", nickname = "modificarSedes", notes = "", response = CiudadSede.class, responseContainer = "List", authorizations = {
             @Authorization(value = "basicAuth")
     }, tags = {"juegos",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class, responseContainer = "List"),
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
             @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/modificar",
@@ -129,11 +125,11 @@ public abstract class JuegosApi {
      * or Atributos de sede no válidos (status code 400)
      * or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Filtrar sedes", nickname = "filtrarSedes", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Filtrar sedes", nickname = "filtrarSedes", notes = "", response = CiudadSede.class, responseContainer = "List", authorizations = {
             @Authorization(value = "basicAuth")
     }, tags = {"juegos",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class, responseContainer = "List"),
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
             @ApiResponse(code = 404, message = "Sede no encontrada")})
     @RequestMapping(value = "/juegos/filtrar",
@@ -144,7 +140,6 @@ public abstract class JuegosApi {
         return getDelegate().filtrarSedes(inlineObject3);
     }
 
-
     /**
      * GET /juegos : Lista de sedes
      * Listar las ciudades que fueron  sede
@@ -152,11 +147,11 @@ public abstract class JuegosApi {
      * @return successful operation (status code 200)
      * or bad request (status code 404)
      */
-    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = Juegos.class, tags = {"juegos",}, authorizations = {
+    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = CiudadSede.class, tags = {"juegos",}, authorizations = {
             @Authorization(value = "basicAuth")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Juegos.class),
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class),
             @ApiResponse(code = 404, message = "bad request")})
     @RequestMapping(value = "/juegos",
             produces = {"application/json"},
@@ -165,28 +160,25 @@ public abstract class JuegosApi {
         return getDelegate().obtenerSedes();
     }
 
-
     /**
      * POST /juegos/login : LogIn
      *
-     * @param modeloLogin  (required)
+     * @param modeloLogin (required)
      * @return successful operation (status code 200)
-     *         or Log in incorrecto (status code 400)
-     *         or Not found (status code 404)
+     * or Log in incorrecto (status code 400)
+     * or Not found (status code 404)
      */
     @ApiOperation(value = "LogIn", nickname = "login", notes = "", authorizations = {
             @Authorization(value = "basicAuth")
-    }, tags={ "juegos,login", })
+    }, tags = {"juegos,login",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation"),
             @ApiResponse(code = 400, message = "Log in incorrecto"),
-            @ApiResponse(code = 404, message = "Not found") })
+            @ApiResponse(code = 404, message = "Not found")})
     @RequestMapping(value = "/juegos/login",
-            consumes = { "application/json" },
+            consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<Void> login(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ModeloLogin modeloLogin) {
+    ResponseEntity<Void> login(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloLogin modeloLogin) {
         return getDelegate().login(modeloLogin);
     }
-
-
 }

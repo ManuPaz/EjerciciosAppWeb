@@ -118,7 +118,7 @@ const columns = useMemo(
       Header: "Eliminar",
       Cell: (row) => {
         
-        return <button  onClick={() => alert(row.original.nombre_ciudad)} className='button2' ><img className='img2'  src={logo2}/></button>
+        return <button  className='button2' ><img className='img2'  src={logo2}/></button>
       },
       id: "eliminar"
     }

@@ -33,6 +33,4 @@ public class Ciudad {
     public void setJuegos(List<Juegos> juegos) {
         this.juegos = juegos;
     }
-
-
 }

@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 @Repository
-public interface UsuariosRepository
-        extends ReactiveCrudRepository<Usuario, String> {
-
+public interface UsuariosRepository extends ReactiveCrudRepository<Usuario, String> {
     Flux<Usuario> findByNombreAndPassword(String nombre, String password);
 
 }

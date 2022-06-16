@@ -1,16 +1,15 @@
-package com.example.demorest.model;
+package com.example.demorest.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-/**
- * InlineObject3
- */
+//clean code: anadir lombok
+@Getter
+@Setter
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-
 public class ModeloAPIFiltrar {
     @JsonProperty("filtro")
     private String filtro;
@@ -19,24 +18,6 @@ public class ModeloAPIFiltrar {
         this.filtro = filtro;
         return this;
     }
-
-    /**
-     * Get filtro
-     *
-     * @return filtro
-     */
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public String getFiltro() {
-        return filtro;
-    }
-
-    public void setFiltro(String filtro) {
-        this.filtro = filtro;
-    }
-
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -59,7 +40,6 @@ public class ModeloAPIFiltrar {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class InlineObject1 {\n");
-
         sb.append("    filtro: ").append(toIndentedString(filtro)).append("\n");
         sb.append("}");
         return sb.toString();

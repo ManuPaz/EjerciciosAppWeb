@@ -13,7 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Embeddable
 public class JuegosId implements Serializable {
-
     @Column(name = "año")
     private Integer año;
     @Column(name = "id_tipo_jjoo")

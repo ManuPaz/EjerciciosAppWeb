@@ -3,8 +3,11 @@ package com.example.demorest.services;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.*;
-import com.example.demorest.mapings.*;
-import com.example.demorest.model.Sede;
+import com.example.demorest.mapings.JuegosDtoToCiudad;
+import com.example.demorest.mapings.JuegosDtoToJuegos;
+import com.example.demorest.mapings.JuegosDtoToJuegosId;
+import com.example.demorest.mapings.JuegosDtoToPais;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.repositories.CiudadRepository;
 import com.example.demorest.repositories.JuegosRepository;
 import com.example.demorest.repositories.PaisRepository;
@@ -30,7 +33,7 @@ import java.util.Optional;
  */
 @Service
 public class JuegosService {
-    private static final  String THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK = "Throwing exception for demoing Rollback!!!";
+    private static final String THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK = "Throwing exception for demoing Rollback!!!";
     @Autowired
     private JuegosDtoToJuegosId juegosDtoToJuegosId;
     @Autowired
@@ -50,7 +53,88 @@ public class JuegosService {
     @Autowired
     private PaisRepository paisRepository;
 
+    /**
+     * Guardar una  nueva ciudad.
+     * Si juegosDTO tiene en nombre de pais valido se guarda la nueva ciudad de ese pais.
+     * Si juegosDTO no tiene un nombre de pais guardado pero tiene atributos de nombre de pais, codigo  de pais y
+     * valor de pais se crea el nuevo pais y la nueva ciudad.
+     *
+     * @param juegosDTO. DTO de juegos que incluye los atributos de ciudad y pais.
+     */
+    //clean code: modificar metodo para lanzar excepcion desde el metodo en vez de devolver boolean
+    private void guardarCiudad(JuegosDTO juegosDTO) {
+        if (!paisRepository.existsPaisByNombrepais(juegosDTO.getNombre_pais())) {
+            if (juegosDTO.getValor_pais() != null || juegosDTO.getNombre_pais() != null || juegosDTO.getCodigoPais() != null) {
+                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+            }
+            Pais pais = juegosDtoToPais.juegodDtoToPais(juegosDTO);
+            paisRepository.save(pais);
+        }
+        Ciudad ciudad = juegosDtoToCiudad.juegodDtoToJuegosCiudad(juegosDTO);
+        ciudadRepository.save(ciudad);
+    }
 
+    /**
+     * Cambia el id de los juegos y elimina los los juegos antiguos
+     *
+     * @param juegosDTO DTO en el que están el tipo y el año del nuevo id
+     * @param juegos    Juegos para guardar los nuevos juegos con el nuevo id
+     * @throws DataIntegrityViolationException
+     */
+    //clean code: metodo para refactorizar parte del codigo de editar juegos
+    private void cambiarIdJuegos(JuegosDTO juegosDTO, Juegos juegos) {
+        boolean cambiaId = false;
+        Optional<Juegos> juegosOptional;
+        if (juegosDTO.getNuevoTipoSede() != null && !juegosDTO.getNuevoTipoSede().equals(juegosDTO.getDescripcion_tipo_jjoo())) {
+            if (!tipoSedeRepository.existsTipoSedeBydescripciontipo(juegosDTO.getNuevoTipoSede()))
+                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+            juegosDTO.setDescripcion_tipo_jjoo(juegosDTO.getNuevoTipoSede());
+            cambiaId = true;
+        }
+        if ((juegosDTO.getNuevoAño() != null) && !juegosDTO.getNuevoAño().equals(juegosDTO.getAño())) {
+            juegosDTO.setAño(juegosDTO.getNuevoAño());
+            cambiaId = true;
+        }
+        //comprobacion de que no existe ya una sede de juegos con el id al que se quiere cambiar
+        if (cambiaId) {
+            juegosOptional = juegosRepository.findById(juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO));
+            if (juegosOptional.isPresent())
+                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+            //si cambia el id tenemos que eliminar la entidad y volver a añadirla
+            juegosRepository.deleteById(juegos.getId());
+        }
+    }
+
+    /**
+     * Comprueba si la ciudad guardada en el DTO  existe y si no intenta crearla si hay un pais valido
+     *
+     * @param juegosDTO
+     * @return si la ciudad existe o no
+     * @throws DataIntegrityViolationException
+     */
+    //clean code: metodo apara refactorizar parte del codigo de editar juegos
+    private boolean comprobarCiudadExiste(JuegosDTO juegosDTO) {
+        Ciudad ciudad;
+        if (juegosDTO.getId_ciudad() != null) {
+            Optional<Ciudad> ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
+            if (!ciudadOptional.isPresent())
+                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+            ciudad = ciudadOptional.get();
+            juegosDTO.setNombre_ciudad(ciudad.getNombreciudad());
+            return true;
+        } else if (juegosDTO.getNombre_ciudad() != null) {
+            ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
+            if (ciudad != null) {
+                juegosDTO.setId_ciudad(ciudad.getId_ciudad());
+            } else {
+                //si hay un datos de pais validos se puede anadir la nueva ciudad y usando el pais, o anadir el pais
+                guardarCiudad(juegosDTO);
+                ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
+                juegosDTO.setId_ciudad(ciudad.getId_ciudad());
+            }
+            return true;
+        } else return false;
+    }
 
     /**
      * Filtrar juegos. Busca el match con un String o numero entero en todos los campos de la tabla de ciudades sede.
@@ -58,11 +142,9 @@ public class JuegosService {
      * @param parametro el String a buscar
      * @return lista de filas para la tabla de ciudades sede que hacen match para alcun campo
      */
-
     //clean code: eliminar variables no utilizadas
     //clean code: clonar tuplequery para reutilizarla
     public List<CiudadSede> filtrarJuegos(String parametro) {
-
         JPAQueryFactory queryFactory = new JPAQueryFactory(manager);
         QCiudad ciudad = QCiudad.ciudad;
         QPais pais = QPais.pais;
@@ -70,17 +152,12 @@ public class JuegosService {
         QTipoSede tiposede = QTipoSede.tipoSede;
         boolean numeric = parametro.matches("-?\\d+(\\.\\d+)?");
         List<Tuple> juego;
-        JPAQuery<Tuple> tupleJPAQuery = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais,
-                pais.nombrepais, Expressions.cases().when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad).otherwise(pais.valor_pais),
-                tiposede.descripciontipo, juegos.id.año.count()).from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede);
-        JPAQuery<Tuple> tupleJPAQuery2=tupleJPAQuery.clone();
+        JPAQuery<Tuple> tupleJPAQuery = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais, pais.nombrepais, Expressions.cases().when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad).otherwise(pais.valor_pais), tiposede.descripciontipo, juegos.id.año.count()).from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede);
+        JPAQuery<Tuple> tupleJPAQuery2 = tupleJPAQuery.clone();
         if (numeric) {
             Integer ano = Integer.parseInt(parametro);
-            juego =
-                    tupleJPAQuery.where(juegos.id.año.eq(ano).or(ciudad.valor_ciudad.eq(ano).or(pais.valor_pais.eq(ano)))).groupBy(ciudad, pais, tiposede).fetch();
-            List<Tuple> juego2 =
-                    tupleJPAQuery2 .groupBy(ciudad, pais, tiposede).having(juegos.id.año.count().eq(Long.valueOf(ano))).fetch();
-
+            juego = tupleJPAQuery.where(juegos.id.año.eq(ano).or(ciudad.valor_ciudad.eq(ano).or(pais.valor_pais.eq(ano)))).groupBy(ciudad, pais, tiposede).fetch();
+            List<Tuple> juego2 = tupleJPAQuery2.groupBy(ciudad, pais, tiposede).having(juegos.id.año.count().eq(Long.valueOf(ano))).fetch();
             juego.addAll(juego2);
         } else {
             tupleJPAQuery.clone();
@@ -88,24 +165,20 @@ public class JuegosService {
         }
         List<CiudadSede> ciudadesSedes = new ArrayList<>();
         for (Tuple juegoAux : juego) {
-            CiudadSede j = new CiudadSede(juegoAux.get(0, Integer.class), juegoAux.get(1, String.class),
-                    juegoAux.get(2, Integer.class), juegoAux.get(3, String.class), juegoAux.get(4, Integer.class),
-                    juegoAux.get(6, Long.class), juegoAux.get(5, String.class));
+            CiudadSede j = new CiudadSede(juegoAux.get(0, Integer.class), juegoAux.get(1, String.class), juegoAux.get(2, Integer.class), juegoAux.get(3, String.class), juegoAux.get(4, Integer.class), juegoAux.get(6, Long.class), juegoAux.get(5, String.class));
             ciudadesSedes.add(j);
-
         }
         return ciudadesSedes;
     }
 
-
-    /**Devuelve todas las ciudades sede con el numero de veces que fueron sede
+    /**
+     * Devuelve todas las ciudades sede con el numero de veces que fueron sede
+     *
      * @return Lista con DTO CiudadSede
      */
     public List<CiudadSede> findAll() {
-
         return juegosRepository.findCiudadSede();
     }
-
 
     /**
      * Encuentra los juegos que tienen una determinada ciudad y de un tipo concreto, invierno o verao
@@ -115,7 +188,6 @@ public class JuegosService {
      *                 or VERANO
      * @return lista de dtos de sedes
      */
-
     public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(tipo);
         if (tiposede != null) {
@@ -123,30 +195,6 @@ public class JuegosService {
         } else {
             return new ArrayList<>();
         }
-    }
-
-    /**
-     * Guardar una  nueva ciudad.
-     * Si juegosDTO tiene en nombre de pais valido se guarda la nueva ciudad de ese pais.
-     * Si juegosDTO no tiene un nombre de pais guardado pero tiene atributos de nombre de pais, codigo  de pais y
-     * valor de pais se crea el nuevo pais y la nueva ciudad.
-     * @param juegosDTO. DTO de juegos que incluye los atributos de ciudad y pais.
-     */
-    //clean code: modificar metodo para lanzar excepcion desde el metodo en vez de devolver boolean
-    private void guardarCiudad(JuegosDTO juegosDTO) {
-
-
-        if (!paisRepository.existsPaisByNombrepais(juegosDTO.getNombre_pais())) {
-            if (juegosDTO.getValor_pais() != null  || juegosDTO.getNombre_pais() != null || juegosDTO.getCodigoPais() != null) {
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-
-            }
-            Pais pais = juegosDtoToPais.juegodDtoToPais(juegosDTO);
-            paisRepository.save(pais);
-        }
-
-        Ciudad  ciudad = juegosDtoToCiudad.juegodDtoToJuegosCiudad(juegosDTO);
-        ciudadRepository.save(ciudad);
     }
 
     /**
@@ -162,22 +210,18 @@ public class JuegosService {
      * @return juegos con la nueva sede
      * @throws DataIntegrityViolationException
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     //clean code: modificar metodo para reducir complejidad
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos guardarJuegos(JuegosDTO juegosDTO) {
-
         Juegos juegos;
         TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(juegosDTO.getDescripcion_tipo_jjoo());
-        if (tiposede==null)
-            throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-
+        if (tiposede == null) throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
         if (!ciudadRepository.existsCiudadBynombreciudad(juegosDTO.getNombre_ciudad())) {
-             guardarCiudad(juegosDTO);
+            guardarCiudad(juegosDTO);
         }
         juegos = juegosDtoToJuegos.juegodDtoToJuegos(juegosDTO);
         if (juegosRepository.existsById(juegos.getId()))
             throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-
         juegosRepository.save(juegos);
         return juegos;
     }
@@ -204,55 +248,9 @@ public class JuegosService {
         if (!juegosOptional.isPresent())
             throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
         juegos = juegosOptional.get();
-
-        Ciudad ciudad;
-        if (juegosDTO.getId_ciudad() != null){
-            Optional<Ciudad> ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
-            if (!ciudadOptional.isPresent())
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-            ciudad = ciudadOptional.get();
-            juegosDTO.setNombre_ciudad(ciudad.getNombreciudad());
-
-        }
-        else if (juegosDTO.getNombre_ciudad() != null) {
-             ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
-            if (ciudad != null) {
-                juegosDTO.setId_ciudad(ciudad.getId_ciudad());
-            } else {
-                //si hay un datos de pais validos se puede anadir la nueva ciudad y usando el pais, o anadir el pais
-                guardarCiudad(juegosDTO);
-                ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
-                juegosDTO.setId_ciudad(ciudad.getId_ciudad());
-            }
-
-        }
-        else
+        if (!comprobarCiudadExiste(juegosDTO))
             juegosDTO.setNombre_ciudad(juegos.getCiudad().getNombreciudad());
-
-
-        boolean cambiaId=false;
-        if (juegosDTO.getNuevoTipoSede() != null && !juegosDTO.getNuevoTipoSede().equals(juegosDTO.getDescripcion_tipo_jjoo()) ) {
-            if (!tipoSedeRepository.existsTipoSedeBydescripciontipo(juegosDTO.getNuevoTipoSede()))
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-            juegosDTO.setDescripcion_tipo_jjoo(juegosDTO.getNuevoTipoSede());
-            cambiaId=true;
-        }
-        if ((juegosDTO.getNuevoAño() != null) && !juegosDTO.getNuevoAño().equals(juegosDTO.getAño())) {
-            juegosDTO.setAño(juegosDTO.getNuevoAño());
-            cambiaId=true;
-        }
-        //comprobacion de que no existe ya una sede de juegos con el id al que se quiere cambiar
-        if (cambiaId){
-            juegosOptional=juegosRepository.findById(juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO));
-            if (juegosOptional.isPresent())
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-            //si cambia el id tenemos que eliminar la entidad y volver a añadirla
-            juegosRepository.deleteById(juegos.getId());
-
-
-        }
-
-
+        cambiarIdJuegos(juegosDTO, juegos);
         juegos = juegosDtoToJuegos.juegodDtoToJuegos(juegosDTO);
         juegosRepository.save(juegos);
         return juegos;

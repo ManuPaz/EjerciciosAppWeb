@@ -2,7 +2,7 @@ package com.example.demorest.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-//clean code: añadir lombok
+//clean code: anadir lombok
 //clean code: renombrar
 @Getter
 @Setter

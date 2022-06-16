@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface TipoSedeRepository extends CrudRepository<TipoSede, Integer> {
-    TipoSede findBydescripciontipo(String descripcion_tipo);
-    boolean existsTipoSedeBydescripciontipo(String descripcion_tipo);
+    TipoSede findBydescripciontipo(String descripcionTipo);
+
+    boolean existsTipoSedeBydescripciontipo(String descripcionTipo);
 }

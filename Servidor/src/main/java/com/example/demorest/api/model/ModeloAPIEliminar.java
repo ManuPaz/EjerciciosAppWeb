@@ -1,20 +1,18 @@
-package com.example.demorest.model;
+package com.example.demorest.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-/**
- * InlineObject2
- */
+//clean code: anadir lombok
+@Getter
+@Setter
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-
 public class ModeloAPIEliminar {
     @JsonProperty("ano")
     private Integer ano;
-
     @JsonProperty("tipo")
     private String tipo;
 
@@ -23,45 +21,10 @@ public class ModeloAPIEliminar {
         return this;
     }
 
-    /**
-     * Get ano
-     *
-     * @return ano
-     */
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public Integer getAno() {
-        return ano;
-    }
-
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
-
     public ModeloAPIEliminar tipo(String tipo) {
         this.tipo = tipo;
         return this;
     }
-
-    /**
-     * Get tipo
-     *
-     * @return tipo
-     */
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -85,7 +48,6 @@ public class ModeloAPIEliminar {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class InlineObject2 {\n");
-
         sb.append("    ano: ").append(toIndentedString(ano)).append("\n");
         sb.append("    tipo: ").append(toIndentedString(tipo)).append("\n");
         sb.append("}");

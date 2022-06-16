@@ -16,7 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
-
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class JuegosServiceDeleteTest {
@@ -35,13 +34,11 @@ class JuegosServiceDeleteTest {
         sedes.add(sede1);
         ciudades.add(3);
         ciudades.add(7);
-
-
     }
 
     @DisplayName("Eliminar juegos")
     @Test
-    public void eliminarJuegos() {
+     void eliminarJuegos() {
         for (int i = 0; i < ciudades.size(); i++) {
             JuegosDTO sede = sedes.get(i);
             int ciudad = ciudades.get(i);
@@ -53,8 +50,5 @@ class JuegosServiceDeleteTest {
                 }
             }
         }
-
     }
-
-
 }

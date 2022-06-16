@@ -1,7 +1,6 @@
 package com.example.demorest.api;
 
 import org.springframework.web.context.request.NativeWebRequest;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 

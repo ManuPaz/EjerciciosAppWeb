@@ -3,11 +3,10 @@ package com.example.demorest.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-//clean code: añadir lombok
+//clean code: anadir lombok
 @Getter
 @Setter
 public class JuegosDTO {
-
     private String nombre_pais;
     private String nombre_ciudad;
     private String codigoPais;
@@ -19,6 +18,7 @@ public class JuegosDTO {
     private Integer id_pais;
     private Integer nuevoAño;
     private String nuevoTipoSede;
+
     public JuegosDTO() {
     }
 
@@ -44,7 +44,6 @@ public class JuegosDTO {
         this.id_ciudad = idCiudad;
         this.valor_pais = valorPais;
         this.nuevoAño = nuevoAño;
-        this.valor_pais = valor_pais;
         this.descripcion_tipo_jjoo = descripcion_tipo_jjoo;
         this.año = año;
         this.nuevoTipoSede = nuevoTipoSede;
