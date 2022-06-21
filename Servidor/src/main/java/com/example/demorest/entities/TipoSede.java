@@ -1,5 +1,6 @@
 package com.example.demorest.entities;
 
+import com.example.demorest.anotaciones.Entidad;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Entidad(obligatorio = true)
 @Entity
 @Getter
 @Setter

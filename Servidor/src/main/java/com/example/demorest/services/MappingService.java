@@ -1,5 +1,6 @@
 package com.example.demorest.services;
 
+import com.example.demorest.anotaciones.Validador;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.Ciudad;
 import com.example.demorest.entities.Pais;
@@ -12,22 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Service
 public class MappingService {
-    @Autowired
-    private JuegosRepository juegosRepository;
+
     @Autowired
     private CiudadRepository ciudadRepository;
     @Autowired
     private TipoSedeRepository tipoSedeRepository;
     @Autowired
-    private EntityManager manager;
-    @Autowired
     private PaisRepository paisRepository;
 
     public Integer findIdTipoSede(String id) {
-        TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(id);
+        Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(id);
+        TipoSede tiposede = (TipoSede) Validador.procesarOptional(tiposedeOptional,TipoSede.class);
         return tiposede.getId_tipo_jjoo();
     }
 
@@ -36,11 +36,12 @@ public class MappingService {
     }
 
     public Ciudad findByNombreCiudad(String nombre) {
-        return ciudadRepository.findBynombreciudad(nombre);
+        return ciudadRepository.findBynombreciudad(nombre).get();
     }
 
     public TipoSede findTipoSede(JuegosDTO sede) {
-        return tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
+        Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
+        return (TipoSede) Validador.procesarOptional(tiposedeOptional,TipoSede.class);
     }
 
 }

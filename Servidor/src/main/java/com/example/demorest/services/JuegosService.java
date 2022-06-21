@@ -1,13 +1,14 @@
 package com.example.demorest.services;
 
+import com.example.demorest.anotaciones.Validador;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
+import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.*;
 import com.example.demorest.mapings.JuegosDtoToCiudad;
 import com.example.demorest.mapings.JuegosDtoToJuegos;
 import com.example.demorest.mapings.JuegosDtoToJuegosId;
 import com.example.demorest.mapings.JuegosDtoToPais;
-import com.example.demorest.dtos.Sede;
 import com.example.demorest.repositories.CiudadRepository;
 import com.example.demorest.repositories.JuegosRepository;
 import com.example.demorest.repositories.PaisRepository;
@@ -97,8 +98,7 @@ public class JuegosService {
         }
         //comprobacion de que no existe ya una sede de juegos con el id al que se quiere cambiar
         if (cambiaId) {
-            juegosOptional = juegosRepository.findById(juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO));
-            if (juegosOptional.isPresent())
+            if (juegosRepository.existsById(juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO)))
                 throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
             //si cambia el id tenemos que eliminar la entidad y volver a añadirla
             juegosRepository.deleteById(juegos.getId());
@@ -108,32 +108,37 @@ public class JuegosService {
     /**
      * Comprueba si la ciudad guardada en el DTO  existe y si no intenta crearla si hay un pais valido
      *
-     * @param juegosDTO
+     * @param juegosDTO <code></code> {@link #cambiarIdJuegos(JuegosDTO, Juegos)}
      * @return si la ciudad existe o no
      * @throws DataIntegrityViolationException
      */
     //clean code: metodo apara refactorizar parte del codigo de editar juegos
     private boolean comprobarCiudadExiste(JuegosDTO juegosDTO) {
         Ciudad ciudad;
+        Optional<Ciudad> ciudadOptional;
         if (juegosDTO.getId_ciudad() != null) {
-            Optional<Ciudad> ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
-            if (!ciudadOptional.isPresent())
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-            ciudad = ciudadOptional.get();
+            ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
+            ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
             juegosDTO.setNombre_ciudad(ciudad.getNombreciudad());
             return true;
-        } else if (juegosDTO.getNombre_ciudad() != null) {
-            ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
-            if (ciudad != null) {
+        }
+        if (juegosDTO.getNombre_ciudad() != null) {
+            ciudadOptional = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
+            //se intenta buscar la ciudad  pero si no existe se intenta anadir usando el pais
+            //si falla anadiendo el pais ya no se captura la excepcion y se hara rollback de la transaccion
+            try {
+                ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
                 juegosDTO.setId_ciudad(ciudad.getId_ciudad());
-            } else {
+            } catch (DataIntegrityViolationException exception) {
                 //si hay un datos de pais validos se puede anadir la nueva ciudad y usando el pais, o anadir el pais
                 guardarCiudad(juegosDTO);
-                ciudad = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
+                ciudadOptional = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
+                ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
                 juegosDTO.setId_ciudad(ciudad.getId_ciudad());
             }
             return true;
-        } else return false;
+        }
+        return false;
     }
 
     /**
@@ -152,7 +157,9 @@ public class JuegosService {
         QTipoSede tiposede = QTipoSede.tipoSede;
         boolean numeric = parametro.matches("-?\\d+(\\.\\d+)?");
         List<Tuple> juego;
-        JPAQuery<Tuple> tupleJPAQuery = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais, pais.nombrepais, Expressions.cases().when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad).otherwise(pais.valor_pais), tiposede.descripciontipo, juegos.id.año.count()).from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede);
+        JPAQuery<Tuple> tupleJPAQuery = queryFactory.select(ciudad.id_ciudad, ciudad.nombreciudad, pais.id_pais,
+                pais.nombrepais, Expressions.cases().when(ciudad.valor_ciudad.isNotNull()).then(ciudad.valor_ciudad).otherwise(pais.valor_pais),
+                tiposede.descripciontipo, juegos.id.año.count()).from(ciudad).innerJoin(ciudad.pais, pais).leftJoin(ciudad.juegos, juegos).leftJoin(juegos.tipo_jjoo, tiposede);
         JPAQuery<Tuple> tupleJPAQuery2 = tupleJPAQuery.clone();
         if (numeric) {
             Integer ano = Integer.parseInt(parametro);
@@ -189,10 +196,11 @@ public class JuegosService {
      * @return lista de dtos de sedes
      */
     public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
-        TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(tipo);
-        if (tiposede != null) {
+        Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(tipo);
+        try {
+            TipoSede tiposede = (TipoSede) Validador.procesarOptional(tiposedeOptional, TipoSede.class);
             return juegosRepository.findJuegosByCiudad(idciudad, tiposede.getId_tipo_jjoo());
-        } else {
+        } catch (DataIntegrityViolationException exception) {
             return new ArrayList<>();
         }
     }
@@ -214,8 +222,8 @@ public class JuegosService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos guardarJuegos(JuegosDTO juegosDTO) {
         Juegos juegos;
-        TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(juegosDTO.getDescripcion_tipo_jjoo());
-        if (tiposede == null) throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+        Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(juegosDTO.getDescripcion_tipo_jjoo());
+        Validador.procesarOptional(tiposedeOptional, TipoSede.class);
         if (!ciudadRepository.existsCiudadBynombreciudad(juegosDTO.getNombre_ciudad())) {
             guardarCiudad(juegosDTO);
         }
@@ -245,9 +253,7 @@ public class JuegosService {
         Juegos juegos;
         JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
         Optional<Juegos> juegosOptional = juegosRepository.findById(id);
-        if (!juegosOptional.isPresent())
-            throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
-        juegos = juegosOptional.get();
+        juegos = (Juegos) Validador.procesarOptional(juegosOptional, Juegos.class);
         if (!comprobarCiudadExiste(juegosDTO))
             juegosDTO.setNombre_ciudad(juegos.getCiudad().getNombreciudad());
         cambiarIdJuegos(juegosDTO, juegos);
@@ -265,15 +271,11 @@ public class JuegosService {
      * or False si no se ha eliminado la sede
      */
     public boolean borrarJuegos(JuegosDTO juegosDTO) {
-        TipoSede tiposede = tipoSedeRepository.findBydescripciontipo(juegosDTO.getDescripcion_tipo_jjoo());
-        if (tiposede != null) {
-            JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
-            if (juegosRepository.existsById(id)) {
-                juegosRepository.deleteById(id);
-                return true;
-            } else {
-                return false;
-            }
+
+        JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
+        if (juegosRepository.existsById(id)) {
+            juegosRepository.deleteById(id);
+            return true;
         }
         return false;
     }
