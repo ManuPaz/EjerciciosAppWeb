@@ -1,5 +1,6 @@
 package com.example.demorest.dtos;
 
+import com.example.demorest.anotaciones.Estacion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +13,13 @@ public class JuegosDTO {
     private String codigoPais;
     private Integer valor_ciudad;
     private Integer valor_pais;
+    @Estacion(notNull = true)
     private String descripcion_tipo_jjoo;
     private Integer año;
     private Integer id_ciudad;
     private Integer id_pais;
     private Integer nuevoAño;
+    @Estacion(notNull = false)
     private String nuevoTipoSede;
 
     public JuegosDTO() {
