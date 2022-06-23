@@ -21,5 +21,4 @@ public class TipoSede {
     private Integer id_tipo_jjoo;
     @Column(name = "descripcion_tipo")
     private String descripciontipo;
-
 }
