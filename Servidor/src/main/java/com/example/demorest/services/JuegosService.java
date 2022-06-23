@@ -271,7 +271,6 @@ public class JuegosService {
      * or False si no se ha eliminado la sede
      */
     public boolean borrarJuegos(JuegosDTO juegosDTO) {
-
         JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
         if (juegosRepository.existsById(id)) {
             juegosRepository.deleteById(id);

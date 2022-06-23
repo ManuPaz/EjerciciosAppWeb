@@ -8,8 +8,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Estacion {
-
-boolean notNull() default true;
-
-
+    boolean notNull() default true;
 }

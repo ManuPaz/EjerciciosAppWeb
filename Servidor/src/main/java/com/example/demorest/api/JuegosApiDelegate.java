@@ -59,9 +59,9 @@ public class JuegosApiDelegate {
             }
         });
         JuegosDTO juegosdto = new JuegosDTO(inlineObject.getPais(), inlineObject.getCiudad(), inlineObject.getCodigoPais(), inlineObject.getValorCiudad(), inlineObject.getValorPais(), inlineObject.getTipo(), inlineObject.getAno());
-        try{
+        try {
             Validador.procesarFields(juegosdto);
-        }catch (ValidationException exception){
+        } catch (ValidationException exception) {
             return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.BAD_REQUEST);
         }
         HttpStatus codigo = HttpStatus.OK;
@@ -94,9 +94,9 @@ public class JuegosApiDelegate {
             }
         });
         JuegosDTO juegosdto = new JuegosDTO(inlineObject2.getAno(), inlineObject2.getTipo());
-        try{
+        try {
             Validador.procesarFields(juegosdto);
-        }catch (ValidationException exception){
+        } catch (ValidationException exception) {
             return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.BAD_REQUEST);
         }
         HttpStatus codigo = HttpStatus.OK;
@@ -185,12 +185,11 @@ public class JuegosApiDelegate {
             }
         });
         JuegosDTO juegosdto = new JuegosDTO(inlineObject1.getPais(), inlineObject1.getCiudad(), inlineObject1.getIdCiudad(), inlineObject1.getCodigoPais(), inlineObject1.getTipo(), inlineObject1.getAno(), inlineObject1.getNuevoAno(), inlineObject1.getNuevoTipo(), inlineObject1.getValorPais());
-        try{
+        try {
             Validador.procesarFields(juegosdto);
-        }catch (ValidationException exception){
+        } catch (ValidationException exception) {
             return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.BAD_REQUEST);
         }
-
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {
