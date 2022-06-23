@@ -23,15 +23,12 @@ public class Validador {
      * @return El objeto que encapsula el Optional o null si no encapsula ningun objeto y la clase no tiene la anotacion Entidad
      * @throws DataIntegrityViolationException
      */
-    public static Object procesarOptional(Optional opt, Class clase) throws DataIntegrityViolationException {
+    public static void  procesarOptional(Optional opt, Class clase) throws DataIntegrityViolationException {
         final Entidad entidad = (Entidad) clase.getAnnotation(Entidad.class);
         if (entidad != null && entidad.obligatorio() && !opt.isPresent()) {
             throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
         }
-        if (opt.isPresent()) {
-            return opt.get();
-        }
-        return null;
+
     }
 
     /**
@@ -45,7 +42,9 @@ public class Validador {
         final Set<String> estaciones = Set.of("VERANO", "INVIERNO");
         final Class clase = juegosDTO.getClass();
         final Field[] fields = clase.getDeclaredFields();
+
         for (Field field : fields) {
+
             final Estacion estacion = field.getAnnotation(Estacion.class);
             if (estacion != null) {
                 String name = field.getName();
@@ -54,7 +53,7 @@ public class Validador {
                     final Method method = clase.getMethod(name);
                     final String atributo = (String) method.invoke(juegosDTO);
                     //la anotacion Estacion tiene un atributo para permitir nulos o no
-                    if (!((!estacion.notNull() && atributo == null) ||  estaciones.contains(atributo))) {
+                    if (!(!estacion.notNull() && atributo == null) &&  !estaciones.contains(atributo)) {
                         throw new ValidationException(TIPO_DE_SEDE_ERRONEO);
                     }
                 } catch (final NoSuchMethodException |  IllegalAccessException | InvocationTargetException e) {

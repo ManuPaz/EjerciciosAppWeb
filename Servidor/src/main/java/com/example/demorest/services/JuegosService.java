@@ -118,7 +118,8 @@ public class JuegosService {
         Optional<Ciudad> ciudadOptional;
         if (juegosDTO.getId_ciudad() != null) {
             ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
-            ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
+            Validador.procesarOptional(ciudadOptional, Ciudad.class);
+            ciudad=ciudadOptional.get();
             juegosDTO.setNombre_ciudad(ciudad.getNombreciudad());
             return true;
         }
@@ -127,14 +128,15 @@ public class JuegosService {
             //se intenta buscar la ciudad  pero si no existe se intenta anadir usando el pais
             //si falla anadiendo el pais ya no se captura la excepcion y se hara rollback de la transaccion
             try {
-                ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
+                 Validador.procesarOptional(ciudadOptional, Ciudad.class);
+                 ciudad=ciudadOptional.get();
                 juegosDTO.setId_ciudad(ciudad.getId_ciudad());
             } catch (DataIntegrityViolationException exception) {
                 //si hay un datos de pais validos se puede anadir la nueva ciudad y usando el pais, o anadir el pais
                 guardarCiudad(juegosDTO);
                 ciudadOptional = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
-                ciudad = (Ciudad) Validador.procesarOptional(ciudadOptional, Ciudad.class);
-                juegosDTO.setId_ciudad(ciudad.getId_ciudad());
+                Validador.procesarOptional(ciudadOptional, Ciudad.class);
+                ciudad=ciudadOptional.get();
             }
             return true;
         }
@@ -198,7 +200,8 @@ public class JuegosService {
     public List<Sede> findJuegosCiudad(Integer idciudad, String tipo) {
         Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(tipo);
         try {
-            TipoSede tiposede = (TipoSede) Validador.procesarOptional(tiposedeOptional, TipoSede.class);
+            Validador.procesarOptional(tiposedeOptional, TipoSede.class);
+            TipoSede tiposede=tiposedeOptional.get();
             return juegosRepository.findJuegosByCiudad(idciudad, tiposede.getId_tipo_jjoo());
         } catch (DataIntegrityViolationException exception) {
             return new ArrayList<>();
@@ -253,7 +256,8 @@ public class JuegosService {
         Juegos juegos;
         JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
         Optional<Juegos> juegosOptional = juegosRepository.findById(id);
-        juegos = (Juegos) Validador.procesarOptional(juegosOptional, Juegos.class);
+        Validador.procesarOptional(juegosOptional, Juegos.class);
+        juegos=juegosOptional.get();
         if (!comprobarCiudadExiste(juegosDTO))
             juegosDTO.setNombre_ciudad(juegos.getCiudad().getNombreciudad());
         cambiarIdJuegos(juegosDTO, juegos);

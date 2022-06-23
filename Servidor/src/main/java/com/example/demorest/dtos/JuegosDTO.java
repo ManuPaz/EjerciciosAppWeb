@@ -4,6 +4,11 @@ import com.example.demorest.anotaciones.Estacion;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import static org.aspectj.bridge.Version.getTime;
+
 //clean code: anadir lombok
 @Getter
 @Setter
@@ -15,10 +20,15 @@ public class JuegosDTO {
     private Integer valor_pais;
     @Estacion(notNull = true)
     private String descripcion_tipo_jjoo;
+    @Min(value = 1000, message = "El año debe ser mayor que 1000")
+    @Max(value = 2050, message = "El año debe ser menor que 2050")
     private Integer año;
     private Integer id_ciudad;
     private Integer id_pais;
+    @Min(value = 1000, message = "El año debe ser mayor que 1000")
+    @Max(value = 2050, message = "El año debe ser menor que 2050")
     private Integer nuevoAño;
+
     @Estacion(notNull = false)
     private String nuevoTipoSede;
 

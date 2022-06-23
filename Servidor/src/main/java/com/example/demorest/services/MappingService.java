@@ -27,7 +27,8 @@ public class MappingService {
 
     public Integer findIdTipoSede(String id) {
         Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(id);
-        TipoSede tiposede = (TipoSede) Validador.procesarOptional(tiposedeOptional,TipoSede.class);
+        Validador.procesarOptional(tiposedeOptional,TipoSede.class);
+        TipoSede tiposede=tiposedeOptional.get();
         return tiposede.getId_tipo_jjoo();
     }
 
@@ -41,7 +42,8 @@ public class MappingService {
 
     public TipoSede findTipoSede(JuegosDTO sede) {
         Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(sede.getDescripcion_tipo_jjoo());
-        return (TipoSede) Validador.procesarOptional(tiposedeOptional,TipoSede.class);
+         Validador.procesarOptional(tiposedeOptional,TipoSede.class);
+        return tiposedeOptional.get();
     }
 
 }
