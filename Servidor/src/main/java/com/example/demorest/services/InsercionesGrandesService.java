@@ -1,9 +1,7 @@
 package com.example.demorest.services;
 
-import com.example.demorest.MAIN;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.Juegos;
-import com.example.demorest.mapings.JuegosDtoToJuegos;
 import com.example.demorest.mapings.JuegosDtoToJuegosReduced;
 import com.example.demorest.repositories.JuegosRepository;
 import com.example.demorest.utils.ListUtils;
@@ -19,12 +17,11 @@ import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 @Service
 public class InsercionesGrandesService {
     private static final String THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK = "Ya existe una clave privada";
-    private static final Logger LOGGER = LoggerFactory.getLogger(MAIN.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InsercionesGrandesService.class);
     @Autowired
     private JuegosDtoToJuegosReduced juegosDtoToJuegosReduced;
     @Autowired
@@ -51,8 +48,8 @@ public class InsercionesGrandesService {
 
     public void guardarMultiplesJuegosCheckingIds(List<JuegosDTO> juegosDTOs) throws DataIntegrityViolationException {
         this.configurarHilos(juegosDTOs);
-        final List<Callable<EntityManager>> callables = this.sublistas.stream().map(sublist ->
-                new TareaInsertCheckingIds(sublist, this.entityManagerFactory)).collect(Collectors.toList());
+        final List<TareaInsertCheckingIds> callables = this.sublistas.stream().map(sublist ->
+                new TareaInsertCheckingIds(sublist, this.entityManagerFactory)).toList();
         CompletionService<EntityManager> completionService = new ExecutorCompletionService<>(this.executorService);
         this.acabarThreads = false;
         for (Callable<EntityManager> callable : callables) {
@@ -65,7 +62,10 @@ public class InsercionesGrandesService {
                 Future<EntityManager> resultFuture = completionService.take();
                 entityManagers.add(resultFuture.get());
                 received += 1;
-            } catch (DataIntegrityViolationException | ExecutionException | InterruptedException e) {
+            } catch (DataIntegrityViolationException | ExecutionException e) {
+                this.acabarThreads = true;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 this.acabarThreads = true;
             }
         }
@@ -87,7 +87,7 @@ public class InsercionesGrandesService {
     public void guardarMultiplesJuegos(List<JuegosDTO> juegosDTOs) {
         this.configurarHilos(juegosDTOs);
         final CompletionService<Void> completionService = new ExecutorCompletionService<>(this.executorService);
-        List<Callable<Void>> callables = this.sublistas.stream().map(sublist -> new TareaInsert(sublist)).collect(Collectors.toList());
+        List<TareaInsert> callables = this.sublistas.stream().map(sublist -> new TareaInsert(sublist)).toList();
         for (Callable<Void> callable : callables) {
             completionService.submit(callable);
         }
@@ -95,7 +95,10 @@ public class InsercionesGrandesService {
             try {
                 Future<Void> resultFuture = completionService.take();
                 resultFuture.get();
-            } catch (DataIntegrityViolationException | ExecutionException | InterruptedException e) {
+            } catch (DataIntegrityViolationException | ExecutionException exception) {
+                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
             }
         }
