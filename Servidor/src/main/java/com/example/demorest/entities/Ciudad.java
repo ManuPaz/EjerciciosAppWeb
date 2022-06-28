@@ -27,11 +27,7 @@ public class Ciudad {
     @OneToMany(mappedBy = "ciudad")
     private List<Juegos> juegos;
 
-    public List<Juegos> getJuegos() {
-        return juegos;
-    }
-
-    public void setJuegos(List<Juegos> juegos) {
-        this.juegos = juegos;
+    public Ciudad(int id_ciudad){
+        this.id_ciudad=id_ciudad;
     }
 }

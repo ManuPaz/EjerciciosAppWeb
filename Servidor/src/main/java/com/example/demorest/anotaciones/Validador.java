@@ -53,7 +53,7 @@ public class Validador {
                     final Method method = clase.getMethod(name);
                     final String atributo = (String) method.invoke(juegosDTO);
                     //la anotacion Estacion tiene un atributo para permitir nulos o no
-                    if (!(!estacion.notNull() && atributo == null) &&  !estaciones.contains(atributo)) {
+                    if (!(!estacion.notNull() && atributo == null) &&  (atributo==null || !estaciones.contains(atributo))) {
                         throw new ValidationException(TIPO_DE_SEDE_ERRONEO);
                     }
                 } catch (final NoSuchMethodException |  IllegalAccessException | InvocationTargetException e) {

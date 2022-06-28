@@ -6,8 +6,10 @@
 package com.example.demorest.api;
 
 import com.example.demorest.api.model.*;
+import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.dtos.Sede;
 import com.example.demorest.dtos.CiudadSede;
+import com.example.demorest.entities.Juegos;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +49,52 @@ public abstract class JuegosApi {
             method = RequestMethod.POST)
     ResponseEntity<List<CiudadSede>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
         return getDelegate().anadirSedes(inlineObject);
+    }
+
+    /**
+     * POST /juegos/anadir/multiple : Anadir sedes
+     *
+     * @param nuevoJuego  (required)
+     * @return successful operation (status code 200)
+     *         or Atributos de sede no válidos (status code 400)
+     *         or Sede no encontrada (status code 404)
+     */
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirMultiplesSedes", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "basicAuth")
+    }, tags={ "juegos", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation"),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada") })
+    @RequestMapping(value = "/juegos/anadir/multiple",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> anadirMultiplesSedes(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<JuegosDTO> nuevoJuego) {
+        return getDelegate().anadirMultiplesSedes(nuevoJuego);
+    }
+
+    /**
+     * POST /juegos/anadir/multiple/checkingIds : Anadir sedes
+     *
+     * @param nuevoJuego  (required)
+     * @return successful operation (status code 200)
+     *         or Atributos de sede no válidos (status code 400)
+     *         or Sede no encontrada (status code 404)
+     */
+    @ApiOperation(value = "Anadir multiples sedes sabiendo ids", nickname = "anadirMultiplesSedesPorIDs", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "basicAuth")
+    }, tags={ "juegos", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation"),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada") })
+    @RequestMapping(value = "/juegos/anadir/multiple/checkingIds",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> anadirMultiplesSedesPorIDs(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<JuegosDTO> nuevoJuego) {
+        return getDelegate().anadirMultiplesSedesCheckingIds(nuevoJuego);
     }
 
     /**

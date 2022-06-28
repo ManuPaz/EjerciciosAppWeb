@@ -14,6 +14,7 @@ public abstract class JuegosDtoToJuegosId {
     protected MappingService mappingService;
 
     @Mappings({
-            @Mapping(target = "tipo", expression = "java(mappingService.findIdTipoSede(source.getDescripcion_tipo_jjoo()))")})
+            @Mapping(target = "tipo", expression = "java(mappingService.findIdTipoSede(source.getDescripcion_tipo_jjoo()))"),
+            @Mapping(target = "año", source = "ano")})
     public abstract JuegosId juegodDtoToJuegosId(JuegosDTO source);
 }

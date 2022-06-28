@@ -3,6 +3,8 @@ package com.example.demorest.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 //clean code: anadir lombok
@@ -12,6 +14,7 @@ import java.util.Objects;
 public class ModeloAPIEditar {
     @JsonProperty("ano")
     private Integer ano;
+    @NotNull
     @JsonProperty("tipo")
     private String tipo;
     @JsonProperty("ciudad")

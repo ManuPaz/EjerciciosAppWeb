@@ -6,19 +6,19 @@ import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.Juegos;
+import com.example.demorest.services.InsercionesGrandesService;
 import com.example.demorest.services.JuegosService;
 import com.example.demorest.services.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.validation.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -31,15 +31,13 @@ public class JuegosApiDelegate {
     @Autowired
     JuegosService juegosService;
     @Autowired
+    InsercionesGrandesService insercionesGrandesService;
+    @Autowired
     LogInService logInService;
     @Autowired
     private Validator validator;
 
     public JuegosApiDelegate() {
-    }
-
-    Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
     }
 
     /**
@@ -52,15 +50,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#anadirSedes
      */
     ResponseEntity<List<CiudadSede>> anadirSedes(ModeloAPIAnadir inlineObject) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
         JuegosDTO juegosDTO = new JuegosDTO(inlineObject.getPais(), inlineObject.getCiudad(), inlineObject.getCodigoPais(), inlineObject.getValorCiudad(), inlineObject.getValorPais(), inlineObject.getTipo(), inlineObject.getAno());
         final Set<ConstraintViolation<JuegosDTO>> violations = validator.validate(juegosDTO);
         if (!violations.isEmpty()) {
@@ -81,6 +70,25 @@ public class JuegosApiDelegate {
         return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
     }
 
+    ResponseEntity anadirMultiplesSedes(List<JuegosDTO> juegosDTO) {
+        try {
+
+            insercionesGrandesService.guardarMultiplesJuegos(juegosDTO);
+        }catch (DataIntegrityViolationException exception){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    ResponseEntity anadirMultiplesSedesCheckingIds(List<JuegosDTO> juegosDTO) {
+        try {
+
+            insercionesGrandesService.guardarMultiplesJuegosCheckingIds(juegosDTO);
+        }catch (DataIntegrityViolationException exception){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     /**
      * POST /juegos/eliminar : Eliminar sedes
      *
@@ -91,16 +99,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#eliminarSedes
      */
     ResponseEntity<List<CiudadSede>> eliminarSedes(ModeloAPIEliminar inlineObject2) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-
         JuegosDTO juegosdto = new JuegosDTO(inlineObject2.getAno(), inlineObject2.getTipo());
         try {
             Validador.procesarFields(juegosdto);
@@ -127,15 +125,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#filtrarSedes
      */
     ResponseEntity<List<CiudadSede>> filtrarSedes(ModeloAPIFiltrar inlineObject3) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
         HttpStatus codigo = HttpStatus.OK;
         List<CiudadSede> juegos;
         try {
@@ -159,15 +148,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#buscarSedes
      */
     ResponseEntity<List<Sede>> buscarSedes(Integer ciudad, String tipo) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"ano\" : 0, \"descripcion_tipo\" : \"descripcion_tipo\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
         HttpStatus codigo = HttpStatus.OK;
         List<Sede> j = juegosService.findJuegosCiudad(ciudad, tipo);
         return new ResponseEntity<List<Sede>>(j, codigo);
@@ -183,16 +163,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#modificarSedes
      */
     ResponseEntity<List<CiudadSede>> modificarSedes(ModeloAPIEditar inlineObject1) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-
         JuegosDTO juegosDTO = new JuegosDTO(inlineObject1.getPais(), inlineObject1.getCiudad(), inlineObject1.getIdCiudad(), inlineObject1.getCodigoPais(), inlineObject1.getTipo(), inlineObject1.getAno(), inlineObject1.getNuevoAno(), inlineObject1.getNuevoTipo(), inlineObject1.getValorPais());
         try {
             Validador.procesarFields(juegosDTO);
@@ -203,7 +173,6 @@ public class JuegosApiDelegate {
         if (!violations.isEmpty()) {
             return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.BAD_REQUEST);
         }
-
         HttpStatus codigo = HttpStatus.OK;
         Juegos j = null;
         try {
@@ -227,15 +196,6 @@ public class JuegosApiDelegate {
      * @see JuegosApi#obtenerSedes
      */
     ResponseEntity<List<CiudadSede>> obtenerSedes() {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nombre_ciudad\" : \"nombre_ciudad\", \"nombre_pais\" : \"nombre_pais\", \"numero_veces_sede\" : 5, \"valor\" : 1, \"id_ciudad\" : 6, \"descripcion_tipo_jjoo\" : \"descripcion_tipo_jjoo\", \"id_pais\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
         return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.OK);
     }
 

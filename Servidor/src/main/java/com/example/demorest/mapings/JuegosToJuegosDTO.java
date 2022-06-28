@@ -17,7 +17,8 @@ public abstract class JuegosToJuegosDTO {
             @Mapping(target = "nombre_ciudad", source = "source.ciudad.nombreciudad"),
             @Mapping(target = "codigoPais", source = "source.ciudad.pais.codigo_pais"),
             @Mapping(target = "descripcion_tipo_jjoo", source = "source.tipo_jjoo.descripciontipo"),
-            @Mapping(target = "año", source = "source.id.año"),
+            @Mapping(target = "ano", source = "source.id.año"),
     })
     public abstract JuegosDTO juegosToJuegosDTO(Juegos source);
+
 }

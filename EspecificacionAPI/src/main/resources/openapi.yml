@@ -75,6 +75,36 @@ paths:
         404:
           description: bad request
       x-codegen-request-body-name: body
+      
+  /juegos/anadir/multiple:
+    post:
+      security:
+        - basicAuth: [user] 
+      tags:
+        - juegos
+      summary: Anadir sedes
+      operationId: anadirMultiplesSedes
+     
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: modeloAnadir
+              $ref: '#/components/schemas/NuevoJuegoArray'
+              
+                  
+
+      responses:
+        200:
+          description: successful operation
+          
+        400:
+          description: Atributos de sede no válidos
+          content: {}
+        404:
+          description: Sede no encontrada
+          content: {}
   /juegos/anadir:
     post:
       security:
@@ -318,6 +348,18 @@ components:
         numero_veces_sede:
           type: integer
           format: int64
+          
+    NuevoJuego:
+      type: object
+      properties:
+        ciudad:
+          type: string
+        tipo:
+          type: string
+        ano:
+          type: integer
+          format: int64
+        
     Sede:
       type: object
       properties:
@@ -335,6 +377,11 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Juegos'
+        
+    NuevoJuegoArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/NuevoJuego'
 
   securitySchemes:
     basicAuth:
@@ -343,5 +390,4 @@ components:
         
 security:
   -    basicAuth: []
-
       

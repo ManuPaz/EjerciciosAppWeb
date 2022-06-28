@@ -18,6 +18,11 @@ public class JuegosId implements Serializable {
     @Column(name = "id_tipo_jjoo")
     private Integer tipo;
 
+    public JuegosId(Integer año,Integer tipo){
+        this.año=año;
+        this.tipo=tipo;
+    }
+
     @Override
     public boolean equals(Object o) {
 

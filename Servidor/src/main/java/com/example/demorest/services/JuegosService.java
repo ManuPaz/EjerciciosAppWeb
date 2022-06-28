@@ -1,5 +1,6 @@
 package com.example.demorest.services;
 
+import com.example.demorest.MAIN;
 import com.example.demorest.anotaciones.Validador;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
@@ -17,6 +18,8 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +38,7 @@ import java.util.Optional;
  */
 @Service
 public class JuegosService {
+
     private static final String THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK = "Throwing exception for demoing Rollback!!!";
     @Autowired
     private JuegosDtoToJuegosId juegosDtoToJuegosId;
@@ -92,8 +97,8 @@ public class JuegosService {
             juegosDTO.setDescripcion_tipo_jjoo(juegosDTO.getNuevoTipoSede());
             cambiaId = true;
         }
-        if ((juegosDTO.getNuevoAño() != null) && !juegosDTO.getNuevoAño().equals(juegosDTO.getAño())) {
-            juegosDTO.setAño(juegosDTO.getNuevoAño());
+        if ((juegosDTO.getNuevoAño() != null) && !juegosDTO.getNuevoAño().equals(juegosDTO.getAno())) {
+            juegosDTO.setAno(juegosDTO.getNuevoAño());
             cambiaId = true;
         }
         //comprobacion de que no existe ya una sede de juegos con el id al que se quiere cambiar
@@ -236,6 +241,11 @@ public class JuegosService {
         juegosRepository.save(juegos);
         return juegos;
     }
+
+
+
+
+
 
     /**
      * Editar juegos . Se puede editar la ciudad, año o tipo de la sede. Para editar la ciudad se puede utilizar el

@@ -4,10 +4,12 @@ import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.Sede;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.entities.JuegosId;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -22,4 +24,5 @@ public interface JuegosRepository extends CrudRepository<Juegos, JuegosId> {
     @Query("Select new com.example.demorest.dtos.Sede(t.descripciontipo,j.id.año) from Ciudad c  inner join c.juegos j " +
             "inner join j.tipo_jjoo as t where c.id_ciudad= :id_ciudad and  j.id.tipo=:tipo_sede")
     List<Sede> findJuegosByCiudad(@Param("id_ciudad") int idCiudad, @Param("tipo_sede") Integer tipoSede);
+
 }
