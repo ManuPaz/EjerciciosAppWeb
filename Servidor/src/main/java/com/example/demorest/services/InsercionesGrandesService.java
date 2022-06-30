@@ -52,7 +52,6 @@ public class InsercionesGrandesService {
             for (Callable<List> callable : callables) {
                 completionService.submit(callable);
             }
-            boolean error = false;
             final int tam = sublistas.size();
             for (int received = 0; received < tam; received++) {
                 try {
@@ -60,11 +59,11 @@ public class InsercionesGrandesService {
                     List<JuegosDTO> lista = resultFuture.get();
                     sublistas.remove(lista);
                 } catch (Exception exception) {
-                    error = true;
+                    LOGGER.error(exception.getMessage());
                 }
             }
             executorService.shutdown();
-            if (error && sublistas.size() == tam) {
+            if (sublistas.size() == tam) {
                 throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
             }
         }
