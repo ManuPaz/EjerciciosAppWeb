@@ -74,28 +74,30 @@ public abstract class JuegosApi {
         return getDelegate().anadirMultiplesSedes(nuevoJuego);
     }
 
+
     /**
-     * POST /juegos/anadir/multiple/checkingIds : Anadir sedes
+     * POST /juegos/anadir/multiple/oneThread : Anadir sedes
      *
      * @param nuevoJuego  (required)
      * @return successful operation (status code 200)
      *         or Atributos de sede no válidos (status code 400)
      *         or Sede no encontrada (status code 404)
      */
-    @ApiOperation(value = "Anadir multiples sedes sabiendo ids", nickname = "anadirMultiplesSedesPorIDs", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirMultiplesSedesOneThread", notes = "", response = Juegos.class, responseContainer = "List", authorizations = {
             @Authorization(value = "basicAuth")
     }, tags={ "juegos", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation"),
             @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
             @ApiResponse(code = 404, message = "Sede no encontrada") })
-    @RequestMapping(value = "/juegos/anadir/multiple/checkingIds",
+    @RequestMapping(value = "/juegos/anadir/multiple/oneThread",
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<Void> anadirMultiplesSedesPorIDs(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<JuegosDTO> nuevoJuego) {
-        return getDelegate().anadirMultiplesSedesCheckingIds(nuevoJuego);
+    ResponseEntity<Void> anadirMultiplesSedesOneThread(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<JuegosDTO> nuevoJuego) {
+        return getDelegate().anadirMultiplesSedesOneThread(nuevoJuego);
     }
+
 
     /**
      * POST /juegos/eliminar : Eliminar sedes

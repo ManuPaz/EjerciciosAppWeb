@@ -79,15 +79,17 @@ public class JuegosApiDelegate {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    ResponseEntity anadirMultiplesSedesCheckingIds(List<JuegosDTO> juegosDTO) {
+
+    ResponseEntity anadirMultiplesSedesOneThread(List<JuegosDTO> juegosDTO) {
         try {
 
-            insercionesGrandesService.guardarMultiplesJuegosCheckingIds(juegosDTO);
+            insercionesGrandesService.guardarMultiplesJuegosOneThread(juegosDTO);
         }catch (DataIntegrityViolationException exception){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     /**
      * POST /juegos/eliminar : Eliminar sedes
