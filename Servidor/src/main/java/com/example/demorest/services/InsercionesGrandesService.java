@@ -31,6 +31,7 @@ public class InsercionesGrandesService {
     private int insertMaxThreads;
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+    private List<JuegosDTO> juegosDTOList;
 
     public void guardarMultiplesJuegosOneThread(List<JuegosDTO> juegosDTOs) {
         final long tiempoComienzo = System.currentTimeMillis();
@@ -41,8 +42,8 @@ public class InsercionesGrandesService {
 
     public void guardarMultiplesJuegos(List<JuegosDTO> juegosDTOs) {
         final long tiempoComienzo = System.currentTimeMillis();
-        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize, insertMaxThreads);
-        final int numeroListas = juegosDTOs.size() / numeroHilos;
+        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize, insertMaxThreads)+1;
+        final int numeroListas = (int) Math.ceil(juegosDTOs.size() / numeroHilos);
         List<List<JuegosDTO>> sublistas = ListUtils.createSubList(juegosDTOs, numeroListas);
         while (sublistas.size() > 0) {
             LOGGER.info("Sublistas restantes {}", sublistas.size());
@@ -73,7 +74,6 @@ public class InsercionesGrandesService {
     public class TareaInsert implements Callable<List> {
         private List<JuegosDTO> juegosDTOList;
         private EntityManager entityManager;
-        private int id;
 
         public TareaInsert(List<JuegosDTO> juegosDTOList, EntityManagerFactory entityManagerFactory) {
             this.juegosDTOList = juegosDTOList;
