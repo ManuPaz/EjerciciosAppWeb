@@ -4,18 +4,18 @@ import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.entities.Juegos;
 import com.example.demorest.mapings.JuegosDtoToJuegosReduced;
 import com.example.demorest.repositories.JuegosRepository;
-import com.example.demorest.utils.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 @Service
 public class InsercionesGrandesService {
@@ -29,6 +29,9 @@ public class InsercionesGrandesService {
     private int insertMaxSize;
     @Value("${bd.insertMaxThreads}")
     private int insertMaxThreads;
+    @Value("${bd.batchSize}")
+    private int batchSize;
+    private int posicionLista;
     @Autowired
     private EntityManagerFactory entityManagerFactory;
     private List<JuegosDTO> juegosDTOList;
@@ -42,59 +45,60 @@ public class InsercionesGrandesService {
 
     public void guardarMultiplesJuegos(List<JuegosDTO> juegosDTOs) {
         final long tiempoComienzo = System.currentTimeMillis();
-        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize, insertMaxThreads)+1;
-        final int numeroListas = (int) Math.ceil(juegosDTOs.size() / numeroHilos);
-        List<List<JuegosDTO>> sublistas = ListUtils.createSubList(juegosDTOs, numeroListas);
-        while (sublistas.size() > 0) {
-            LOGGER.info("Sublistas restantes {}", sublistas.size());
-            final ExecutorService executorService = Executors.newFixedThreadPool(sublistas.size());
-            final CompletionService<List> completionService = new ExecutorCompletionService<>(executorService);
-            List<TareaInsert> callables = sublistas.stream().map(sublist -> new TareaInsert(sublist, this.entityManagerFactory)).toList();
-            for (Callable<List> callable : callables) {
-                completionService.submit(callable);
-            }
-            final int tam = sublistas.size();
-            for (int received = 0; received < tam; received++) {
-                try {
-                    Future<List> resultFuture = completionService.take();
-                    List<JuegosDTO> lista = resultFuture.get();
-                    sublistas.remove(lista);
-                } catch (Exception exception) {
-                    LOGGER.error(exception.getMessage());
-                }
-            }
-            executorService.shutdown();
-            if (sublistas.size() == tam) {
-                throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+        this.juegosDTOList = Collections.synchronizedList(juegosDTOs);
+        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize+1, insertMaxThreads);
+        posicionLista = 0;
+        LOGGER.info("Numero de hilos: {}", numeroHilos);
+        final ExecutorService executorService = Executors.newFixedThreadPool(numeroHilos);
+        final CompletionService<Void> completionService = new ExecutorCompletionService<>(executorService);
+        List<TareaInsert> callables = IntStream.range(0, numeroHilos).mapToObj(sublist -> new TareaInsert(this.entityManagerFactory)).toList();
+        for (Callable<Void> callable : callables) {
+            completionService.submit(callable);
+        }
+        for (int received = 0; received < numeroHilos; received++) {
+            try {
+                Future<Void> resultFuture = completionService.take();
+                resultFuture.get();
+            } catch (Exception exception) {
+                LOGGER.error(exception.getMessage());
             }
         }
+        executorService.shutdown();
         LOGGER.info("Tiempo de insercion en BD: {} segundos", (System.currentTimeMillis() - tiempoComienzo) / 1000);
     }
 
-    public class TareaInsert implements Callable<List> {
-        private List<JuegosDTO> juegosDTOList;
+    public class TareaInsert implements Callable<Void> {
         private EntityManager entityManager;
 
-        public TareaInsert(List<JuegosDTO> juegosDTOList, EntityManagerFactory entityManagerFactory) {
-            this.juegosDTOList = juegosDTOList;
+        public TareaInsert(EntityManagerFactory entityManagerFactory) {
             this.entityManager = entityManagerFactory.createEntityManager();
         }
 
         @Override
-        public List call() {
-            entityManager.getTransaction().begin();
-            List<Juegos> juegosArray = juegosDtoToJuegosReduced.juegodDtoListToJuegosReducedList(this.juegosDTOList);
-            for (Juegos juegos : juegosArray) {
-                entityManager.merge(juegos);
-            }
-            try {
-                entityManager.getTransaction().commit();
-            } catch (Exception exception) {
-                entityManager.close();
-                throw exception;
+        public Void call() {
+            while (true) {
+                List<JuegosDTO> sublist;
+                synchronized (juegosDTOList) {
+                    if (posicionLista < juegosDTOList.size()) {
+                        sublist = juegosDTOList.subList(posicionLista, Math.min(posicionLista+batchSize,juegosDTOList.size()));
+                        posicionLista += batchSize;
+                    } else {
+                        break;
+                    }
+                }
+                List<Juegos> juegosArray = juegosDtoToJuegosReduced.juegodDtoListToJuegosReducedList(sublist);
+                entityManager.getTransaction().begin();
+                for (Juegos juegos : juegosArray) {
+                    entityManager.merge(juegos);
+                }
+                try {
+                    entityManager.getTransaction().commit();
+                } catch (Exception exception) {
+                    LOGGER.error(exception.getMessage());
+                }
             }
             entityManager.close();
-            return this.juegosDTOList;
+            return null;
         }
     }
 }
