@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
@@ -46,7 +45,7 @@ public class InsercionesGrandesService {
     public void guardarMultiplesJuegos(List<JuegosDTO> juegosDTOs) {
         final long tiempoComienzo = System.currentTimeMillis();
         this.juegosDTOList = juegosDTOs;
-        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize+1, insertMaxThreads);
+        final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize + 1, insertMaxThreads);
         posicionLista = 0;
         LOGGER.info("Numero de hilos: {}", numeroHilos);
         final ExecutorService executorService = Executors.newFixedThreadPool(numeroHilos);
@@ -80,7 +79,7 @@ public class InsercionesGrandesService {
                 List<JuegosDTO> sublist;
                 synchronized (juegosDTOList) {
                     if (posicionLista < juegosDTOList.size()) {
-                        sublist = juegosDTOList.subList(posicionLista, Math.min(posicionLista+batchSize,juegosDTOList.size()));
+                        sublist = juegosDTOList.subList(posicionLista, Math.min(posicionLista + batchSize, juegosDTOList.size()));
                         posicionLista += batchSize;
                     } else {
                         break;
