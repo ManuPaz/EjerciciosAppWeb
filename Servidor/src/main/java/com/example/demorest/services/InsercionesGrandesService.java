@@ -45,7 +45,7 @@ public class InsercionesGrandesService {
 
     public void guardarMultiplesJuegos(List<JuegosDTO> juegosDTOs) {
         final long tiempoComienzo = System.currentTimeMillis();
-        this.juegosDTOList = Collections.synchronizedList(juegosDTOs);
+        this.juegosDTOList = juegosDTOs;
         final int numeroHilos = Math.min(juegosDTOs.size() / insertMaxSize+1, insertMaxThreads);
         posicionLista = 0;
         LOGGER.info("Numero de hilos: {}", numeroHilos);
