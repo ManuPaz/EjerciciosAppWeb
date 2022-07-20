@@ -4,9 +4,12 @@ import {properties} from "../../properties";
 export default axios.create({
   baseURL: properties.baseURL,
   headers: {
-    "Content-type": "application/json"
+    "Content-type": "application/json",
+    //"databaseName":"juegosolimpicos2050"
   }, auth: {
     username: properties.username,
-    password: properties.password
-  }
+    password: properties.password,
+
+  },
+
 });
