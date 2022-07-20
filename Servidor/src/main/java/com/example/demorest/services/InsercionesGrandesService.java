@@ -110,6 +110,7 @@ public class InsercionesGrandesService {
                     entityManager.getTransaction().commit();
                 } catch (Exception exception) {
                     LOGGER.error(exception.getMessage());
+                    break;
                 }
             }
             entityManager.close();

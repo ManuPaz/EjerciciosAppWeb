@@ -10,6 +10,7 @@ import com.example.demorest.dtos.JuegosDTO;
 import com.example.demorest.dtos.Sede;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.entities.Juegos;
+import com.example.demorest.multiple_databases.DatabaseContext;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +50,29 @@ public abstract class JuegosApi {
             method = RequestMethod.POST)
     ResponseEntity<List<CiudadSede>> anadirSedes(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
         return getDelegate().anadirSedes(inlineObject);
+    }
+
+    /**
+     * POST /juegos/anadirVariasBD : Anadir sedes
+     *
+     * @param inlineObject (required)
+     * @return successful operation (status code 200)
+     * or Atributos de sede no válidos (status code 400)
+     * or Sede no encontrada (status code 404)
+     */
+    @ApiOperation(value = "Anadir sedes", nickname = "anadirSedes", notes = "", response = CiudadSede.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "basicAuth")
+    }, tags = {"juegos",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class, responseContainer = "List"),
+            @ApiResponse(code = 400, message = "Atributos de sede no válidos"),
+            @ApiResponse(code = 404, message = "Sede no encontrada")})
+    @RequestMapping(value = "/juegos/anadirVariasBD",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<Juegos> anadirSedesVariasBD(@ApiParam(value = "", required = true) @Valid @RequestBody ModeloAPIAnadir inlineObject) {
+        return getDelegate().anadirSedesVariasBD(inlineObject);
     }
 
     /**
@@ -210,6 +234,29 @@ public abstract class JuegosApi {
         return getDelegate().obtenerSedes();
     }
 
+
+    /**
+     * GET /juegosChangeDB : Lista de sedes
+     * Listar las ciudades que fueron  sede
+     *
+     * @return successful operation (status code 200)
+     * or bad request (status code 404)
+     */
+    @ApiOperation(value = "Lista de sedes", nickname = "obtenerSedes", notes = "Listar las ciudades que fueron  sede", response = CiudadSede.class, tags = {"juegos",}, authorizations = {
+            @Authorization(value = "basicAuth")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = CiudadSede.class),
+            @ApiResponse(code = 404, message = "bad request")})
+    @RequestMapping(value = "/juegosChangeDB",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<CiudadSede>> obtenerSedesChangeDB() {
+
+
+
+        return getDelegate().obtenerSedesChangeDB();
+    }
     /**
      * POST /juegos/login : LogIn
      *

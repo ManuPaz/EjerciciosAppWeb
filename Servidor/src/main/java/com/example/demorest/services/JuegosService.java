@@ -1,6 +1,5 @@
 package com.example.demorest.services;
 
-import com.example.demorest.MAIN;
 import com.example.demorest.anotaciones.Validador;
 import com.example.demorest.dtos.CiudadSede;
 import com.example.demorest.dtos.JuegosDTO;
@@ -10,10 +9,12 @@ import com.example.demorest.mapings.JuegosDtoToCiudad;
 import com.example.demorest.mapings.JuegosDtoToJuegos;
 import com.example.demorest.mapings.JuegosDtoToJuegosId;
 import com.example.demorest.mapings.JuegosDtoToPais;
+import com.example.demorest.multiple_databases.DatabaseContext;
 import com.example.demorest.repositories.CiudadRepository;
 import com.example.demorest.repositories.JuegosRepository;
 import com.example.demorest.repositories.PaisRepository;
 import com.example.demorest.repositories.TipoSedeRepository;
+import com.example.demorest.utils.JerarquiaStopWatch;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -28,18 +29,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.*;
 
 /**
  * The type Juegos service.
  */
 @Service
 public class JuegosService {
-
     private static final String THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK = "Throwing exception for demoing Rollback!!!";
+    private static final Logger LOGGER = LoggerFactory.getLogger(InsercionesGrandesService.class);
+    private static final String NOMBREDATABASE2 = "juegosolimpicos2000";
     @Autowired
     private JuegosDtoToJuegosId juegosDtoToJuegosId;
     @Autowired
@@ -58,6 +60,8 @@ public class JuegosService {
     private EntityManager manager;
     @Autowired
     private PaisRepository paisRepository;
+    private ExecutorService executorService = null;
+    private CallableBuscarJuegos callableBuscarJuegos;
 
     /**
      * Guardar una  nueva ciudad.
@@ -124,7 +128,7 @@ public class JuegosService {
         if (juegosDTO.getId_ciudad() != null) {
             ciudadOptional = ciudadRepository.findById(juegosDTO.getId_ciudad());
             Validador.procesarOptional(ciudadOptional, Ciudad.class);
-            ciudad=ciudadOptional.get();
+            ciudad = ciudadOptional.get();
             juegosDTO.setNombre_ciudad(ciudad.getNombreciudad());
             return true;
         }
@@ -133,15 +137,15 @@ public class JuegosService {
             //se intenta buscar la ciudad  pero si no existe se intenta anadir usando el pais
             //si falla anadiendo el pais ya no se captura la excepcion y se hara rollback de la transaccion
             try {
-                 Validador.procesarOptional(ciudadOptional, Ciudad.class);
-                 ciudad=ciudadOptional.get();
+                Validador.procesarOptional(ciudadOptional, Ciudad.class);
+                ciudad = ciudadOptional.get();
                 juegosDTO.setId_ciudad(ciudad.getId_ciudad());
             } catch (DataIntegrityViolationException exception) {
                 //si hay un datos de pais validos se puede anadir la nueva ciudad y usando el pais, o anadir el pais
                 guardarCiudad(juegosDTO);
                 ciudadOptional = ciudadRepository.findBynombreciudad(juegosDTO.getNombre_ciudad());
                 Validador.procesarOptional(ciudadOptional, Ciudad.class);
-                ciudad=ciudadOptional.get();
+                ciudad = ciudadOptional.get();
             }
             return true;
         }
@@ -185,13 +189,40 @@ public class JuegosService {
         return ciudadesSedes;
     }
 
-    /**
-     * Devuelve todas las ciudades sede con el numero de veces que fueron sede
-     *
-     * @return Lista con DTO CiudadSede
-     */
+    @Transactional
     public List<CiudadSede> findAll() {
-        return juegosRepository.findCiudadSede();
+        JerarquiaStopWatch jerarquiaStopWatch = new JerarquiaStopWatch();
+        String stopWatchPadreId = jerarquiaStopWatch.addPadre();
+        jerarquiaStopWatch.startStopWatch(stopWatchPadreId);
+        juegosRepository.findCiudadSede();
+        List<CiudadSede> juegos = juegosRepository.findCiudadSede();
+        jerarquiaStopWatch.stopStopWatch(stopWatchPadreId);
+        System.out.println(jerarquiaStopWatch);
+        return juegos;
+    }
+
+    public List<CiudadSede> findAllChangeDatabase() {
+        JerarquiaStopWatch jerarquiaStopWatch = new JerarquiaStopWatch();
+        String stopWatchPadreId = jerarquiaStopWatch.addPadre();
+        jerarquiaStopWatch.startStopWatch(stopWatchPadreId);
+        juegosRepository.findCiudadSede();
+        if (this.executorService == null) {
+            this.executorService = Executors.newFixedThreadPool(1);
+        }
+        if (this.callableBuscarJuegos == null) {
+            this.callableBuscarJuegos = new CallableBuscarJuegos(NOMBREDATABASE2);
+        }
+        Future<List<CiudadSede>> resultado = this.executorService.submit(this.callableBuscarJuegos);
+        List<CiudadSede> juegos;
+        try {
+            juegos = resultado.get();
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+        jerarquiaStopWatch.stopStopWatch(stopWatchPadreId);
+        System.out.println(jerarquiaStopWatch);
+        return juegos;
     }
 
     /**
@@ -206,7 +237,7 @@ public class JuegosService {
         Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(tipo);
         try {
             Validador.procesarOptional(tiposedeOptional, TipoSede.class);
-            TipoSede tiposede=tiposedeOptional.get();
+            TipoSede tiposede = tiposedeOptional.get();
             return juegosRepository.findJuegosByCiudad(idciudad, tiposede.getId_tipo_jjoo());
         } catch (DataIntegrityViolationException exception) {
             return new ArrayList<>();
@@ -229,6 +260,19 @@ public class JuegosService {
     //clean code: modificar metodo para reducir complejidad
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Juegos guardarJuegos(JuegosDTO juegosDTO) {
+        this.guardarJuegosAux(juegosDTO);
+        if (this.executorService == null) {
+            this.executorService = Executors.newFixedThreadPool(1);
+        }
+        Future<List<CiudadSede>> resultado = this.executorService.submit(new CallableGuardarJuegos(NOMBREDATABASE2, juegosDTO));
+        try {
+            return (Juegos) resultado.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new DataIntegrityViolationException(THROWING_EXCEPTION_FOR_DEMOING_ROLLBACK);
+        }
+    }
+
+    public Juegos guardarJuegosAux(JuegosDTO juegosDTO) {
         Juegos juegos;
         Optional<TipoSede> tiposedeOptional = tipoSedeRepository.findBydescripciontipo(juegosDTO.getDescripcion_tipo_jjoo());
         Validador.procesarOptional(tiposedeOptional, TipoSede.class);
@@ -241,11 +285,6 @@ public class JuegosService {
         juegosRepository.save(juegos);
         return juegos;
     }
-
-
-
-
-
 
     /**
      * Editar juegos . Se puede editar la ciudad, año o tipo de la sede. Para editar la ciudad se puede utilizar el
@@ -267,7 +306,7 @@ public class JuegosService {
         JuegosId id = juegosDtoToJuegosId.juegodDtoToJuegosId(juegosDTO);
         Optional<Juegos> juegosOptional = juegosRepository.findById(id);
         Validador.procesarOptional(juegosOptional, Juegos.class);
-        juegos=juegosOptional.get();
+        juegos = juegosOptional.get();
         if (!comprobarCiudadExiste(juegosDTO))
             juegosDTO.setNombre_ciudad(juegos.getCiudad().getNombreciudad());
         cambiarIdJuegos(juegosDTO, juegos);
@@ -291,6 +330,39 @@ public class JuegosService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Devuelve todas las ciudades sede con el numero de veces que fueron sede
+     *
+     * @return Lista con DTO CiudadSede
+     */
+    public class CallableBuscarJuegos<List> implements Callable<List> {
+        // More fields here
+
+        public CallableBuscarJuegos(String tenantId) {
+            DatabaseContext.setCurrentSchema(tenantId);
+        }
+
+        @Override
+        public final List call() throws Exception {
+            return (List) juegosRepository.findCiudadSede();
+        }
+    }
+
+    public class CallableGuardarJuegos<Juegos> implements Callable<Juegos> {
+        private JuegosDTO juegosDTO;
+        // More fields here
+
+        public CallableGuardarJuegos(String tenantId, JuegosDTO juegosdto) {
+            this.juegosDTO = juegosdto;
+            DatabaseContext.setCurrentSchema(tenantId);
+        }
+
+        @Override
+        public final Juegos call() throws Exception {
+            return (Juegos) guardarJuegosAux(this.juegosDTO);
+        }
     }
 }
 

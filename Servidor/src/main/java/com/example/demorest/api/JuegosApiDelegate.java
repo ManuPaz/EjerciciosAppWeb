@@ -70,6 +70,19 @@ public class JuegosApiDelegate {
         return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), codigo);
     }
 
+    ResponseEntity<Juegos> anadirSedesVariasBD(ModeloAPIAnadir inlineObject) {
+        JuegosDTO juegosDTO = new JuegosDTO(inlineObject.getPais(), inlineObject.getCiudad(), inlineObject.getCodigoPais(), inlineObject.getValorCiudad(), inlineObject.getValorPais(), inlineObject.getTipo(), inlineObject.getAno());
+
+        HttpStatus codigo = HttpStatus.OK;
+        Juegos j = null;
+        try {
+            j = juegosService.guardarJuegos(juegosDTO);
+        } catch (DataIntegrityViolationException ex) {
+            codigo = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<Juegos>(j, codigo);
+    }
+
     ResponseEntity anadirMultiplesSedes(List<JuegosDTO> juegosDTO) {
         try {
 
@@ -199,6 +212,10 @@ public class JuegosApiDelegate {
      */
     ResponseEntity<List<CiudadSede>> obtenerSedes() {
         return new ResponseEntity<List<CiudadSede>>(juegosService.findAll(), HttpStatus.OK);
+    }
+
+    ResponseEntity<List<CiudadSede>> obtenerSedesChangeDB() {
+        return new ResponseEntity<List<CiudadSede>>(juegosService.findAllChangeDatabase(), HttpStatus.OK);
     }
 
     /**
